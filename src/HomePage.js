@@ -19,7 +19,7 @@ export default function HomePage() {
   const heroCommunityTitleColor = useTransform(scrollYProgress, [0, 0.5], ["rgba(48, 108, 236, 0.8)", "rgba(255, 254, 249, 0.8)"]);
   const communityCardBackground = useTransform(scrollYProgress, [0, 0.5], ["rgba(48, 108, 236, 0.08)", "rgba(255, 254, 249, 0.08)"]);
   
-  // Detect scroll to shrink navbar
+  // Detect scroll to hide navbar background
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -30,52 +30,38 @@ export default function HomePage() {
 
   return (
     <div className="font-sans">
-      {/* NAVBAR - Slim and doesn't block content */}
-      <nav className={`w-full flex justify-between items-center px-8 fixed top-0 left-0 right-0 bg-[#FFFEF9]/95 backdrop-blur-md z-50 border-b border-[#306CEC]/10 transition-all duration-300 ${scrolled ? 'py-3 shadow-xl' : 'py-5 shadow-lg'}`}>
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className={`flex items-center justify-center transition-all duration-300 ${scrolled ? 'w-10 h-10' : 'w-12 h-12'}`}>
+      {/* NAVBAR - Ultra transparent and disappears on scroll */}
+      <nav className={`w-full flex justify-between items-center px-8 fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-transparent backdrop-blur-none border-b-0 py-2' : 'bg-[#FFFEF9]/60 backdrop-blur-sm border-b border-[#306CEC]/5 py-3'}`}>
+        {/* Logo - Fades out on scroll */}
+        <div className={`flex items-center gap-2 transition-all duration-500 ${scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          <div className="w-10 h-10 flex items-center justify-center">
             <img 
               src="/logo2.png" 
               alt="Impact360 Logo"
               className="w-full h-full object-contain"
             />
           </div>
-          <h1 className={`font-bold tracking-wide text-[#306CEC] transition-all duration-300 ${scrolled ? 'text-xl' : 'text-2xl'}`}>Impact360</h1>
+          <h1 className="text-xl font-bold tracking-wide text-[#306CEC]">Impact360</h1>
         </div>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-8 text-[#306CEC] font-semibold">
+        {/* Desktop Menu - Always visible */}
+        <ul className="hidden md:flex gap-10 text-[#306CEC] font-semibold text-sm">
           {["Home", "About", "Programs", "Events", "Contact"].map((item) => (
             <li key={item} className="cursor-pointer hover:text-[#306CEC]/70 transition-all duration-300 relative group">
               <span>{item}</span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#306CEC] group-hover:w-full transition-all duration-300"></span>
             </li>
           ))}
+          <li className="cursor-pointer hover:text-[#306CEC]/70 transition-all duration-300 relative group">
+            <span>Join Community</span>
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#306CEC] group-hover:w-full transition-all duration-300"></span>
+          </li>
         </ul>
-
-        {/* Join Button */}
-        <motion.button 
-          className={`hidden md:block bg-[#306CEC] text-[#FFFEF9] rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group ${scrolled ? 'px-6 py-2 text-sm' : 'px-8 py-3 text-base'}`}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <span className="relative z-10">Join Community</span>
-          <motion.div
-            className="absolute inset-0 bg-[#000000]"
-            initial={{ x: "-100%" }}
-            whileHover={{ x: 0 }}
-            transition={{ duration: 0.3 }}
-          />
-          <span className="absolute inset-0 flex items-center justify-center text-[#FFFEF9] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-            Join Now
-          </span>
-        </motion.button>
 
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-[#306CEC] text-2xl font-semibold"
+          className="md:hidden text-[#306CEC] text-xl font-semibold"
         >
           {menuOpen ? "✕" : "☰"}
         </button>
@@ -84,7 +70,7 @@ export default function HomePage() {
       {/* Mobile Dropdown */}
       {menuOpen && (
         <motion.div
-          className="md:hidden bg-[#FFFEF9]/98 backdrop-blur-lg fixed top-16 left-0 right-0 py-6 px-8 space-y-4 text-[#306CEC] text-lg font-semibold shadow-2xl border-b border-[#306CEC]/10 z-40"
+          className="md:hidden bg-[#FFFEF9]/90 backdrop-blur-lg fixed top-12 left-0 right-0 py-4 px-8 space-y-3 text-[#306CEC] text-base font-semibold shadow-2xl border-b border-[#306CEC]/10 z-40"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -94,16 +80,14 @@ export default function HomePage() {
           <p className="hover:text-[#306CEC]/70 transition cursor-pointer">Programs</p>
           <p className="hover:text-[#306CEC]/70 transition cursor-pointer">Events</p>
           <p className="hover:text-[#306CEC]/70 transition cursor-pointer">Contact</p>
-          <button className="w-full bg-[#306CEC] text-[#FFFEF9] px-6 py-2.5 rounded-full font-bold shadow-xl">
-            Join Community
-          </button>
+          <p className="hover:text-[#306CEC]/70 transition cursor-pointer">Join Community</p>
         </motion.div>
       )}
 
       {/* HERO SECTION */}
       <motion.section 
         style={{ backgroundColor }}
-        className="min-h-screen flex items-center justify-center relative overflow-hidden pt-24"
+        className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20"
       >
         {/* Animated gradient overlays */}
         <div className="absolute inset-0 overflow-hidden">
@@ -132,7 +116,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-20 items-center">
             {/* Left Side - Text Content */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -184,23 +168,6 @@ export default function HomePage() {
                 transition={{ delay: 0.8 }}
               >
                 <motion.button
-                  className="bg-[#306CEC] text-[#FFFEF9] px-10 py-4 rounded-full font-bold shadow-2xl text-lg relative overflow-hidden group"
-                  whileHover={{ scale: 1.05, y: -3 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="relative z-10">Get Started</span>
-                  <motion.div 
-                    className="absolute inset-0 bg-[#000000]"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: 0 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  <span className="absolute inset-0 flex items-center justify-center text-[#FFFEF9] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                    Get Started
-                  </span>
-                </motion.button>
-
-                <motion.button
                   className="border-2 px-10 py-4 rounded-full font-bold text-lg hover:bg-[#306CEC] hover:text-[#FFFEF9] transition-all duration-300"
                   whileHover={{ scale: 1.05, y: -3 }}
                   whileTap={{ scale: 0.95 }}
@@ -210,6 +177,23 @@ export default function HomePage() {
                   }}
                 >
                   Learn More
+                </motion.button>
+
+                <motion.button
+                  className="bg-[#306CEC] text-[#FFFEF9] px-10 py-4 rounded-full font-bold shadow-2xl text-lg relative overflow-hidden group"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span className="relative z-10">Join Community</span>
+                  <motion.div 
+                    className="absolute inset-0 bg-[#000000]"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  <span className="absolute inset-0 flex items-center justify-center text-[#FFFEF9] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                    Join Community
+                  </span>
                 </motion.button>
               </motion.div>
 
@@ -254,7 +238,7 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <div className="relative w-full max-w-lg mx-auto aspect-square">
-                {/* Animated logo transitions - All same size, smooth fade */}
+                {/* Animated logo transitions */}
                 <motion.div className="absolute inset-0 flex items-center justify-center">
                   {/* Logo 1 - Blue on transparent */}
                   <motion.div
