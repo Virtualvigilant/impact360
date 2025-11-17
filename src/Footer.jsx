@@ -30,7 +30,7 @@ export default function Footer() {
         <p className="text-[#FFFEF9] font-semibold text-lg">
           © 2025 Impact360. All Rights Reserved.
         </p>
-        <p className="mt-2 text-sm text-[#FFFEF9]/70">Building Africa's Entrepreneurial Future 🚀</p>
+        <p className="mt-2 text-sm text-[#FFFEF9]/70">Building Africa's Entrepreneurial Future</p>
       </div>
     </footer>
   );

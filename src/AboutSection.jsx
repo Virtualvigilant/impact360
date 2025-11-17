@@ -58,9 +58,9 @@ export default function AboutSection() {
           viewport={{ once: true }}
         >
           {[
-            { icon: "💡", title: "Innovation", desc: "Transform ideas into reality with cutting-edge tools" },
-            { icon: "🤝", title: "Community", desc: "Connect with Africa's top changemakers" },
-            { icon: "📈", title: "Growth", desc: "Scale your ventures with proven frameworks" }
+            { icon: "", title: "Innovation", desc: "Transform ideas into reality with cutting-edge tools" },
+            { icon: "", title: "Community", desc: "Connect with Africa's top changemakers" },
+            { icon: "", title: "Growth", desc: "Scale your ventures with proven frameworks" }
           ].map((item, i) => (
             <motion.div
               key={i}

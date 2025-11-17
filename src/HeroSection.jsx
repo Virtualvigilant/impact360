@@ -16,8 +16,6 @@ export default function HeroSection() {
   // Hero color transforms
   const heroTextColor = useTransform(scrollYProgress, [0, 0.5], ["#306CEC", "#FFFEF9"]);
   const heroDescriptionColor = useTransform(scrollYProgress, [0, 0.5], ["rgba(48, 108, 236, 0.8)", "rgba(255, 254, 249, 0.9)"]);
-  const heroCommunityTitleColor = useTransform(scrollYProgress, [0, 0.5], ["rgba(48, 108, 236, 0.8)", "rgba(255, 254, 249, 0.8)"]);
-  const communityCardBackground = useTransform(scrollYProgress, [0, 0.5], ["rgba(48, 108, 236, 0.08)", "rgba(255, 254, 249, 0.08)"]);
   
   // Detect scroll to hide navbar background
   useEffect(() => {
@@ -43,6 +41,7 @@ export default function HeroSection() {
           </div>
           <h1 className="text-xl font-bold tracking-wide text-[#306CEC]">Impact360</h1>
         </div>
+
         {/* Desktop Menu - Always visible */}
         <ul className="hidden md:flex gap-10 text-[#306CEC] font-semibold text-sm">
           {["Home", "About", "Programs", "Events", "Contact"].map((item) => (
@@ -56,6 +55,7 @@ export default function HeroSection() {
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#306CEC] group-hover:w-full transition-all duration-300"></span>
           </li>
         </ul>
+
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
@@ -113,7 +113,7 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
+        <div className="relative z-10 w-full max-w-7xl mx-auto pr-6 pl-0">
           <div className="grid md:grid-cols-2 gap-20 items-center">
             {/* Left Side - Text Content */}
             <motion.div
@@ -166,7 +166,7 @@ export default function HeroSection() {
                 transition={{ delay: 0.8 }}
               >
                 <motion.button
-                  className="border-2 px-10 py-4 rounded-full font-bold text-lg hover:bg-[#306CEC] hover:text-[#FFFEF9] transition-all duration-300"
+                  className="border-2 px-10 py-4 rounded-full font-bold text-lg hover:text-[#FFFEF9] transition-all duration-300"
                   whileHover={{ scale: 1.05, y: -3 }}
                   whileTap={{ scale: 0.95 }}
                   style={{
@@ -193,166 +193,145 @@ export default function HeroSection() {
                   </span>
                 </motion.button>
               </motion.div>
-
-              {/* Stats */}
-              <motion.div
-                className="grid grid-cols-3 gap-6 pt-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
-              >
-                {[
-                  { number: "500+", label: "Startups" },
-                  { number: "50+", label: "Programs" },
-                  { number: "10k+", label: "Community" }
-                ].map((stat, i) => (
-                  <motion.div 
-                    key={i}
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <h3 
-                      className="text-3xl md:text-4xl font-bold"
-                      style={{ color: heroTextColor }}
-                    >
-                      {stat.number}
-                    </h3>
-                    <p 
-                      className="text-sm opacity-70"
-                      style={{ color: heroTextColor }}
-                    >
-                      {stat.label}
-                    </p>
-                  </motion.div>
-                ))}
-              </motion.div>
             </motion.div>
 
-            {/* Right Side - Logo Carousel */}
+            {/* Right Side - Interactive Logo Display */}
             <motion.div
               className="relative"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <div className="relative w-full max-w-lg mx-auto aspect-square">
-                {/* Animated logo transitions */}
-                <motion.div className="absolute inset-0 flex items-center justify-center">
-                  {/* Logo 1 - Blue on transparent */}
+              <div className="relative w-full max-w-lg mx-auto">
+                {/* Floating animated cards with logos */}
+                <div className="relative h-[500px] flex items-center justify-center">
+                  {/* Center large logo */}
                   <motion.div
-                    className="absolute inset-0 flex items-center justify-center p-12"
-                    initial={{ opacity: 1 }}
+                    className="absolute z-10"
+                    initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ 
-                      opacity: [1, 1, 1, 0, 0, 0, 0, 0, 1, 1],
+                      scale: [0.8, 1, 0.8],
+                      opacity: [0, 1, 0],
+                      rotate: [0, 5, 0]
                     }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <img 
-                      src="/logo2.png" 
-                      alt="Impact360 Blue Logo" 
-                      className="w-full h-full object-contain drop-shadow-2xl"
-                    />
-                  </motion.div>
-                  {/* Logo 2 - White on Black */}
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center bg-[#000000] p-12"
-                    style={{ borderRadius: '20%' }}
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: [0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+                    transition={{ 
+                      duration: 20, 
+                      repeat: Infinity, 
+                      ease: "easeInOut",
+                      times: [0, 0.25, 0.5]
                     }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
                   >
-                    <img 
-                      src="/logo3.png" 
-                      alt="Impact360 White Logo" 
-                      className="w-full h-full object-contain"
-                    />
+                    <div className="w-64 h-64 bg-gradient-to-br from-[#306CEC]/10 to-transparent backdrop-blur-xl rounded-3xl shadow-2xl border border-[#306CEC]/20 flex items-center justify-center p-8">
+                      <img 
+                        src="/logo2.png" 
+                        alt="Impact360 Logo" 
+                        className="w-full h-full object-contain drop-shadow-2xl"
+                      />
+                    </div>
                   </motion.div>
-                  {/* Logo 3 - White on Blue */}
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center bg-[#306CEC] p-12"
-                    style={{ borderRadius: '20%' }}
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: [0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
-                    }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <img 
-                      src="/logo4.png" 
-                      alt="Impact360 White on Blue Logo" 
-                      className="w-full h-full object-contain"
-                    />
-                  </motion.div>
-                  {/* Logo 4 - Black on Cream */}
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center bg-[#FFFEF9] p-12"
-                    style={{ borderRadius: '20%' }}
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                    }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <img 
-                      src="/logo5.png" 
-                      alt="Impact360 Black Logo" 
-                      className="w-full h-full object-contain"
-                    />
-                  </motion.div>
-                </motion.div>
 
-                {/* Decorative rings */}
-                <motion.div
-                  className="absolute inset-0 border-4 border-[#306CEC]/20 rounded-full pointer-events-none"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                />
-                <motion.div
-                  className="absolute inset-8 border-2 border-[#306CEC]/10 rounded-full pointer-events-none"
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                />
+                  {/* Second logo variant */}
+                  <motion.div
+                    className="absolute z-10"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ 
+                      scale: [0, 0, 0.8, 1, 0.8, 0, 0],
+                      opacity: [0, 0, 0, 1, 0, 0, 0],
+                      rotate: [0, 0, 0, -5, 0, 0, 0]
+                    }}
+                    transition={{ 
+                      duration: 20, 
+                      repeat: Infinity, 
+                      ease: "easeInOut",
+                      times: [0, 0.25, 0.35, 0.5, 0.65, 0.75, 1]
+                    }}
+                  >
+                    <div className="w-64 h-64 bg-[#000000] backdrop-blur-xl rounded-3xl shadow-2xl flex items-center justify-center p-8">
+                      <img 
+                        src="/logo3.png" 
+                        alt="Impact360 White Logo" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* Third logo variant */}
+                  <motion.div
+                    className="absolute z-10"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ 
+                      scale: [0, 0, 0, 0, 0.8, 1, 0.8, 0],
+                      opacity: [0, 0, 0, 0, 0, 1, 0, 0],
+                      rotate: [0, 0, 0, 0, 0, 3, 0, 0]
+                    }}
+                    transition={{ 
+                      duration: 20, 
+                      repeat: Infinity, 
+                      ease: "easeInOut",
+                      times: [0, 0.4, 0.5, 0.6, 0.65, 0.75, 0.85, 1]
+                    }}
+                  >
+                    <div className="w-64 h-64 bg-[#306CEC] backdrop-blur-xl rounded-3xl shadow-2xl flex items-center justify-center p-8">
+                      <img 
+                        src="/logo4.png" 
+                        alt="Impact360 White on Blue Logo" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* Fourth logo variant */}
+                  <motion.div
+                    className="absolute z-10"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ 
+                      scale: [0, 0, 0, 0, 0, 0, 0.8, 1],
+                      opacity: [0, 0, 0, 0, 0, 0, 0, 1],
+                      rotate: [0, 0, 0, 0, 0, 0, 0, -3]
+                    }}
+                    transition={{ 
+                      duration: 20, 
+                      repeat: Infinity, 
+                      ease: "easeInOut",
+                      times: [0, 0.6, 0.7, 0.75, 0.8, 0.85, 0.9, 1]
+                    }}
+                  >
+                    <div className="w-64 h-64 bg-[#FFFEF9] backdrop-blur-xl rounded-3xl shadow-2xl border border-[#306CEC]/20 flex items-center justify-center p-8">
+                      <img 
+                        src="/logo5.png" 
+                        alt="Impact360 Black Logo" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* Orbiting particles */}
+                  {[...Array(8)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-3 h-3 rounded-full"
+                      style={{
+                        background: `linear-gradient(135deg, ${i % 2 === 0 ? '#306CEC' : '#FFFEF9'}, transparent)`,
+                        filter: 'blur(1px)'
+                      }}
+                      animate={{
+                        x: [0, Math.cos((i * Math.PI) / 4) * 200, 0],
+                        y: [0, Math.sin((i * Math.PI) / 4) * 200, 0],
+                        opacity: [0.3, 0.8, 0.3],
+                        scale: [1, 1.5, 1]
+                      }}
+                      transition={{
+                        duration: 15 + i,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.5
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
             </motion.div>
           </div>
-
-          {/* Community Section */}
-          <motion.div
-            className="mt-24 text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 }}
-          >
-            <motion.h3 
-              className="text-2xl md:text-3xl font-semibold mb-8"
-              style={{ color: heroCommunityTitleColor }}
-            >
-              Trusted by Innovators Across Africa
-            </motion.h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              {[1, 2, 3, 4].map((i) => (
-                <motion.div
-                  key={i}
-                  className="aspect-square rounded-2xl overflow-hidden shadow-xl backdrop-blur-sm border border-[#306CEC]/20"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                  style={{
-                    backgroundColor: communityCardBackground
-                  }}
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <motion.span 
-                      className="text-5xl opacity-30"
-                      style={{ color: heroTextColor }}
-                    >
-                      👥
-                    </motion.span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </motion.section>
     </div>
