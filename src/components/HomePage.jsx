@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentPhoto, setCurrentPhoto] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   const photos = [
     "/photo_1.jpg",
@@ -14,35 +13,16 @@ export default function HomePage() {
     "/photo_6.jpg"
   ];
 
-  // Preload images for swift loading
-  useEffect(() => {
-    // Set images as loaded immediately to prevent grey screen
-    setImagesLoaded(true);
-    
-    const imagePromises = photos.map((src) => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-    });
-
-    Promise.all(imagePromises).catch(() => {});
-  }, []);
-
   // Auto slideshow
   useEffect(() => {
-    if (!imagesLoaded) return;
-    
     const interval = setInterval(() => {
       setCurrentPhoto((prev) => (prev + 1) % photos.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [imagesLoaded]);
+  }, []);
 
   return (
-    <div className="font-sans">
+    <div className="font-sans bg-white">
 
       {/* NAVBAR */}
       <nav className="w-full flex justify-between items-center px-8 fixed top-0 left-0 right-0 z-50 py-3">
@@ -93,18 +73,19 @@ export default function HomePage() {
       )}
 
       {/* HERO SECTION */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-white">
 
         {/* Slideshow Background */}
         <div className="absolute inset-0">
           {photos.map((photo, index) => (
             <div
               key={photo}
-              className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
+              className="absolute inset-0 bg-cover bg-center"
               style={{
                 backgroundImage: `url(${photo})`,
                 zIndex: currentPhoto === index ? 2 : 1,
-                opacity: currentPhoto === index ? 1 : 0
+                opacity: currentPhoto === index ? 1 : 0,
+                transition: 'opacity 1s ease-in-out'
               }}
             />
           ))}
