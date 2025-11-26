@@ -93,7 +93,7 @@ export default function Campaign() {
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-400/20 to-purple-400/20 blur-3xl rounded-full"></div>
             <div className="relative group">
               <img
-                src={"/Roadshow_20251118_200702_0000 (1).png"}
+                src={"/roadshow.png"}
                 alt="Innovation Roadshow"
                 className="w-full max-w-lg rounded-3xl shadow-2xl object-cover transform transition-all duration-500 group-hover:scale-105"
               />

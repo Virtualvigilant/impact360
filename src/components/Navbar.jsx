@@ -155,10 +155,10 @@ const Navbar = () => {
           </li>
 
           <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
-            <Link to="/contact" onClick={() => setMenuOpen(false)}>
-              <span>contacts</span>
+            <Link to="/Campaign" onClick={() => setMenuOpen(false)}>
+              <span>Campaign</span>
               <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
-                location.pathname === '/contact' ? 'w-full' : 'w-0 group-hover:w-full'
+                location.pathname === '/Campaign' ? 'w-full' : 'w-0 group-hover:w-full'
               }`}></span>
             </Link>
           </li>
