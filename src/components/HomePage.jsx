@@ -68,7 +68,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="font-sans bg-white">
+    <div className="bg-white" style={{ fontFamily: 'DM Sans, sans-serif' }}>
       <Navbar />
 
     
@@ -77,23 +77,19 @@ export default function HomePage() {
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-white">
 
         {/* Slideshow Background */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-black">
           {photos.map((photo, index) => (
             <div
               key={photo}
               className="absolute inset-0 bg-cover bg-center"
               style={{
-                backgroundImage: `url(${photo})`,
+                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(${photo})`,
                 zIndex: currentPhoto === index ? 2 : 1,
                 opacity: currentPhoto === index ? 1 : 0,
-                transition: 'opacity 1s ease-in-out'
+                transition: 'opacity 2s ease-in-out'
               }}
             />
           ))}
-
-          {/* Darker Gradient Overlay Effect */}
-          <div className="absolute inset-0 bg-black/65" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
         </div>
 
         {/* Indicators */}
@@ -114,6 +110,7 @@ export default function HomePage() {
           <h1
             className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight"
             style={{
+              fontFamily: 'League Spartan, sans-serif',
               textShadow: "0 4px 20px rgba(0,0,0,0.7), 0 2px 10px rgba(0,0,0,0.5)"
             }}
           >
@@ -132,13 +129,13 @@ export default function HomePage() {
           {/* Buttons */}
           <div className="flex flex-wrap gap-5 justify-center">
             <a href="/about">
-              <button className="border-2 border-white text-white px-10 py-4 rounded-full font-bold hover:bg-white hover:text-black transition-all duration-300 shadow-lg hover:shadow-xl">
+              <button className="border-2 border-white text-white px-10 py-4 rounded-full font-bold hover:bg-white hover:text-[#000000] transition-all duration-300 shadow-lg hover:shadow-xl" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                 Learn More
               </button>
             </a>
 
             <a href="/subscription">
-              <button className="bg-blue-600 text-white px-10 py-4 rounded-full font-bold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+              <button className="bg-[#306CEC] text-white px-10 py-4 rounded-full font-bold hover:bg-[#1a4d99] transition-all duration-300 shadow-lg hover:shadow-xl" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                 Join Community
               </button>
             </a>
@@ -156,10 +153,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-5xl md:text-6xl font-bold text-[#306CEC] mb-4">
+            <h2 className="text-5xl md:text-6xl font-bold text-[#306CEC] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
               What We Offer
             </h2>
-            <p className="text-xl text-[#306CEC]/70">
+            <p className="text-xl text-[#000000]/70">
               Clear, structured pathways for founders to grow
             </p>
           </motion.div>
@@ -187,15 +184,16 @@ export default function HomePage() {
                 </div>
 
                 <div className="p-8">
-                  <h3 className="text-3xl font-bold text-[#306CEC] mb-4">
+                  <h3 className="text-3xl font-bold text-[#306CEC] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                     {offer.title}
                   </h3>
-                  <p className="text-[#306CEC]/70 text-lg mb-6">
+                  <p className="text-[#000000]/70 text-lg mb-6">
                     {offer.description}
                   </p>
                   <a
                     href={offer.link}
                     className="inline-flex items-center text-[#306CEC] font-semibold hover:gap-3 gap-2 transition-all duration-300"
+                    style={{ fontFamily: 'League Spartan, sans-serif' }}
                   >
                     Learn More →
                   </a>
@@ -216,10 +214,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-5xl md:text-6xl font-bold text-[#306CEC] mb-4">
+            <h2 className="text-5xl md:text-6xl font-bold text-[#306CEC] mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
               Why Choose Impact360
             </h2>
-            <p className="text-xl text-[#306CEC]/70">
+            <p className="text-xl text-[#000000]/70">
               Built for founders who want to make a difference
             </p>
           </motion.div>
@@ -237,7 +235,7 @@ export default function HomePage() {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="text-6xl mb-6 relative z-10">{item.icon}</div>
-                <h3 className="text-3xl font-bold mb-3 relative z-10">{item.title}</h3>
+                <h3 className="text-3xl font-bold mb-3 relative z-10" style={{ fontFamily: 'League Spartan, sans-serif' }}>{item.title}</h3>
                 <p className="text-[#FFFEF9]/90 text-lg relative z-10">{item.desc}</p>
               </motion.div>
             ))}
@@ -248,7 +246,7 @@ export default function HomePage() {
     
 
       {/* CALL TO ACTION */}
-      <section className="py-24 px-6 bg-gradient-to-br from-[#306CEC] to-[#1a4d99] text-white">
+      <section className="py-24 px-6 bg-[#306CEC] text-white">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -256,14 +254,14 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: 'League Spartan, sans-serif' }}>
               Ready to Make an Impact?
             </h2>
             <p className="text-xl mb-10 text-white/90">
               Join our community of innovators and changemakers today
             </p>
             <a href="/subscription">
-              <button className="bg-white text-[#306CEC] px-12 py-5 rounded-full font-bold text-lg hover:bg-[#FFFEF9] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+              <button className="bg-white text-[#306CEC] px-12 py-5 rounded-full font-bold text-lg hover:bg-[#FFFEF9] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                 Get Started Now
               </button>
             </a>
