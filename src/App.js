@@ -6,6 +6,8 @@ import Programs from "./components/Programs.jsx";
 import Eventpage from "./components/Eventpage.jsx"; 
 import Subscription from "./components/Subscription.jsx";
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
+import Campaign from "./components/Campaign.jsx";
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
         <Route path="/subscription" element={<Subscription />} />
         <Route path="*" element={<HomePage />} />
         <Route path="/navbar" element={<Navbar />} />
+        <Route path="/footer" element={<Footer />} />
+        <Route path="/campaign" element={<Campaign />} />
       </Routes>
     </Router>
   );

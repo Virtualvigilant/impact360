@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,6 +16,29 @@ export default function HomePage() {
     "/photo_6.jpg"
   ];
 
+  const featuresData = [
+    { icon: "💡", title: "Innovation", desc: "Transform ideas into reality with cutting-edge tools" },
+    { icon: "🤝", title: "Community", desc: "Connect with Africa's top changemakers" },
+    { icon: "📈", title: "Growth", desc: "Scale your ventures with proven frameworks" },
+  ];
+
+  const offers = [
+    {
+      title: "Incubation & Acceleration",
+      description: "We support founders from idea to execution through mentorship, structured programs, and strategic resources.",
+      icon: "🚀",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
+      link: "/programs",
+    },
+    {
+      title: "Events",
+      description: "We run workshops, bootcamps, and founder meetups to help innovators learn, connect, and grow.",
+      icon: "📅",
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+      link: "/events",
+    },
+  ];
+
   // Auto slideshow
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,55 +49,10 @@ export default function HomePage() {
 
   return (
     <div className="font-sans bg-white">
+      <Navbar />
 
-      {/* NAVBAR */}
-      <nav className="w-full flex justify-between items-center px-8 fixed top-0 left-0 right-0 z-50 py-3">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 flex items-center justify-center">
-            <img 
-              src="/logo2.png" 
-              alt="Impact360 Logo"
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <h1 className="text-xl font-bold tracking-wide text-white">Impact360</h1>
-        </div>
-
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-10 font-semibold text-sm text-white">
-          <li><a href="/" className="hover:text-gray-300 transition-colors">Home</a></li>
-          <li><a href="/about" className="hover:text-gray-300 transition-colors">About</a></li>
-          <li><a href="/programs" className="hover:text-gray-300 transition-colors">Programs</a></li>
-          <li><a href="/events" className="hover:text-gray-300 transition-colors">Events</a></li>
-          <li><a href="/subscription" className="hover:text-gray-300 transition-colors">Join Community</a></li>
-        </ul>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-white text-xl"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? "✕" : "☰"}
-        </button>
-      </nav>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div
-          className="md:hidden bg-black/90 backdrop-blur-sm fixed top-12 left-0 right-0 py-4 px-8 space-y-3 text-white text-base font-semibold z-40"
-          style={{
-            animation: "slideDown 0.3s ease-out"
-          }}
-        >
-          <a href="/" onClick={() => setMenuOpen(false)} className="block">Home</a>
-          <a href="/about" onClick={() => setMenuOpen(false)} className="block">About</a>
-          <a href="/programs" onClick={() => setMenuOpen(false)} className="block">Programs</a>
-          <a href="/events" onClick={() => setMenuOpen(false)} className="block">Events</a>
-          <a href="/subscription" onClick={() => setMenuOpen(false)} className="block">Join Community</a>
-        </div>
-      )}
-
+    
+        
       {/* HERO SECTION */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-white">
 
@@ -144,6 +125,132 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+        {/* WHAT WE OFFER SECTION */}
+      <section className="py-24 px-6 bg-[#FFFEF9]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-[#306CEC] mb-4">
+              What We Offer
+            </h2>
+            <p className="text-xl text-[#306CEC]/70">
+              Clear, structured pathways for founders to grow
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {offers.map((offer, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
+                whileHover={{ y: -10 }}
+              >
+                <div className="relative h-64 overflow-hidden">
+                  <img
+                    src={offer.image}
+                    alt={offer.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#306CEC]/80 to-transparent flex items-end p-8">
+                    <span className="text-6xl">{offer.icon}</span>
+                  </div>
+                </div>
+
+                <div className="p-8">
+                  <h3 className="text-3xl font-bold text-[#306CEC] mb-4">
+                    {offer.title}
+                  </h3>
+                  <p className="text-[#306CEC]/70 text-lg mb-6">
+                    {offer.description}
+                  </p>
+                  <a
+                    href={offer.link}
+                    className="inline-flex items-center text-[#306CEC] font-semibold hover:gap-3 gap-2 transition-all duration-300"
+                  >
+                    Learn More →
+                  </a>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES SECTION */}
+      <section className="py-24 px-6 bg-gradient-to-b from-white to-[#FFFEF9]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-[#306CEC] mb-4">
+              Why Choose Impact360
+            </h2>
+            <p className="text-xl text-[#306CEC]/70">
+              Built for founders who want to make a difference
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {featuresData.map((item, i) => (
+              <motion.div
+                key={i}
+                className="bg-gradient-to-br from-[#306CEC] to-[#000000] text-[#FFFEF9] p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 relative overflow-hidden group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2, duration: 0.6 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10, scale: 1.03 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="text-6xl mb-6 relative z-10">{item.icon}</div>
+                <h3 className="text-3xl font-bold mb-3 relative z-10">{item.title}</h3>
+                <p className="text-[#FFFEF9]/90 text-lg relative z-10">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+    
+
+      {/* CALL TO ACTION */}
+      <section className="py-24 px-6 bg-gradient-to-br from-[#306CEC] to-[#1a4d99] text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Ready to Make an Impact?
+            </h2>
+            <p className="text-xl mb-10 text-white/90">
+              Join our community of innovators and changemakers today
+            </p>
+            <a href="/subscription">
+              <button className="bg-white text-[#306CEC] px-12 py-5 rounded-full font-bold text-lg hover:bg-[#FFFEF9] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+                Get Started Now
+              </button>
+            </a>
+          </motion.div>
+        </div>
+      </section>
+      <Footer/>
 
       <style>{`
         @keyframes slideDown {
