@@ -6,6 +6,7 @@ import Footer from "./Footer";
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentPhoto, setCurrentPhoto] = useState(0);
+  const [showFooter, setShowFooter] = useState(false);
 
   const photos = [
     "/photo_1.jpg",
@@ -45,6 +46,25 @@ export default function HomePage() {
       setCurrentPhoto((prev) => (prev + 1) % photos.length);
     }, 5000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Show footer when scrolled near bottom
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.scrollY;
+      const clientHeight = window.innerHeight;
+      
+      // Show footer when user is within 200px of the bottom
+      if (scrollHeight - scrollTop - clientHeight < 200) {
+        setShowFooter(true);
+      } else {
+        setShowFooter(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -250,7 +270,14 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-      <Footer/>
+
+      {/* Add spacing before footer */}
+      <div className="h-32 bg-[#FFFEF9]"></div>
+
+      {/* FOOTER - Shows only when scrolled near bottom */}
+     
+        <Footer/>
+      
 
       <style>{`
         @keyframes slideDown {

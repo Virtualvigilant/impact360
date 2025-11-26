@@ -14,30 +14,29 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-gradient-to-br from-[#1a4d9e] via-[#306CEC] to-[#4c8aff] text-[#FFFEF9] overflow-hidden">
-
-      {/* Animated Blurred Background */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFFEF9] rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FFFEF9] rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
+    <footer className="relative bg-gradient-to-br from-[#306CEC] via-[#4a7eec] to-[#306CEC] text-[#FFFEF9] overflow-hidden">
+      
+      {/* Subtle Background Accents */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 right-20 w-64 h-64 bg-[#FFFEF9] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-64 h-64 bg-[#FFFEF9] rounded-full blur-3xl"></div>
       </div>
 
-      {/* Floating Particles */}
-      {[...Array(20)].map((_, i) => (
+      {/* Minimal Floating Particles */}
+      {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-[#FFFEF9] rounded-full"
+          className="absolute w-1 h-1 bg-[#FFFEF9] rounded-full opacity-30"
           style={{
             top: `${Math.random() * 100}%`,
             left: `${Math.random() * 100}%`,
           }}
           animate={{
-            y: [0, -30, 0],
-            opacity: [0.2, 1, 0.2],
-            scale: [1, 1.5, 1],
+            y: [0, -20, 0],
+            opacity: [0.2, 0.5, 0.2],
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: 4 + Math.random() * 2,
             repeat: Infinity,
             delay: Math.random() * 2,
           }}
@@ -66,7 +65,7 @@ export default function Footer() {
                   <img src="/logo4.png" alt="Impact360 Logo"
                        className="w-full h-full object-contain drop-shadow-lg" />
                 </motion.div>
-                <span className="text-3xl font-bold">Impact360</span>
+                <span className="text-3xl font-bold text-[#FFFEF9]">Impact360</span>
               </div>
 
               <p className="text-[#FFFEF9]/90 text-lg leading-relaxed mb-6">
@@ -84,7 +83,7 @@ export default function Footer() {
                   <motion.a
                     key={i}
                     href={item.link}
-                    className="w-12 h-12 rounded-full bg-[#FFFEF9]/10 backdrop-blur-sm border border-[#FFFEF9]/20 flex items-center justify-center hover:bg-[#FFFEF9]/20 transition-all duration-300"
+                    className="w-12 h-12 rounded-full bg-[#FFFEF9] text-[#306CEC] flex items-center justify-center hover:bg-[#FFFEF9]/90 transition-all duration-300 shadow-lg"
                     whileHover={{ scale: 1.1, y: -3 }}
                   >
                     {item.icon}
@@ -99,15 +98,15 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <h3 className="text-xl font-bold mb-6">Quick Links</h3>
+              <h3 className="text-xl font-bold mb-6 text-[#FFFEF9]">Quick Links</h3>
               <ul className="space-y-3">
                 {["Home", "About", "Programs", "Events"].map((item, i) => (
                   <motion.li key={i} whileHover={{ x: 5 }}>
                     <button
                       onClick={() => scrollToSection(item)}
-                      className="text-[#FFFEF9]/80 hover:text-[#FFFEF9] flex items-center gap-2"
+                      className="text-[#FFFEF9]/80 hover:text-[#FFFEF9] flex items-center gap-2 transition-colors"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#FFFEF9]/50 group-hover:bg-[#FFFEF9]"></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FFFEF9]/50"></span>
                       {item}
                     </button>
                   </motion.li>
@@ -121,7 +120,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 className="text-xl font-bold mb-6">Connect</h3>
+              <h3 className="text-xl font-bold mb-6 text-[#FFFEF9]">Connect</h3>
               <ul className="space-y-3">
                 {[
                   { name: "Twitter", icon: <Twitter /> },
@@ -130,7 +129,7 @@ export default function Footer() {
                   { name: "Facebook", icon: <Facebook /> },
                 ].map((item, i) => (
                   <motion.li key={i} whileHover={{ x: 5 }}>
-                    <a href="#" className="flex items-center gap-3 text-[#FFFEF9]/80 hover:text-[#FFFEF9]">
+                    <a href="#" className="flex items-center gap-3 text-[#FFFEF9]/80 hover:text-[#FFFEF9] transition-colors">
                       {item.icon}
                       {item.name}
                     </a>
@@ -149,7 +148,7 @@ export default function Footer() {
           >
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <h3 className="text-2xl font-bold mb-3">Stay Updated </h3>
+                <h3 className="text-2xl font-bold mb-3 text-[#FFFEF9]">Stay Updated </h3>
                 <p className="text-[#FFFEF9]/80">
                   Join our community for updates on programs, events, and opportunities.
                 </p>
@@ -159,7 +158,7 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="flex-1 px-6 py-4 rounded-full bg-[#FFFEF9]/20 border border-[#FFFEF9]/30 text-[#FFFEF9] placeholder-[#FFFEF9]/50 focus:border-[#FFFEF9]"
+                  className="flex-1 px-6 py-4 rounded-full bg-[#FFFEF9] text-[#306CEC] placeholder-[#306CEC]/50 focus:outline-none focus:ring-2 focus:ring-[#FFFEF9]/50"
                 />
                 <motion.button
                   className="px-8 py-4 bg-[#FFFEF9] text-[#306CEC] rounded-full font-bold hover:bg-[#FFFEF9]/90 shadow-lg"
@@ -190,7 +189,12 @@ export default function Footer() {
 
               <div className="flex gap-6 text-sm">
                 {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item, i) => (
-                  <motion.a key={i} href="#" className="text-[#FFFEF9]/70 hover:text-[#FFFEF9]">
+                  <motion.a 
+                    key={i} 
+                    href="#" 
+                    className="text-[#FFFEF9]/70 hover:text-[#FFFEF9] transition-colors"
+                    whileHover={{ y: -2 }}
+                  >
                     {item}
                   </motion.a>
                 ))}
@@ -202,7 +206,7 @@ export default function Footer() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
             >
-              Made by Impact360 in Africa
+              Made with ❤️ by Impact360 in Africa
             </motion.div>
           </motion.div>
         </div>
