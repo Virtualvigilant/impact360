@@ -7,70 +7,50 @@ export default function Campaign() {
   const [activeCity, setActiveCity] = useState(0);
   
   const cityStops = [
-    { 
-      name: "Mombasa", 
-      date: "Coming Soon", 
-      spots: "Limited",
-      status: "upcoming"
-    },
-    { 
-      name: "Kisumu", 
-      date: "Coming Soon", 
-      spots: "Limited",
-      status: "upcoming"
-    },
-    { 
-      name: "Eldoret", 
-      date: "Coming Soon", 
-      spots: "Limited",
-      status: "upcoming"
-    },
-    { 
-      name: "Nakuru", 
-      date: "Coming Soon", 
-      spots: "Limited",
-      status: "upcoming"
-    }
+    { name: "Mombasa", date: "Coming Soon", spots: "Limited", status: "upcoming" },
+    { name: "Kisumu", date: "Coming Soon", spots: "Limited", status: "upcoming" },
+    { name: "Eldoret", date: "Coming Soon", spots: "Limited", status: "upcoming" },
+    { name: "Nakuru", date: "Coming Soon", spots: "Limited", status: "upcoming" }
   ];
 
+  /* ============================
+        FIXED COUNTDOWN LOGIC
+     ============================ */
+  const targetDate = new Date("2026-02-14T00:00:00+03:00");
+
   const [timeLeft, setTimeLeft] = useState({
-    days: 45,
-    hours: 12,
-    minutes: 30,
+    days: 0,
+    hours: 0,
+    minutes: 0,
     seconds: 0
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        let { days, hours, minutes, seconds } = prev;
-        
-        if (seconds > 0) {
-          seconds--;
-        } else {
-          seconds = 59;
-          if (minutes > 0) {
-            minutes--;
-          } else {
-            minutes = 59;
-            if (hours > 0) {
-              hours--;
-            } else {
-              hours = 23;
-              if (days > 0) {
-                days--;
-              }
-            }
-          }
-        }
-        
-        return { days, hours, minutes, seconds };
-      });
-    }, 1000);
+    const updateCountdown = () => {
+      const now = new Date();
+      const diff = targetDate - now;
 
+      if (diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60)
+      });
+    };
+
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
     return () => clearInterval(timer);
   }, []);
 
+  /* ============================
+        CITY ANIMATION LOGIC
+     ============================ */
   useEffect(() => {
     const cityInterval = setInterval(() => {
       setActiveCity(prev => (prev + 1) % cityStops.length);
@@ -85,10 +65,10 @@ export default function Campaign() {
 
       <div className="max-w-7xl mx-auto px-6 pt-20 pb-12">
         
-        {/* HERO SECTION WITH IMAGE FIRST */}
+        {/* ---------------- HERO SECTION ---------------- */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16 pt-12">
           
-          {/* LEFT: POSTER IMAGE - FIRST ON DESKTOP */}
+          {/* POSTER IMAGE */}
           <div className="relative flex justify-center order-1">
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-400/20 to-purple-400/20 blur-3xl rounded-full"></div>
             <div className="relative group">
@@ -104,7 +84,7 @@ export default function Campaign() {
             </div>
           </div>
 
-          {/* RIGHT: HERO TEXT */}
+          {/* HERO TEXT */}
           <div className="order-2">
             <div className="inline-flex items-center gap-2 bg-red-100 text-red-600 px-5 py-2 rounded-full text-sm font-bold mb-6 animate-pulse">
               <Zap className="w-4 h-4" />
@@ -132,7 +112,7 @@ export default function Campaign() {
           </div>
         </div>
 
-        {/* ANIMATED CITY MAP */}
+        {/* ---------------- CITY ANIMATION SECTION ---------------- */}
         <div className="bg-[#306CEC] rounded-3xl shadow-2xl p-8 md:p-12 mb-16 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -142,27 +122,27 @@ export default function Campaign() {
           <div className="relative z-10">
             <div className="flex items-center justify-center gap-3 mb-8">
               <MapPin className="w-8 h-8 text-white" />
-              <h2 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: 'League Spartan, sans-serif' }}>OUR JOURNEY ACROSS KENYA</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                OUR JOURNEY ACROSS KENYA
+              </h2>
             </div>
 
             <div className="flex flex-wrap justify-center gap-4 mb-8">
               {cityStops.map((city, idx) => (
                 <div
                   key={city.name}
-                  className={`relative bg-white/10 backdrop-blur-sm rounded-2xl p-6 border-2 transition-all duration-500 w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)] lg:w-[calc(20%-0.8rem)] ${
-                    activeCity === idx
-                      ? 'border-yellow-400 scale-105 bg-white/20'
-                      : 'border-white/20'
-                  }`}
+                  className={`relative bg-white/10 backdrop-blur-sm rounded-2xl p-6 border-2 transition-all duration-500 w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)] lg:w-[calc(20%-0.8rem)]
+                  ${activeCity === idx ? 'border-yellow-400 scale-105 bg-white/20' : 'border-white/20'}`}
                 >
                   {activeCity === idx && (
                     <div className="absolute -top-3 -right-3 w-6 h-6 bg-yellow-400 rounded-full animate-ping"></div>
                   )}
-                  <MapPin className={`w-8 h-8 mb-3 transition-all duration-300 ${
-                    activeCity === idx ? 'text-yellow-400 scale-110' : 'text-white'
-                  }`} />
+
+                  <MapPin className={`w-8 h-8 mb-3 ${activeCity === idx ? 'text-yellow-400 scale-110' : 'text-white'}`} />
+                  
                   <h3 className="text-xl font-bold text-white mb-1">{city.name}</h3>
                   <p className="text-blue-100 text-sm font-semibold">{city.date}</p>
+
                   <div className="mt-3 inline-flex items-center gap-1 bg-yellow-400/20 text-yellow-300 px-3 py-1 rounded-full text-xs font-bold">
                     <Users className="w-3 h-3" />
                     {city.spots} Spots
@@ -182,13 +162,14 @@ export default function Campaign() {
           </div>
         </div>
 
-        {/* COUNTDOWN TO FIRST STOP */}
+        {/* ---------------- COUNTDOWN SECTION ---------------- */}
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-16 border border-gray-200">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 bg-red-100 text-red-600 px-4 py-2 rounded-full text-sm font-bold mb-4">
               <Clock className="w-4 h-4" />
               <span style={{ fontFamily: 'League Spartan, sans-serif' }}>ROADSHOW LAUNCHES IN</span>
             </div>
+
             <h2 className="text-3xl md:text-4xl font-bold text-[#000000]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
               FIRST STOP ANNOUNCEMENT COMING SOON
             </h2>
@@ -219,26 +200,19 @@ export default function Campaign() {
           </div>
         </div>
 
-       
-       
-
-        {/* FINAL CTA */}
+        {/* ---------------- FINAL CTA ---------------- */}
         <div className="bg-[#306CEC] rounded-3xl shadow-2xl p-8 md:p-16 text-center">
           <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
             WILL YOU BE PART OF THE JOURNEY?
           </h2>
+
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Be among the first to connect, engage, and enjoy what the Innovation Roadshow has to offer in your city
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="bg-white text-[#306CEC] px-10 py-5 rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition-all duration-300" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-              RESERVE YOUR SPOT NOW
-            </button>
-           
-          </div>
-
-          
+          <button className="bg-white text-[#306CEC] px-10 py-5 rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition-all duration-300" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+            RESERVE YOUR SPOT NOW
+          </button>
         </div>
       </div>
 

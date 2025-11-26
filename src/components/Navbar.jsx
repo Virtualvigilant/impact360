@@ -19,7 +19,7 @@ const Navbar = () => {
 
   // Check if current page should have solid background
   const shouldHaveSolidBg = () => {
-    const pagesWithSolidBg = ['/about', '/programs', '/events', '/subscription'];
+    const pagesWithSolidBg = ['/about', '/programs', '/events', '/subscription', '/campaign'];
     return pagesWithSolidBg.includes(location.pathname);
   };
 
@@ -154,11 +154,11 @@ const Navbar = () => {
             </Link>
           </li>
 
-          <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
-            <Link to="/Campaign" onClick={() => setMenuOpen(false)}>
+           <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
+            <Link to="/campaign" onClick={() => setMenuOpen(false)}>
               <span>Campaign</span>
               <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
-                location.pathname === '/Campaign' ? 'w-full' : 'w-0 group-hover:w-full'
+                location.pathname === '/campaign' ? 'w-full' : 'w-0 group-hover:w-full'
               }`}></span>
             </Link>
           </li>
