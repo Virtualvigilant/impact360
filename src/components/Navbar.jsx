@@ -17,10 +17,33 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll to section on homepage or show QR
-  const handleJoinCommunity = () => {
+  // Check if current page should have solid background
+  const shouldHaveSolidBg = () => {
+    const pagesWithSolidBg = ['/about', '/programs', '/events', '/subscription'];
+    return pagesWithSolidBg.includes(location.pathname);
+  };
+
+  // Determine navbar background
+  const getNavbarBg = () => {
+    if (shouldHaveSolidBg()) {
+      return 'bg-black/80 backdrop-blur-lg shadow-lg';
+    }
+    return scrolled ? 'bg-black/80 backdrop-blur-lg shadow-lg' : 'bg-transparent';
+  };
+
+  // Scroll to section on homepage
+  const scrollToSection = (sectionId) => {
     setMenuOpen(false);
-    setShowQR(true);
+    
+    if (sectionId === 'Join Community') {
+      setShowQR(true);
+      return;
+    }
+    
+    const element = document.getElementById(sectionId.toLowerCase().replace(/\s+/g, '-'));
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
@@ -70,66 +93,89 @@ const Navbar = () => {
         </motion.div>
       )}
 
-      {/* NAVBAR - Matches Home Page Style */}
-      <nav className="w-full flex justify-between items-center px-8 fixed top-0 left-0 right-0 z-50 py-3">
+      {/* NAVBAR - Semi-transparent with backdrop blur */}
+      <nav className={`w-full flex justify-between items-center px-8 fixed top-0 left-0 right-0 z-50 py-3 transition-all duration-300 ${getNavbarBg()}`}>
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2 transition-all duration-500">
           <div className="w-10 h-10 flex items-center justify-center">
             <img 
               src="/logo2.png" 
               alt="Impact360 Logo"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain drop-shadow-lg"
             />
           </div>
-          <h1 className="text-xl font-bold tracking-wide text-white">Impact360</h1>
+          <h1 className="text-xl font-bold tracking-wide text-white drop-shadow-lg">Impact360</h1>
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-10 font-semibold text-sm text-white">
-          <li>
-            <Link to="/" className="hover:text-gray-300 transition-colors">
-              Home
+        <ul className="hidden md:flex gap-10 font-semibold text-sm text-white drop-shadow-md">
+          <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
+            <Link to="/" onClick={() => setMenuOpen(false)}>
+              <span>Home</span>
+              <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
+                location.pathname === '/' ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
             </Link>
           </li>
-          <li>
-            <Link to="/about" className="hover:text-gray-300 transition-colors">
-              About
+
+          <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
+            <Link to="/about" onClick={() => setMenuOpen(false)}>
+              <span>About</span>
+              <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
+                location.pathname === '/about' ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
             </Link>
           </li>
-          <li>
-            <Link to="/programs" className="hover:text-gray-300 transition-colors">
-              Programs
+
+          <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
+            <Link to="/programs" onClick={() => setMenuOpen(false)}>
+              <span>Programs</span>
+              <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
+                location.pathname === '/programs' ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
             </Link>
           </li>
-          <li>
-            <Link to="/events" className="hover:text-gray-300 transition-colors">
-              Events
+
+          <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
+            <Link to="/events" onClick={() => setMenuOpen(false)}>
+              <span>Events</span>
+              <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
+                location.pathname === '/events' ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
             </Link>
           </li>
-          <li>
-            <Link to="/campaign" className="hover:text-gray-300 transition-colors">
-              Campaign
+
+          <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
+            <Link to="/subscription" onClick={() => setMenuOpen(false)}>
+              <span>Subscription</span>
+              <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
+                location.pathname === '/subscription' ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
             </Link>
           </li>
-          <li>
-            <Link to="/subscription" className="hover:text-gray-300 transition-colors">
-              Subscription
+
+          <li className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md">
+            <Link to="/contact" onClick={() => setMenuOpen(false)}>
+              <span>contacts</span>
+              <span className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-300 ${
+                location.pathname === '/contact' ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
             </Link>
           </li>
-          <li>
-            <button 
-              onClick={handleJoinCommunity}
-              className="hover:text-gray-300 transition-colors"
-            >
-              Join Community
-            </button>
+
+          <li 
+            onClick={() => scrollToSection('Join Community')}
+            className="cursor-pointer hover:text-white/70 transition-all duration-300 relative group drop-shadow-md"
+          >
+            <span>Join Community</span>
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
           </li>
         </ul>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white text-xl"
           onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden text-white text-xl font-semibold drop-shadow-lg"
         >
           {menuOpen ? "✕" : "☰"}
         </button>
@@ -138,37 +184,47 @@ const Navbar = () => {
       {/* Mobile Dropdown */}
       {menuOpen && (
         <motion.div
-          className="md:hidden bg-black/90 backdrop-blur-lg fixed top-16 left-0 right-0 py-4 px-8 space-y-3 text-white text-base font-semibold shadow-2xl z-40"
+          className="md:hidden bg-black/80 backdrop-blur-lg fixed top-12 left-0 right-0 py-4 px-8 space-y-3 text-white text-base font-semibold shadow-2xl z-40"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
           <Link to="/" onClick={() => setMenuOpen(false)}>
-            <p className="hover:text-gray-300 transition cursor-pointer">Home</p>
+            <p className={`hover:text-white/70 transition cursor-pointer ${
+              location.pathname === '/' ? 'text-yellow-400' : ''
+            }`}>Home</p>
           </Link>
           
           <Link to="/about" onClick={() => setMenuOpen(false)}>
-            <p className="hover:text-gray-300 transition cursor-pointer">About</p>
+            <p className={`hover:text-white/70 transition cursor-pointer ${
+              location.pathname === '/about' ? 'text-yellow-400' : ''
+            }`}>About</p>
           </Link>
 
           <Link to="/programs" onClick={() => setMenuOpen(false)}>
-            <p className="hover:text-gray-300 transition cursor-pointer">Programs</p>
+            <p className={`hover:text-white/70 transition cursor-pointer ${
+              location.pathname === '/programs' ? 'text-yellow-400' : ''
+            }`}>Programs</p>
           </Link>
 
           <Link to="/events" onClick={() => setMenuOpen(false)}>
-            <p className="hover:text-gray-300 transition cursor-pointer">Events</p>
+            <p className={`hover:text-white/70 transition cursor-pointer ${
+              location.pathname === '/events' ? 'text-yellow-400' : ''
+            }`}>Events</p>
           </Link>
 
           <Link to="/subscription" onClick={() => setMenuOpen(false)}>
-            <p className="hover:text-gray-300 transition cursor-pointer">Subscription</p>
+            <p className={`hover:text-white/70 transition cursor-pointer ${
+              location.pathname === '/subscription' ? 'text-yellow-400' : ''
+            }`}>Subscription</p>
           </Link>
 
-          <button 
-            onClick={handleJoinCommunity}
-            className="hover:text-gray-300 transition cursor-pointer w-full text-left"
+          <p 
+            onClick={() => scrollToSection('Join Community')}
+            className="hover:text-white/70 transition cursor-pointer"
           >
             Join Community
-          </button>
+          </p>
         </motion.div>
       )}
     </>
@@ -176,3 +232,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+
+
