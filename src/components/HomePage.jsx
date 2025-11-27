@@ -40,28 +40,27 @@ export default function HomePage() {
     },
   ];
 
-const [loadedPhotos, setLoadedPhotos] = useState([]);
 
-useEffect(() => {
-  photos.forEach((src) => {
+ const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload first image
+  useEffect(() => {
     const img = new Image();
-    img.src = src;
+    img.src = photos[0];
     img.onload = () => {
-      setLoadedPhotos(prev => [...prev, src]);
+      setImagesLoaded(true);
     };
-  });
-}, []);
+  }, []);
 
-
-// Auto slideshow every 3 seconds
-useEffect(() => {
-  const interval = setInterval(() => {
-    setCurrentPhoto(prev => (prev + 1) % photos.length);
-  }, 3000);
-  return () => clearInterval(interval);
-}, []);
-
-
+  // Auto slideshow every 3 seconds - only start after first image loads
+  useEffect(() => {
+    if (!imagesLoaded) return;
+    
+    const interval = setInterval(() => {
+      setCurrentPhoto(prev => (prev + 1) % photos.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [photos.length, imagesLoaded]);
 
 
   return (
@@ -113,27 +112,31 @@ useEffect(() => {
         </motion.div>
       )}
         
-      {/* HERO SECTION */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-white">
+         {/* HERO SECTION */}
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-gray-900">
 
-    {/*SLIDESHOW BACKGROUND */}
-<div className="absolute inset-0">
-  {photos.map((photo, index) => (
-    loadedPhotos.includes(photo) && (
-      <div
-        key={photo}
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(${photo})`,
-          zIndex: currentPhoto === index ? 2 : 1,
-          opacity: currentPhoto === index ? 1 : 0,
-          transition: 'opacity 1s ease-in-out',
-        }}
-      />
-    )
-  ))}
-</div>
-
+        {/* SLIDESHOW BACKGROUND */}
+        <div className="absolute inset-0">
+          {/* Loading placeholder with gradient */}
+          {!imagesLoaded && (
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-black flex items-center justify-center">
+              <div className="text-white text-xl">Loading...</div>
+            </div>
+          )}
+          
+          {photos.map((photo, index) => (
+            <div
+              key={photo}
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(${photo})`,
+                zIndex: currentPhoto === index ? 2 : 1,
+                opacity: imagesLoaded && currentPhoto === index ? 1 : 0,
+                transition: 'opacity 1s ease-in-out',
+              }}
+            />
+          ))}
+        </div>
 
         {/* Indicators */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
