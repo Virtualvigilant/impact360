@@ -34,14 +34,12 @@ export default function HomePage() {
     {
       title: "Events",
       description: "We run workshops, bootcamps, and founder meetups to help innovators learn, connect, and grow.",
-
       image: "/event.png",
       link: "/events",
     },
   ];
 
-
- const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   // Preload first image
   useEffect(() => {
@@ -61,7 +59,6 @@ export default function HomePage() {
     }, 3000);
     return () => clearInterval(interval);
   }, [photos.length, imagesLoaded]);
-
 
   return (
     <div className="bg-white" style={{ fontFamily: 'DM Sans, sans-serif' }}>
@@ -112,15 +109,15 @@ export default function HomePage() {
         </motion.div>
       )}
         
-         {/* HERO SECTION */}
+      {/* HERO SECTION */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-gray-900">
 
         {/* SLIDESHOW BACKGROUND */}
         <div className="absolute inset-0">
           {/* Loading placeholder with gradient */}
           {!imagesLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-black flex items-center justify-center">
-              <div className="text-white text-xl">Loading...</div>
+            <div className="absolute inset-0 bg-[#306CEC] flex items-center justify-center">
+              <div className="text-white text-xl font-semibold">Loading...</div>
             </div>
           )}
           
