@@ -17,12 +17,6 @@ export default function HomePage() {
     "/photo_5.jpg",
     "/photo_6.jpg"
   ];
-React.useEffect(() => {
-  photos.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
-}, []);
 
   const featuresData = [
     { icon: "💡", title: "Innovation", desc: "Transform ideas into reality with cutting-edge tools" },
@@ -46,13 +40,28 @@ React.useEffect(() => {
     },
   ];
 
-  // Auto slideshow
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPhoto((prev) => (prev + 1) % photos.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+const [loadedPhotos, setLoadedPhotos] = useState([]);
+
+useEffect(() => {
+  photos.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      setLoadedPhotos(prev => [...prev, src]);
+    };
+  });
+}, []);
+
+
+// Auto slideshow every 3 seconds
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentPhoto(prev => (prev + 1) % photos.length);
+  }, 3000);
+  return () => clearInterval(interval);
+}, []);
+
+
 
 
   return (
@@ -107,20 +116,21 @@ React.useEffect(() => {
       {/* HERO SECTION */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-white">
 
-       {/* Slideshow Background */}
-    <div className="absolute inset-0">
+    {/*SLIDESHOW BACKGROUND */}
+<div className="absolute inset-0">
   {photos.map((photo, index) => (
-    <div
-      key={photo}
-      className="absolute inset-0 bg-cover bg-center"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(${photo})`,
-        zIndex: currentPhoto === index ? 2 : 1,
-        opacity: currentPhoto === index ? 1 : 0,
-        // Only fade the ones that are not the first visible image
-        transition: index === 0 && currentPhoto === 0 ? 'none' : 'opacity 2s ease-in-out'
-      }}
-    />
+    loadedPhotos.includes(photo) && (
+      <div
+        key={photo}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(${photo})`,
+          zIndex: currentPhoto === index ? 2 : 1,
+          opacity: currentPhoto === index ? 1 : 0,
+          transition: 'opacity 1s ease-in-out',
+        }}
+      />
+    )
   ))}
 </div>
 
