@@ -98,77 +98,39 @@ export default function HomePage() {
         </motion.div>
       )}
         
-      {/* HERO SECTION */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-white">
+     <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 bg-[#306CEC]">
+  {/* Brand placeholder while images load */}
+  <div className="absolute inset-0 flex items-center justify-center z-0">
+    <img src="/logo2.png" alt="Impact360 Logo" className="w-40 md:w-56" />
+  </div>
 
-        {/* Slideshow Background */}
-        <div className="absolute inset-0 bg-black">
-          {photos.map((photo, index) => (
-            <div
-              key={photo}
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(${photo})`,
-                zIndex: currentPhoto === index ? 2 : 1,
-                opacity: currentPhoto === index ? 1 : 0,
-                transition: 'opacity 2s ease-in-out'
-              }}
-            />
-          ))}
-        </div>
+  {/* Slideshow Background */}
+  <div className="absolute inset-0">
+    {photos.map((photo, index) => (
+      <div
+        key={photo}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url(${photo})`,
+          zIndex: currentPhoto === index ? 2 : 1,
+          opacity: currentPhoto === index ? 1 : 0,
+          transition: 'opacity 2s ease-in-out'
+        }}
+      />
+    ))}
+  </div>
 
-        {/* Indicators */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-          {photos.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentPhoto(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                currentPhoto === index ? "bg-white w-8" : "bg-white/40 w-2"
-              }`}
-            />
-          ))}
-        </div>
+  {/* Hero Text */}
+  <div className="relative z-10 w-full max-w-6xl mx-auto px-6 text-center text-white">
+    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+      Empowering Innovation for Real-World Impact
+    </h1>
+    <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-4xl mx-auto font-light leading-relaxed">
+      Transform your ideas into sustainable, scalable solutions with our global-standard innovation pipeline.
+    </p>
+  </div>
+</section>
 
-        {/* CENTERED HERO TEXT */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 text-center">
-          <h1
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight"
-            style={{
-              fontFamily: 'League Spartan, sans-serif',
-              textShadow: "0 4px 20px rgba(0,0,0,0.7), 0 2px 10px rgba(0,0,0,0.5)"
-            }}
-          >
-            Empowering Innovation for Real-World Impact
-          </h1>
-
-          <p
-            className="text-lg md:text-xl lg:text-2xl text-white mb-10 max-w-4xl mx-auto font-light leading-relaxed"
-            style={{
-              textShadow: "0 2px 12px rgba(0,0,0,0.7)"
-            }}
-          >
-            Transform your ideas into sustainable, scalable solutions with our global-standard innovation pipeline.
-          </p>
-
-          {/* Buttons */}
-          <div className="flex flex-wrap gap-5 justify-center">
-            <a href="/about">
-              <button className="border-2 border-white text-white px-10 py-4 rounded-full font-bold hover:bg-white hover:text-[#000000] transition-all duration-300 shadow-lg hover:shadow-xl" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                Learn More
-              </button>
-            </a>
-
-            <button 
-              onClick={() => setShowQR(true)}
-              className="bg-[#306CEC] text-white px-10 py-4 rounded-full font-bold hover:bg-[#1a4d99] transition-all duration-300 shadow-lg hover:shadow-xl" 
-              style={{ fontFamily: 'League Spartan, sans-serif' }}
-            >
-              Join Community
-            </button>
-          </div>
-        </div>
-      </section>
 
        
     {/* WHAT WE OFFER SECTION */}
