@@ -388,51 +388,7 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 px-6 bg-[#F5F5F0]">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            viewport={{ once: true }}
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              transition={{ type: "spring", duration: 0.6 }}
-              className="inline-block mb-6"
-            >
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#306CEC] to-[#4A80FF] flex items-center justify-center shadow-2xl shadow-[#306CEC]/30">
-                <span className="text-4xl">🚀</span>
-              </div>
-            </motion.div>
-
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#306CEC] to-[#4A80FF] bg-clip-text text-transparent mb-6">
-              Ready to Get Started?
-            </h2>
-            <p className="text-xl md:text-2xl text-gray-700 mb-10">
-              Join hundreds of founders who are building the future of African entrepreneurship
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                onClick={handleSubscribe}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative px-10 py-4 bg-gradient-to-r from-[#306CEC] to-[#4A80FF] text-[#FFFEF9] rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:shadow-[#306CEC]/30 transition-all duration-300 overflow-hidden"
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.6 }}
-                />
-                <span className="relative z-10">Subscribe</span>
-              </motion.button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+    
 
       <Footer />
     </div>
