@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Lightbulb, Users, TrendingUp, Rocket, Calendar } from "lucide-react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
@@ -19,21 +20,23 @@ export default function HomePage() {
   ];
 
   const featuresData = [
-    { icon: "💡", title: "Innovation", desc: "Transform ideas into reality with cutting-edge tools" },
-    { icon: "🤝", title: "Community", desc: "Connect with Africa's top changemakers" },
-    { icon: "📈", title: "Growth", desc: "Scale your ventures with proven frameworks" },
+    { icon: Lightbulb, title: "Innovation", desc: "Transform ideas into reality with cutting-edge tools" },
+    { icon: Users, title: "Community", desc: "Connect with Africa's top changemakers" },
+    { icon: TrendingUp, title: "Growth", desc: "Scale your ventures with proven frameworks" },
   ];
 
   const offers = [
     {
       title: "Incubation & Acceleration",
       description: "We support founders from idea to execution through mentorship, structured programs, and strategic resources.",
+      icon: Rocket,
       image: "/incubation.png",
       link: "/programs",
     },
     {
       title: "Events",
       description: "We run workshops, bootcamps, and founder meetups to help innovators learn, connect, and grow.",
+      icon: Calendar,
       image: "/event.png",
       link: "/events",
     },
@@ -157,7 +160,7 @@ export default function HomePage() {
               textShadow: "0 4px 20px rgba(0,0,0,0.7), 0 2px 10px rgba(0,0,0,0.5)"
             }}
           >
-            Empowering Innovation for Real-World Impact
+            Decentralizing Innovation Across Africa
           </h1>
 
           <p
@@ -166,7 +169,7 @@ export default function HomePage() {
               textShadow: "0 2px 12px rgba(0,0,0,0.7)"
             }}
           >
-            Transform your ideas into sustainable, scalable solutions with our global-standard innovation pipeline.
+            Breaking barriers and bringing world-class entrepreneurship resources to every corner of the continent—empowering founders everywhere to build sustainable, scalable solutions.
           </p>
 
           {/* Buttons */}
@@ -217,60 +220,63 @@ export default function HomePage() {
             </p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {offers.map((offer, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 60, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  delay: index * 0.2, 
-                  duration: 0.7,
-                  ease: [0.25, 0.46, 0.45, 0.94]
-                }}
-                viewport={{ once: true, amount: 0.3 }}
-                className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group"
-                whileHover={{ y: -12, scale: 1.02 }}
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <motion.img
-                    src={offer.image}
-                    alt={offer.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#306CEC]/90 via-[#306CEC]/40 to-transparent flex items-end p-8 transition-all duration-500 group-hover:from-[#306CEC]/95">
-                    <motion.span 
-                      className="text-6xl"
-                      whileHover={{ scale: 1.2, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      {offer.icon}
-                    </motion.span>
+            {offers.map((offer, index) => {
+              const IconComponent = offer.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ 
+                    delay: index * 0.2, 
+                    duration: 0.7,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                  }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group"
+                  whileHover={{ y: -12, scale: 1.02 }}
+                >
+                  <div className="relative h-64 overflow-hidden">
+                    <motion.img
+                      src={offer.image}
+                      alt={offer.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#306CEC]/90 via-[#306CEC]/40 to-transparent flex items-end p-8 transition-all duration-500 group-hover:from-[#306CEC]/95">
+                      <motion.div 
+                        className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 w-20 h-20 flex items-center justify-center"
+                        whileHover={{ scale: 1.2, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        <IconComponent className="w-12 h-12 text-white" strokeWidth={1.5} />
+                      </motion.div>
+                    </div>
                   </div>
-                </div>
-                <div className="p-8 relative">
-                  <div className="absolute top-0 left-0 w-20 h-1 bg-[#306CEC] transform origin-left transition-all duration-500 group-hover:w-full"></div>
-                  <h3 className="text-3xl font-bold text-[#306CEC] mb-4 mt-2 transition-colors duration-300 group-hover:text-[#1a4d99]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
-                    {offer.title}
-                  </h3>
-                  <p className="text-[#000000]/70 text-lg mb-6 leading-relaxed">
-                    {offer.description}
-                  </p>
-                  <a
-                    href={offer.link}
-                    className="inline-flex items-center text-[#306CEC] font-semibold gap-2 transition-all duration-300 group-hover:gap-4 group-hover:text-[#1a4d99]"
-                    style={{ fontFamily: 'League Spartan, sans-serif' }}
-                  >
-                    Learn More 
-                    <motion.span
-                      animate={{ x: [0, 5, 0] }}
-                      transition={{ repeat: Infinity, duration: 1.5 }}
+                  <div className="p-8 relative">
+                    <div className="absolute top-0 left-0 w-20 h-1 bg-[#306CEC] transform origin-left transition-all duration-500 group-hover:w-full"></div>
+                    <h3 className="text-3xl font-bold text-[#306CEC] mb-4 mt-2 transition-colors duration-300 group-hover:text-[#1a4d99]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                      {offer.title}
+                    </h3>
+                    <p className="text-[#000000]/70 text-lg mb-6 leading-relaxed">
+                      {offer.description}
+                    </p>
+                    <a
+                      href={offer.link}
+                      className="inline-flex items-center text-[#306CEC] font-semibold gap-2 transition-all duration-300 group-hover:gap-4 group-hover:text-[#1a4d99]"
+                      style={{ fontFamily: 'League Spartan, sans-serif' }}
                     >
-                      →
-                    </motion.span>
-                  </a>
-                </div>
-              </motion.div>
-            ))}
+                      Learn More 
+                      <motion.span
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ repeat: Infinity, duration: 1.5 }}
+                      >
+                        →
+                      </motion.span>
+                    </a>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -309,40 +315,43 @@ export default function HomePage() {
     </motion.div>
 
     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-      {featuresData.map((item, i) => (
-        <motion.div
-          key={i}
-          className="
-            bg-white
-            border border-[#306CEC]/20
-            p-10 rounded-3xl
-            shadow-lg hover:shadow-xl
-            transition-all duration-300
-            group
-          "
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.2, duration: 0.6 }}
-          viewport={{ once: true }}
-          whileHover={{ y: -10 }}
-        >
-          {/* Blue top bar */}
-          <div className="h-2 w-full bg-[#306CEC] rounded-full mb-6"></div>
-
-          <div className="text-6xl mb-6 text-[#306CEC]">{item.icon}</div>
-
-          <h3
-            className="text-3xl font-bold text-[#306CEC] mb-3"
-            style={{ fontFamily: "League Spartan, sans-serif" }}
+      {featuresData.map((item, i) => {
+        const IconComponent = item.icon;
+        return (
+          <motion.div
+            key={i}
+            className="
+              bg-white
+              border border-[#306CEC]/20
+              p-10 rounded-3xl
+              shadow-lg hover:shadow-xl
+              transition-all duration-300
+              group
+            "
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.2, duration: 0.6 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -10 }}
           >
-            {item.title}
-          </h3>
+            {/* Blue top bar */}
+            <div className="h-2 w-full bg-[#306CEC] rounded-full mb-6"></div>
 
-          <p className="text-gray-700 text-lg leading-relaxed">
-            {item.desc}
-          </p>
-        </motion.div>
-      ))}
+            <IconComponent className="w-16 h-16 mb-6 text-[#306CEC]" strokeWidth={1.5} />
+
+            <h3
+              className="text-3xl font-bold text-[#306CEC] mb-3"
+              style={{ fontFamily: "League Spartan, sans-serif" }}
+            >
+              {item.title}
+            </h3>
+
+            <p className="text-gray-700 text-lg leading-relaxed">
+              {item.desc}
+            </p>
+          </motion.div>
+        );
+      })}
     </div>
 
   </div>

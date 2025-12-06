@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Ticket, BookOpen, Users, Gift, Check } from "lucide-react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
@@ -104,6 +105,29 @@ export default function SubscriptionPlans() {
       }
     ]
   };
+
+  const benefits = [
+    {
+      Icon: Ticket,
+      title: "Event Access",
+      description: "Priority access to all our workshops, masterclasses, and networking events"
+    },
+    {
+      Icon: BookOpen,
+      title: "Resources",
+      description: "Get slides, toolkits, templates, and exclusive materials from every session"
+    },
+    {
+      Icon: Users,
+      title: "Community",
+      description: "Connect with fellow entrepreneurs, mentors, and industry leaders"
+    },
+    {
+      Icon: Gift,
+      title: "Perks",
+      description: "Enjoy discounts, merch, certificates, and special recognition opportunities"
+    }
+  ];
 
   return (
     <div className="font-sans bg-[#FFFEF9]">
@@ -225,9 +249,7 @@ export default function SubscriptionPlans() {
                       viewport={{ once: true }}
                       className="flex items-start gap-3"
                     >
-                      <span className={`text-xl flex-shrink-0 ${plan.popular ? 'text-yellow-300' : 'text-[#306CEC]'}`}>
-                        ✓
-                      </span>
+                      <Check className={`w-5 h-5 flex-shrink-0 ${plan.popular ? 'text-yellow-300' : 'text-[#306CEC]'}`} strokeWidth={2.5} />
                       <span className={`${plan.popular ? 'text-white/90' : 'text-gray-600'}`}>
                         {feature}
                       </span>
@@ -271,42 +293,24 @@ export default function SubscriptionPlans() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: "🎟️",
-                title: "Event Access",
-                description: "Priority access to all our workshops, masterclasses, and networking events"
-              },
-              {
-                icon: "📚",
-                title: "Resources",
-                description: "Get slides, toolkits, templates, and exclusive materials from every session"
-              },
-              {
-                icon: "🤝",
-                title: "Community",
-                description: "Connect with fellow entrepreneurs, mentors, and industry leaders"
-              },
-              {
-                icon: "🎁",
-                title: "Perks",
-                description: "Enjoy discounts, merch, certificates, and special recognition opportunities"
-              }
-            ].map((benefit, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center"
-              >
-                <div className="text-5xl mb-4">{benefit.icon}</div>
-                <h3 className="text-xl font-bold text-[#306CEC] mb-3">{benefit.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
-              </motion.div>
-            ))}
+            {benefits.map((benefit, index) => {
+              const IconComponent = benefit.Icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5 }}
+                  className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                >
+                  <IconComponent className="w-14 h-14 mx-auto mb-4 text-[#306CEC]" strokeWidth={1.5} />
+                  <h3 className="text-xl font-bold text-[#306CEC] mb-3">{benefit.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>

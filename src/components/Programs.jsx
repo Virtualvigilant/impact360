@@ -1,10 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Rocket, Zap, GraduationCap, Wrench, Dumbbell, Laptop, Handshake, Mic, Calendar, Users, Globe, Lightbulb, Link } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-const ProgramCard = ({ icon, title, description, features, gradient, delay = 0 }) => (
+const ProgramCard = ({ Icon, title, description, features, gradient, delay = 0 }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -16,7 +17,7 @@ const ProgramCard = ({ icon, title, description, features, gradient, delay = 0 }
     <div className="absolute top-0 right-0 w-40 h-40 bg-[#FFFEF9]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
     
     <div className="relative z-10">
-      <div className="text-6xl mb-6">{icon}</div>
+      <Icon className="w-16 h-16 mb-6" strokeWidth={1.5} />
       <h3 className="text-3xl font-bold mb-4">{title}</h3>
       <p className="text-[#FFFEF9]/90 text-lg leading-relaxed mb-6">{description}</p>
       
@@ -69,7 +70,7 @@ export default function ProgramsPage() {
 
   const mainPrograms = [
     {
-      icon: "🚀",
+      Icon: Rocket,
       title: "Incubation Program",
       description: "Transform your idea into a viable business with structured support, mentorship, and resources over 3-6 months.",
       features: [
@@ -83,7 +84,7 @@ export default function ProgramsPage() {
       gradient: "bg-gradient-to-br from-[#306CEC] to-[#1a4d9e]"
     },
     {
-      icon: "⚡",
+      Icon: Zap,
       title: "Acceleration Program",
       description: "Scale your existing startup rapidly with intensive support, funding opportunities, and expert guidance over 3-4 months.",
       features: [
@@ -121,32 +122,32 @@ export default function ProgramsPage() {
 
   const eventTypes = [
     {
-      icon: "🎓",
+      Icon: GraduationCap,
       title: "Masterclasses",
       description: "Deep-dive sessions with successful entrepreneurs who share years of experience building and scaling businesses."
     },
     {
-      icon: "🛠️",
+      Icon: Wrench,
       title: "Workshops",
       description: "Hands-on, practical sessions focused on specific skills like pitch development, financial modeling, and product design."
     },
     {
-      icon: "⚡",
+      Icon: Dumbbell,
       title: "Bootcamps",
       description: "Intensive multi-day programs covering comprehensive topics from fundraising to market entry strategies."
     },
     {
-      icon: "💻",
+      Icon: Laptop,
       title: "Hackathons",
       description: "Collaborative coding events where teams build innovative solutions to real-world challenges in limited time."
     },
     {
-      icon: "🤝",
+      Icon: Handshake,
       title: "Meetups",
       description: "Casual networking events connecting founders, mentors, investors, and ecosystem players."
     },
     {
-      icon: "🎤",
+      Icon: Mic,
       title: "Panel Discussions",
       description: "Expert panels discussing current trends, challenges, and opportunities in entrepreneurship and innovation."
     }
@@ -154,22 +155,22 @@ export default function ProgramsPage() {
 
   const benefits = [
     {
-      icon: "👥",
+      Icon: Users,
       title: "Expert Mentorship",
       description: "Connect with successful entrepreneurs who have built and scaled businesses in Africa and beyond."
     },
     {
-      icon: "🌍",
+      Icon: Globe,
       title: "Decentralized Access",
       description: "Programs and events delivered across counties and towns, not just in capital cities."
     },
     {
-      icon: "💡",
+      Icon: Lightbulb,
       title: "Practical Learning",
       description: "Real-world knowledge and actionable insights you can apply immediately to your venture."
     },
     {
-      icon: "🔗",
+      Icon: Link,
       title: "Community Network",
       description: "Join a growing community of 10,000+ founders, mentors, and supporters across Africa."
     }
@@ -200,17 +201,6 @@ export default function ProgramsPage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="inline-block mb-6"
-            >
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#306CEC] to-[#4A80FF] flex items-center justify-center shadow-2xl shadow-[#306CEC]/30">
-                <span className="text-4xl">🎯</span>
-              </div>
-            </motion.div>
-
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               <span className="bg-gradient-to-r from-[#306CEC] via-[#4A80FF] to-[#306CEC] bg-clip-text text-transparent">
                 Our Programs
@@ -250,7 +240,7 @@ export default function ProgramsPage() {
               transition={{ duration: 0.5 }}
               className="inline-block mb-4"
             >
-              <span className="text-5xl">🎓</span>
+              <GraduationCap className="w-14 h-14 text-[#306CEC]" strokeWidth={1.5} />
             </motion.div>
             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#306CEC] to-[#4A80FF] bg-clip-text text-transparent mb-4">
               Learning Events
@@ -261,27 +251,24 @@ export default function ProgramsPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {eventTypes.map((type, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
-              >
-                <motion.div 
-                  className="text-5xl mb-4 inline-block"
-                  whileHover={{ scale: 1.2, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+            {eventTypes.map((type, index) => {
+              const IconComponent = type.Icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
                 >
-                  {type.icon}
+                  <IconComponent className="w-14 h-14 mb-4 text-[#306CEC] group-hover:text-[#4A80FF] transition-colors" strokeWidth={1.5} />
+                  <h3 className="text-2xl font-bold text-[#306CEC] mb-3 group-hover:text-[#4A80FF] transition-colors">{type.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{type.description}</p>
                 </motion.div>
-                <h3 className="text-2xl font-bold text-[#306CEC] mb-3 group-hover:text-[#4A80FF] transition-colors">{type.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{type.description}</p>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -302,7 +289,7 @@ export default function ProgramsPage() {
               transition={{ duration: 0.5 }}
               className="inline-block mb-4"
             >
-              <span className="text-5xl">📅</span>
+              <Calendar className="w-14 h-14 text-[#306CEC]" strokeWidth={1.5} />
             </motion.div>
             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#306CEC] to-[#4A80FF] bg-clip-text text-transparent mb-4">
               Upcoming Events

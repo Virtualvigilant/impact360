@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Calendar, Camera, Mic, Handshake, Lightbulb, Target, Globe, Rocket, Sparkles } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -53,7 +54,7 @@ const FeaturedEventCard = ({ event, index }) => (
             className="absolute bottom-6 left-6"
           >
             <div className="bg-[#306CEC] text-[#FFFEF9] px-6 py-3 rounded-full font-bold shadow-2xl backdrop-blur-sm flex items-center gap-2">
-              <span>📅</span>
+              <Calendar className="w-5 h-5" strokeWidth={2} />
               {event.date}
             </div>
           </motion.div>
@@ -88,7 +89,7 @@ const FeaturedEventCard = ({ event, index }) => (
           {/* HIGHLIGHTS */}
           <div className="space-y-4 mb-8 bg-gradient-to-br from-[#306CEC]/5 to-transparent p-6 rounded-2xl border border-[#306CEC]/10">
             <h3 className="text-2xl font-bold text-[#306CEC] flex items-center gap-2">
-              <span>✨</span> Key Highlights
+              <Sparkles className="w-6 h-6" strokeWidth={2} /> Key Highlights
             </h3>
 
             {event.highlights.map((highlight, i) => (
@@ -214,6 +215,39 @@ export default function EventsPage() {
    
   ];
 
+  const expectations = [
+    {
+      Icon: Mic,
+      title: "Expert Speakers",
+      description: "Learn from successful entrepreneurs across Africa and beyond."
+    },
+    {
+      Icon: Handshake,
+      title: "Networking Opportunities",
+      description: "Meet founders, investors, mentors, and ecosystem leaders."
+    },
+    {
+      Icon: Lightbulb,
+      title: "Actionable Insights",
+      description: "Gain practical tools and frameworks you can apply instantly."
+    },
+    {
+      Icon: Target,
+      title: "Interactive Sessions",
+      description: "Workshops, roundtables, and deep-dive Q&A sessions."
+    },
+    {
+      Icon: Globe,
+      title: "Decentralized Access",
+      description: "Participate in person or virtually from different counties."
+    },
+    {
+      Icon: Rocket,
+      title: "Growth Opportunities",
+      description: "Funding, partnerships, and scaling frameworks."
+    }
+  ];
+
   return (
     <div className="font-sans bg-[#FFFEF9]">
       <Navbar />
@@ -271,7 +305,7 @@ export default function EventsPage() {
               transition={{ duration: 0.5 }}
               className="inline-block mb-4"
             >
-              <span className="text-5xl">📸</span>
+              <Camera className="w-14 h-14 text-[#306CEC] mx-auto" strokeWidth={1.5} />
             </motion.div>
 
             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#306CEC] to-[#4A80FF] bg-clip-text text-transparent mb-4">
@@ -305,52 +339,24 @@ export default function EventsPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: "🎤",
-                title: "Expert Speakers",
-                description: "Learn from successful entrepreneurs across Africa and beyond."
-              },
-              {
-                icon: "🤝",
-                title: "Networking Opportunities",
-                description: "Meet founders, investors, mentors, and ecosystem leaders."
-              },
-              {
-                icon: "💡",
-                title: "Actionable Insights",
-                description: "Gain practical tools and frameworks you can apply instantly."
-              },
-              {
-                icon: "🎯",
-                title: "Interactive Sessions",
-                description: "Workshops, roundtables, and deep-dive Q&A sessions."
-              },
-              {
-                icon: "🌍",
-                title: "Decentralized Access",
-                description: "Participate in person or virtually from different counties."
-              },
-              {
-                icon: "🚀",
-                title: "Growth Opportunities",
-                description: "Funding, partnerships, and scaling frameworks."
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 group transition-all"
-              >
-                <motion.div className="text-5xl mb-4 inline-block">{item.icon}</motion.div>
-                <h3 className="text-2xl font-bold text-[#306CEC] mb-3">{item.title}</h3>
-                <p className="text-gray-700">{item.description}</p>
-              </motion.div>
-            ))}
+            {expectations.map((item, index) => {
+              const IconComponent = item.Icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 group transition-all"
+                >
+                  <IconComponent className="w-14 h-14 mb-4 text-[#306CEC] group-hover:text-[#4A80FF] transition-colors" strokeWidth={1.5} />
+                  <h3 className="text-2xl font-bold text-[#306CEC] mb-3">{item.title}</h3>
+                  <p className="text-gray-700">{item.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>

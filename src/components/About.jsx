@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Rocket, Calendar, Wrench, BookOpen, Briefcase, Globe, Zap, Building2, Users, Sparkles } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -13,27 +14,27 @@ export default function AboutPage() {
 
   const perks = [
     {
-      icon: "🚀",
+      icon: Rocket,
       title: "Programs",
       description: "Incubation, acceleration, and learning tracks designed to take your venture to the next level."
     },
     {
-      icon: "📅",
+      icon: Calendar,
       title: "Events",
       description: "Workshops, bootcamps, hackathons, and meetups to connect, learn, and grow together."
     },
     {
-      icon: "🛠️",
+      icon: Wrench,
       title: "Resources",
       description: "Tools, software credits, workspace, labs, and funding opportunities for your startup."
     },
     {
-      icon: "📚",
+      icon: BookOpen,
       title: "Knowledge",
       description: "Mentorship, masterclasses, templates, and expert support to guide your journey."
     },
     {
-      icon: "💼",
+      icon: Briefcase,
       title: "Services",
       description: "Legal clinics, advisory, technical guidance, and business development support."
     }
@@ -41,27 +42,27 @@ export default function AboutPage() {
 
   const approachValues = [
     {
-      icon: "🌍",
+      icon: Globe,
       title: "Decentralisation",
       description: "Running activities, programs, and support outside capital cities in counties, towns, universities, and community centers so more people can participate."
     },
     {
-      icon: "💪",
+      icon: Zap,
       title: "Practical Empowerment",
       description: "Offering perks in the form of programs, events, resources, knowledge, and services that create real impact."
     },
     {
-      icon: "🏗️",
+      icon: Building2,
       title: "Business Building",
       description: "Guiding founders from idea to validation, traction, and scale with structured support at every stage."
     },
     {
-      icon: "🤝",
+      icon: Users,
       title: "Ecosystem Building",
       description: "Connecting founders, local hubs, universities, partners, and community organizations to create strong regional ecosystems."
     },
     {
-      icon: "✨",
+      icon: Sparkles,
       title: "Inclusivity",
       description: "Ensuring any ambitious entrepreneur can access opportunities regardless of their location or background."
     }
@@ -234,22 +235,25 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {approachValues.map((value, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.2 }}
-                variants={fadeRise}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="bg-gradient-to-br from-[#306CEC] to-[#1a4d9e] text-[#FFFEF9] p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300"
-              >
-                <div className="text-6xl mb-4">{value.icon}</div>
-                <h3 className="text-2xl font-bold mb-3">{value.title}</h3>
-                <p className="text-[#FFFEF9]/90 leading-relaxed">{value.description}</p>
-              </motion.div>
-            ))}
+            {approachValues.map((value, index) => {
+              const IconComponent = value.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.2 }}
+                  variants={fadeRise}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  className="bg-gradient-to-br from-[#306CEC] to-[#1a4d9e] text-[#FFFEF9] p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300"
+                >
+                  <IconComponent className="w-16 h-16 mb-4" strokeWidth={1.5} />
+                  <h3 className="text-2xl font-bold mb-3">{value.title}</h3>
+                  <p className="text-[#FFFEF9]/90 leading-relaxed">{value.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </motion.section>
@@ -282,22 +286,25 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {perks.map((perk, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.2 }}
-                variants={fadeRise}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-[#306CEC]/20"
-              >
-                <div className="text-6xl mb-4">{perk.icon}</div>
-                <h3 className="text-2xl font-bold text-[#306CEC] mb-3">{perk.title}</h3>
-                <p className="text-gray-700 leading-relaxed">{perk.description}</p>
-              </motion.div>
-            ))}
+            {perks.map((perk, index) => {
+              const IconComponent = perk.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false, amount: 0.2 }}
+                  variants={fadeRise}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-[#306CEC]/20"
+                >
+                  <IconComponent className="w-16 h-16 mb-4 text-[#306CEC]" strokeWidth={1.5} />
+                  <h3 className="text-2xl font-bold text-[#306CEC] mb-3">{perk.title}</h3>
+                  <p className="text-gray-700 leading-relaxed">{perk.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </motion.section>
