@@ -30,9 +30,9 @@ const Navbar = () => {
   // Navbar Background logic
   const getNavbarBg = () => {
     if (pagesWithSolidBg.includes(location.pathname)) {
-      return "bg-white dark:bg-gray-800 shadow-lg";
+      return "bg-white dark:bg-[#1a1f3a] shadow-lg";
     }
-    return scrolled ? "bg-white dark:bg-gray-800 shadow-lg" : "bg-transparent";
+    return scrolled ? "bg-white dark:bg-[#1a1f3a] shadow-lg" : "bg-transparent";
   };
 
   // Scroll to section on homepage
@@ -64,7 +64,7 @@ const Navbar = () => {
           onClick={() => setShowQR(false)}
         >
           <motion.div
-            className="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-md w-full relative shadow-2xl"
+            className="bg-white dark:bg-[#1a1f3a] rounded-3xl p-8 max-w-md w-full relative shadow-2xl"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1 }}
@@ -199,7 +199,7 @@ const Navbar = () => {
           animate={{ opacity: 1 }}
         >
           <motion.div
-            className="bg-white dark:bg-gray-800 w-80 rounded-3xl p-8 shadow-2xl text-center space-y-6 relative"
+            className="bg-white dark:bg-[#1a1f3a] w-80 rounded-3xl p-8 shadow-2xl text-center space-y-6 relative"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
           >

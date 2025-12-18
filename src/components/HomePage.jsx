@@ -66,7 +66,7 @@ export default function HomePage() {
   }, [photos.length, imagesLoaded]);
 
   return (
-    <div className={`transition-colors duration-1000 ${darkMode ? 'bg-gray-900' : 'bg-white'}`} style={{ fontFamily: 'DM Sans, sans-serif' }}>
+    <div className={`transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-white'}`} style={{ fontFamily: 'DM Sans, sans-serif' }}>
       <Navbar />
 
       {/* WhatsApp QR Code Modal */}
@@ -78,7 +78,7 @@ export default function HomePage() {
           onClick={() => setShowQR(false)}
         >
           <motion.div
-            className={`rounded-3xl p-8 max-w-md w-full relative shadow-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
+            className={`rounded-3xl p-8 max-w-md w-full relative shadow-2xl ${darkMode ? 'bg-[#1a1f3a]' : 'bg-white'}`}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1 }}
@@ -115,13 +115,13 @@ export default function HomePage() {
       )}
         
       {/* HERO SECTION */}
-      <section className={`min-h-screen flex items-center justify-center relative overflow-hidden pt-20 ${darkMode ? 'bg-gray-800' : 'bg-gray-900'}`}>
+      <section className={`min-h-screen flex items-center justify-center relative overflow-hidden pt-20 ${darkMode ? 'bg-[#000000]' : 'bg-gray-900'}`}>
 
         {/* SLIDESHOW BACKGROUND */}
         <div className="absolute inset-0">
           {/* Loading placeholder with gradient */}
           {!imagesLoaded && (
-            <div className={`absolute inset-0 flex items-center justify-center ${darkMode ? 'bg-gray-700' : 'bg-[#306CEC]'}`}>
+            <div className={`absolute inset-0 flex items-center justify-center ${darkMode ? 'bg-[#000000]' : 'bg-[#306CEC]'}`}>
               <div className="text-white text-xl font-semibold">Loading...</div>
             </div>
           )}
@@ -184,7 +184,7 @@ export default function HomePage() {
 
             <button 
               onClick={() => setShowQR(true)}
-              className={`text-white px-10 py-4 rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-[#306CEC] hover:bg-[#1a4d99]'}`}
+              className={`text-white px-10 py-4 rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl ${darkMode ? 'bg-[#306CEC] hover:bg-[#1a4d99]' : 'bg-[#306CEC] hover:bg-[#1a4d99]'}`}
               style={{ fontFamily: 'League Spartan, sans-serif' }}
             >
               Join Community
@@ -201,10 +201,10 @@ export default function HomePage() {
       transition={{ duration: 0.8 }}
       viewport={{ once: false, amount: 0.2 }}
     >
-      <section className={`py-24 px-6 relative overflow-hidden transition-colors duration-1000 ${darkMode ? 'bg-gray-800' : 'bg-[#FFFEF9]'}`}>
+      <section className={`py-24 px-6 relative overflow-hidden transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#FFFEF9]'}`}>
         {/* Decorative elements */}
-        <div className={`absolute top-0 left-0 w-64 h-64 rounded-full blur-3xl ${darkMode ? 'bg-blue-600/10' : 'bg-[#306CEC]/5'}`}></div>
-        <div className={`absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl ${darkMode ? 'bg-blue-600/10' : 'bg-[#306CEC]/5'}`}></div>
+        <div className={`absolute top-0 left-0 w-64 h-64 rounded-full blur-3xl ${darkMode ? 'bg-[#306CEC]/10' : 'bg-[#306CEC]/5'}`}></div>
+        <div className={`absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl ${darkMode ? 'bg-[#306CEC]/10' : 'bg-[#306CEC]/5'}`}></div>
         
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -214,7 +214,7 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.3 }}
             className="text-center mb-20"
           >
-            <h2 className={`text-5xl md:text-6xl font-bold mb-4 ${darkMode ? 'text-blue-400' : 'text-[#306CEC]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
+            <h2 className={`text-5xl md:text-6xl font-bold mb-4 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
               What We Offer
             </h2>
             <p className={`text-xl ${darkMode ? 'text-gray-400' : 'text-[#000000]/70'}`}>
@@ -235,7 +235,7 @@ export default function HomePage() {
                     ease: [0.25, 0.46, 0.45, 0.94]
                   }}
                   viewport={{ once: true, amount: 0.3 }}
-                  className={`rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group ${darkMode ? 'bg-gray-700' : 'bg-white'}`}
+                  className={`rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group ${darkMode ? 'bg-[#1a1f3a] border border-[#306CEC]/20' : 'bg-white'}`}
                   whileHover={{ y: -12, scale: 1.02 }}
                 >
                   <div className="relative h-64 overflow-hidden">
@@ -244,7 +244,7 @@ export default function HomePage() {
                       alt={offer.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className={`absolute inset-0 flex items-end p-8 transition-all duration-500 ${darkMode ? 'bg-gradient-to-t from-blue-600/95 via-blue-600/40 to-transparent group-hover:from-blue-600/95' : 'bg-gradient-to-t from-[#306CEC]/90 via-[#306CEC]/40 to-transparent group-hover:from-[#306CEC]/95'}`}>
+                    <div className={`absolute inset-0 flex items-end p-8 transition-all duration-500 ${darkMode ? 'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-[#306CEC]/95 group-hover:via-[#306CEC]/40' : 'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-[#306CEC]/90 group-hover:via-[#306CEC]/40'}`}>
                       <motion.div 
                         className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 w-20 h-20 flex items-center justify-center"
                         whileHover={{ scale: 1.2, rotate: 5 }}
@@ -255,8 +255,8 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="p-8 relative">
-                    <div className={`absolute top-0 left-0 w-20 h-1 transform origin-left transition-all duration-500 group-hover:w-full ${darkMode ? 'bg-blue-400' : 'bg-[#306CEC]'}`}></div>
-                    <h3 className={`text-3xl font-bold mb-4 mt-2 transition-colors duration-300 ${darkMode ? 'text-blue-400 group-hover:text-blue-300' : 'text-[#306CEC] group-hover:text-[#1a4d99]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                    <div className={`absolute top-0 left-0 w-20 h-1 transform origin-left transition-all duration-500 group-hover:w-full ${darkMode ? 'bg-[#306CEC]' : 'bg-[#306CEC]'}`}></div>
+                    <h3 className={`text-3xl font-bold mb-4 mt-2 transition-colors duration-300 ${darkMode ? 'text-[#306CEC] group-hover:text-[#1a4d99]' : 'text-[#306CEC] group-hover:text-[#1a4d99]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
                       {offer.title}
                     </h3>
                     <p className={`text-lg mb-6 leading-relaxed ${darkMode ? 'text-gray-300' : 'text-[#000000]/70'}`}>
@@ -264,7 +264,7 @@ export default function HomePage() {
                     </p>
                     <a
                       href={offer.link}
-                      className={`inline-flex items-center font-semibold gap-2 transition-all duration-300 group-hover:gap-4 ${darkMode ? 'text-blue-400 group-hover:text-blue-300' : 'text-[#306CEC] group-hover:text-[#1a4d99]'}`}
+                      className={`inline-flex items-center font-semibold gap-2 transition-all duration-300 group-hover:gap-4 ${darkMode ? 'text-[#306CEC] group-hover:text-[#1a4d99]' : 'text-[#306CEC] group-hover:text-[#1a4d99]'}`}
                       style={{ fontFamily: 'League Spartan, sans-serif' }}
                     >
                       Learn More 
@@ -291,7 +291,7 @@ export default function HomePage() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: false, amount: 0.2 }}
-        className={`py-24 px-6 transition-colors duration-1000 ${darkMode ? 'bg-gray-900' : 'bg-[#F5F6F8]'}`}
+        className={`py-24 px-6 transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#F5F6F8]'}`}
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -302,7 +302,7 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2
-              className={`text-5xl md:text-6xl font-bold mb-3 ${darkMode ? 'text-blue-400' : 'text-[#306CEC]'}`}
+              className={`text-5xl md:text-6xl font-bold mb-3 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`}
               style={{ fontFamily: "League Spartan, sans-serif" }}
             >
               Why Choose Impact360
@@ -321,7 +321,7 @@ export default function HomePage() {
                   key={i}
                   className={`border p-10 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 group ${
                     darkMode 
-                      ? 'bg-gray-800 border-blue-600/30' 
+                      ? 'bg-[#1a1f3a] border-[#306CEC]/20' 
                       : 'bg-white border-[#306CEC]/20'
                   }`}
                   initial={{ opacity: 0, y: 30 }}
@@ -331,12 +331,12 @@ export default function HomePage() {
                   whileHover={{ y: -10 }}
                 >
                   {/* Blue top bar */}
-                  <div className={`h-2 w-full rounded-full mb-6 ${darkMode ? 'bg-blue-400' : 'bg-[#306CEC]'}`}></div>
+                  <div className={`h-2 w-full rounded-full mb-6 ${darkMode ? 'bg-[#306CEC]' : 'bg-[#306CEC]'}`}></div>
 
-                  <IconComponent className={`w-16 h-16 mb-6 ${darkMode ? 'text-blue-400' : 'text-[#306CEC]'}`} strokeWidth={1.5} />
+                  <IconComponent className={`w-16 h-16 mb-6 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`} strokeWidth={1.5} />
 
                   <h3
-                    className={`text-3xl font-bold mb-3 ${darkMode ? 'text-blue-400' : 'text-[#306CEC]'}`}
+                    className={`text-3xl font-bold mb-3 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`}
                     style={{ fontFamily: "League Spartan, sans-serif" }}
                   >
                     {item.title}

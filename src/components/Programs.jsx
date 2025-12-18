@@ -42,7 +42,7 @@ const EventCard = ({ type, title, description, image, delay = 0, darkMode }) => 
     viewport={{ once: true }}
     whileHover={{ y: -10 }}
     className={`rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group ${
-      darkMode ? 'bg-gray-800' : 'bg-white'
+      darkMode ? 'bg-[#1a1f3a] border border-[#306CEC]/20' : 'bg-white'
     }`}
   >
     <div className="relative h-64 overflow-hidden">
@@ -51,10 +51,14 @@ const EventCard = ({ type, title, description, image, delay = 0, darkMode }) => 
         alt={title}
         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
       />
-      <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-t from-blue-600/60 to-transparent' : 'bg-gradient-to-t from-[#306CEC]/60 to-transparent'}`}></div>
+      <div className={`absolute inset-0 transition-all duration-500 ${
+        darkMode 
+          ? 'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-[#306CEC]/60 group-hover:via-[#306CEC]/30' 
+          : 'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-[#306CEC]/60 group-hover:via-[#306CEC]/30'
+      }`}></div>
       <div className={`absolute top-4 left-4 px-4 py-2 rounded-full font-bold text-sm ${
         darkMode
-          ? 'bg-blue-400 text-gray-800'
+          ? 'bg-[#306CEC] text-white'
           : 'bg-[#FFFEF9] text-[#306CEC]'
       }`}>
         {type}
@@ -62,8 +66,8 @@ const EventCard = ({ type, title, description, image, delay = 0, darkMode }) => 
     </div>
     
     <div className="p-8">
-      <h3 className={`text-2xl font-bold mb-3 ${darkMode ? 'text-blue-400' : 'text-[#306CEC]'}`}>{title}</h3>
-      <p className={`leading-relaxed mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{description}</p>
+      <h3 className={`text-2xl font-bold mb-3 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`}>{title}</h3>
+      <p className={`leading-relaxed mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{description}</p>
     </div>
   </motion.div>
 );
@@ -89,7 +93,8 @@ export default function ProgramsPage() {
         "Pitch training and investor connections",
         "Legal and technical advisory services"
       ],
-      gradient: "bg-gradient-to-br from-[#306CEC] to-[#1a4d9e]"
+      gradientLight: "bg-gradient-to-br from-[#306CEC] to-[#1a4d9e]",
+      gradientDark: "bg-gradient-to-br from-[#1a3a66] to-[#0f1f3a]"
     },
     {
       Icon: Zap,
@@ -103,7 +108,8 @@ export default function ProgramsPage() {
         "Partnership and collaboration opportunities",
         "Demo day with investors and stakeholders"
       ],
-      gradient: "bg-gradient-to-br from-[#1a4d9e] to-[#000000]"
+      gradientLight: "bg-gradient-to-br from-[#1a4d9e] to-[#000000]",
+      gradientDark: "bg-gradient-to-br from-[#1a2d4d] to-[#0f1a2e]"
     }
   ];
 
@@ -184,20 +190,25 @@ export default function ProgramsPage() {
     }
   ];
 
+  const mainPrograms_with_gradient = mainPrograms.map(p => ({
+    ...p,
+    gradient: darkMode ? p.gradientDark : p.gradientLight
+  }));
+
   return (
-    <div className={`font-sans transition-colors duration-1000 ${darkMode ? 'bg-gray-900' : 'bg-[#FFFEF9]'}`}>
+    <div className={`font-sans transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#FFFEF9]'}`}>
       <Navbar />
 
       {/* Hero Section */}
-      <section className={`relative pt-32 pb-16 px-6 overflow-hidden transition-colors duration-1000 ${darkMode ? 'bg-gray-900' : 'bg-[#FFFEF9]'}`}>
+      <section className={`relative pt-32 pb-16 px-6 overflow-hidden transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#FFFEF9]'}`}>
         {/* Animated background shapes */}
         <motion.div
-          className={`absolute top-20 right-10 w-72 h-72 rounded-full blur-3xl ${darkMode ? 'bg-blue-600/10' : 'bg-[#306CEC]/5'}`}
+          className={`absolute top-20 right-10 w-72 h-72 rounded-full blur-3xl ${darkMode ? 'bg-[#306CEC]/10' : 'bg-[#306CEC]/5'}`}
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 3, repeat: Infinity }}
         />
         <motion.div
-          className={`absolute bottom-10 left-10 w-96 h-96 rounded-full blur-3xl ${darkMode ? 'bg-blue-400/10' : 'bg-[#4A80FF]/5'}`}
+          className={`absolute bottom-10 left-10 w-96 h-96 rounded-full blur-3xl ${darkMode ? 'bg-[#306CEC]/10' : 'bg-[#4A80FF]/5'}`}
           animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
           transition={{ duration: 4, repeat: Infinity }}
         />
@@ -212,7 +223,7 @@ export default function ProgramsPage() {
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               <span className={`bg-clip-text text-transparent ${
                 darkMode
-                  ? 'bg-gradient-to-r from-blue-400 via-blue-300 to-blue-400'
+                  ? 'bg-gradient-to-r from-[#306CEC] via-[#4A80FF] to-[#306CEC]'
                   : 'bg-gradient-to-r from-[#306CEC] via-[#4A80FF] to-[#306CEC]'
               }`}>
                 Our Programs
@@ -226,10 +237,10 @@ export default function ProgramsPage() {
       </section>
 
       {/* Main Programs Section */}
-      <section className={`py-16 px-6 transition-colors duration-1000 ${darkMode ? 'bg-gray-900' : 'bg-[#FFFEF9]'}`}>
+      <section className={`py-16 px-6 transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#FFFEF9]'}`}>
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12">
-            {mainPrograms.map((program, index) => (
+            {mainPrograms_with_gradient.map((program, index) => (
               <ProgramCard key={index} {...program} delay={index * 0.2} darkMode={darkMode} />
             ))}
           </div>
@@ -239,7 +250,7 @@ export default function ProgramsPage() {
       {/* Events Overview Section */}
       <section className={`py-24 px-6 transition-colors duration-1000 ${
         darkMode
-          ? 'bg-gradient-to-b from-gray-800 to-gray-900'
+          ? 'bg-[#000000]'
           : 'bg-gradient-to-b from-[#F5F5F0] to-[#FFFEF9]'
       }`}>
         <div className="max-w-7xl mx-auto">
@@ -256,11 +267,11 @@ export default function ProgramsPage() {
               transition={{ duration: 0.5 }}
               className="inline-block mb-4"
             >
-              <GraduationCap className={`w-14 h-14 ${darkMode ? 'text-blue-400' : 'text-[#306CEC]'}`} strokeWidth={1.5} />
+              <GraduationCap className={`w-14 h-14 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`} strokeWidth={1.5} />
             </motion.div>
             <h2 className={`text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent ${
               darkMode
-                ? 'bg-gradient-to-r from-blue-400 to-blue-300'
+                ? 'bg-gradient-to-r from-[#306CEC] to-[#4A80FF]'
                 : 'bg-gradient-to-r from-[#306CEC] to-[#4A80FF]'
             }`}>
               Learning Events
@@ -283,21 +294,21 @@ export default function ProgramsPage() {
                   whileHover={{ y: -5, scale: 1.02 }}
                   className={`p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group ${
                     darkMode
-                      ? 'bg-gray-800 border border-gray-700'
+                      ? 'bg-[#1a1f3a] border border-[#306CEC]/20 hover:border-[#306CEC]'
                       : 'bg-white border border-gray-100'
                   }`}
                 >
                   <IconComponent className={`w-14 h-14 mb-4 group-hover:transition-colors ${
                     darkMode
-                      ? 'text-blue-400 group-hover:text-blue-300'
+                      ? 'text-[#306CEC] group-hover:text-[#4A80FF]'
                       : 'text-[#306CEC] group-hover:text-[#4A80FF]'
                   }`} strokeWidth={1.5} />
                   <h3 className={`text-2xl font-bold mb-3 group-hover:transition-colors ${
                     darkMode
-                      ? 'text-blue-400 group-hover:text-blue-300'
+                      ? 'text-[#306CEC] group-hover:text-[#4A80FF]'
                       : 'text-[#306CEC] group-hover:text-[#4A80FF]'
                   }`}>{type.title}</h3>
-                  <p className={`leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{type.description}</p>
+                  <p className={`leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{type.description}</p>
                 </motion.div>
               );
             })}
@@ -306,7 +317,7 @@ export default function ProgramsPage() {
       </section>
 
       {/* Upcoming Events Section */}
-      <section className={`py-24 px-6 transition-colors duration-1000 ${darkMode ? 'bg-gray-900' : 'bg-[#FFFEF9]'}`}>
+      <section className={`py-24 px-6 transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#FFFEF9]'}`}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -321,11 +332,11 @@ export default function ProgramsPage() {
               transition={{ duration: 0.5 }}
               className="inline-block mb-4"
             >
-              <Calendar className={`w-14 h-14 ${darkMode ? 'text-blue-400' : 'text-[#306CEC]'}`} strokeWidth={1.5} />
+              <Calendar className={`w-14 h-14 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`} strokeWidth={1.5} />
             </motion.div>
             <h2 className={`text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent ${
               darkMode
-                ? 'bg-gradient-to-r from-blue-400 to-blue-300'
+                ? 'bg-gradient-to-r from-[#306CEC] to-[#4A80FF]'
                 : 'bg-gradient-to-r from-[#306CEC] to-[#4A80FF]'
             }`}>
               Upcoming Events

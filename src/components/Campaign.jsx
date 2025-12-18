@@ -69,7 +69,7 @@ export default function Campaign() {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-1000 ${darkMode ? 'bg-gray-900' : 'bg-[#FFFEF9]'}`} style={{ fontFamily: 'DM Sans, sans-serif' }}>
+    <div className={`min-h-screen transition-colors duration-1000 ${darkMode ? 'bg-black' : 'bg-[#FFFEF9]'}`} style={{ fontFamily: 'DM Sans, sans-serif' }}>
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-6 pt-20 pb-12">
@@ -79,7 +79,7 @@ export default function Campaign() {
           
           {/* POSTER IMAGE */}
           <div className="relative flex justify-center order-1">
-            <div className={`absolute inset-0 rounded-full blur-3xl ${darkMode ? 'bg-gradient-to-tr from-blue-600/20 to-purple-600/20' : 'bg-gradient-to-tr from-blue-400/20 to-purple-400/20'}`}></div>
+            <div className={`absolute inset-0 rounded-full blur-3xl ${darkMode ? 'bg-[#306CEC]/20' : 'bg-gradient-to-tr from-blue-400/20 to-purple-400/20'}`}></div>
             <div className="relative group">
               <img
                 src={"/roadshow.png"}
@@ -106,7 +106,7 @@ export default function Campaign() {
 
             <h1 className={`text-5xl md:text-6xl font-extrabold mb-6 leading-tight ${darkMode ? 'text-white' : 'text-[#000000]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
               CATCH US BEFORE
-              <span className={`block ${darkMode ? 'text-blue-400' : 'text-[#306CEC]'}`}>
+              <span className="block text-[#306CEC]">
                 WE MOVE ON
               </span>
             </h1>
@@ -124,9 +124,7 @@ export default function Campaign() {
                 navigate('/subscription');
                 window.scrollTo(0, 0);
               }}
-              className={`text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ${
-                darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-[#306CEC] hover:bg-[#1a4d9e]'
-              }`}
+              className="bg-[#306CEC] hover:bg-[#1a4d9e] text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
               style={{ fontFamily: 'League Spartan, sans-serif' }}
             >
               RESERVE YOUR SPOT NOW
@@ -136,7 +134,7 @@ export default function Campaign() {
 
         {/* ---------------- CITY ANIMATION SECTION ---------------- */}
         <div className={`rounded-3xl shadow-2xl p-8 md:p-12 mb-16 relative overflow-hidden transition-colors duration-1000 ${
-          darkMode ? 'bg-blue-700' : 'bg-[#306CEC]'
+          darkMode ? 'bg-black border border-[#306CEC]/20' : 'bg-[#306CEC]'
         }`}>
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
@@ -159,28 +157,47 @@ export default function Campaign() {
                     setSelectedCity(city);
                     setShowTrailer(true);
                   }}
-                  className={`relative backdrop-blur-sm rounded-2xl p-6 border-2 transition-all duration-500 w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)] lg:w-[calc(20%-0.8rem)] cursor-pointer hover:bg-white/30 hover:scale-105 hover:shadow-2xl group
-                  ${activeCity === idx ? 'border-yellow-400 scale-105 bg-white/20' : 'border-white/20 bg-white/10'}`}
+                  className={`relative backdrop-blur-sm rounded-2xl p-6 border-2 transition-all duration-500 w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)] lg:w-[calc(20%-0.8rem)] cursor-pointer hover:scale-105 hover:shadow-2xl group
+                  ${activeCity === idx 
+                    ? darkMode
+                      ? 'border-[#306CEC] scale-105 bg-black shadow-lg shadow-[#306CEC]/30'
+                      : 'border-yellow-400 scale-105 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 shadow-lg shadow-yellow-400/30'
+                    : darkMode
+                    ? 'border-[#306CEC]/30 bg-black hover:bg-[#1a1f3a] hover:border-[#306CEC]/50'
+                    : 'border-white/30 bg-white/10 hover:bg-white/30 hover:border-white/50'}`}
                 >
                   {activeCity === idx && (
-                    <div className="absolute -top-3 -right-3 w-6 h-6 bg-yellow-400 rounded-full animate-ping"></div>
+                    <>
+                      <div className={`absolute -top-3 -right-3 w-6 h-6 rounded-full animate-ping ${darkMode ? 'bg-[#306CEC]' : 'bg-yellow-400'}`}></div>
+                      <div className={`absolute inset-0 rounded-2xl animate-pulse ${darkMode ? 'bg-gradient-to-br from-[#306CEC]/10 to-[#1a4d9e]/10' : 'bg-gradient-to-br from-yellow-400/10 to-orange-400/10'}`}></div>
+                    </>
                   )}
 
-                  <MapPin className={`w-8 h-8 mb-3 ${activeCity === idx ? 'text-yellow-400 scale-110' : 'text-white'}`} />
-                  
-                  <h3 className="text-xl font-bold text-white mb-1">{city.name}</h3>
-                  <p className="text-blue-100 text-sm font-semibold">{city.date}</p>
+                  <div className="relative z-10">
+                    <MapPin className={`w-8 h-8 mb-3 transition-all duration-300 ${activeCity === idx ? (darkMode ? 'text-[#306CEC] scale-110 drop-shadow-lg' : 'text-yellow-400 scale-110 drop-shadow-lg') : 'text-white'}`} />
+                    
+                    <h3 className="text-xl font-bold text-white mb-1 drop-shadow-md">{city.name}</h3>
+                    <p className="text-sm font-semibold text-blue-100">{city.date}</p>
 
-                  <div className="mt-3 inline-flex items-center gap-1 bg-yellow-400/20 text-yellow-300 px-3 py-1 rounded-full text-xs font-bold">
-                    <Users className="w-3 h-3" />
-                    {city.spots} Spots
-                  </div>
+                    <div className={`mt-3 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold transition-all duration-300 ${
+                      activeCity === idx 
+                        ? darkMode
+                          ? 'bg-[#306CEC] text-white'
+                          : 'bg-yellow-400 text-gray-900'
+                        : darkMode
+                        ? 'bg-[#306CEC]/20 text-blue-300'
+                        : 'bg-yellow-400/20 text-yellow-300'
+                    }`}>
+                      <Users className="w-3 h-3" />
+                      {city.spots} Spots
+                    </div>
 
-                  {/* Click indicator - appears on hover */}
-                  <div className="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="flex items-center justify-center gap-2 text-white text-xs font-semibold">
-                      <Sparkles className="w-3 h-3" />
-                      <span>Click to view</span>
+                    {/* Click indicator - appears on hover */}
+                    <div className="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="flex items-center justify-center gap-2 text-white text-xs font-semibold">
+                        <Sparkles className="w-3 h-3" />
+                        <span>Click to view</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -196,8 +213,8 @@ export default function Campaign() {
               </p>
               <button 
                 onClick={() => setShowQR(true)}
-                className={`text-[#306CEC] px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ${
-                  darkMode ? 'bg-gray-100 hover:bg-white' : 'bg-white hover:bg-gray-50'
+                className={`px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ${
+                  darkMode ? 'bg-white text-[#306CEC] hover:bg-gray-100' : 'bg-white text-[#306CEC] hover:bg-gray-50'
                 }`}
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
@@ -210,7 +227,7 @@ export default function Campaign() {
         {/* ---------------- COUNTDOWN SECTION ---------------- */}
         <div className={`rounded-3xl shadow-2xl p-8 md:p-12 mb-16 border transition-colors duration-1000 ${
           darkMode
-            ? 'bg-gray-800 border-gray-700'
+            ? 'bg-[#1a1f3a] border-[#000000]/20'
             : 'bg-white border-gray-200'
         }`}>
           <div className="text-center mb-8">
@@ -223,7 +240,7 @@ export default function Campaign() {
               <span style={{ fontFamily: 'League Spartan, sans-serif' }}>ROADSHOW LAUNCHES IN</span>
             </div>
 
-            <h2 className={`text-3xl md:text-4xl font-bold ${darkMode ? 'text-white' : 'text-[#000000]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
+            <h2 className={`text-3xl md:text-4xl font-bold ${darkMode ? 'text-[#306CEC]' : 'text-[#000000]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
               FIRST STOP ANNOUNCEMENT COMING SOON
             </h2>
           </div>
@@ -236,7 +253,7 @@ export default function Campaign() {
               { label: 'SECONDS', value: timeLeft.seconds }
             ].map((item) => (
               <div key={item.label} className={`rounded-2xl p-6 text-center shadow-lg transition-colors duration-1000 ${
-                darkMode ? 'bg-blue-600' : 'bg-[#306CEC]'
+                darkMode ? 'bg-black border border-[#306CEC]/30' : 'bg-[#306CEC]'
               }`}>
                 <div className="text-4xl md:text-5xl font-extrabold text-white mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                   {String(item.value).padStart(2, '0')}
@@ -261,13 +278,13 @@ export default function Campaign() {
 
         {/* ---------------- FINAL CTA ---------------- */}
         <div className={`rounded-3xl shadow-2xl p-8 md:p-16 text-center transition-colors duration-1000 ${
-          darkMode ? 'bg-blue-700' : 'bg-[#306CEC]'
+          darkMode ? 'bg-[#1f2937] border border-[#306CEC]/20' : 'bg-[#306CEC]'
         }`}>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+          <h2 className={`text-3xl md:text-5xl font-extrabold mb-4 ${darkMode ? 'text-[#306CEC]' : 'text-white'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
             WILL YOU BE PART OF THE JOURNEY?
           </h2>
 
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className={`text-xl mb-8 max-w-2xl mx-auto ${darkMode ? 'text-gray-300' : 'text-white/90'}`}>
             Be among the first to connect, engage, and enjoy what the Innovation Roadshow has to offer in your city
           </p>
           
@@ -276,8 +293,8 @@ export default function Campaign() {
               navigate('/subscription');
               window.scrollTo(0, 0);
             }}
-            className={`text-[#306CEC] px-10 py-5 rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition-all duration-300 ${
-              darkMode ? 'bg-gray-100 hover:bg-white' : 'bg-white hover:bg-gray-50'
+            className={`px-10 py-5 rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition-all duration-300 ${
+              darkMode ? 'bg-white text-[#306CEC] hover:bg-gray-100' : 'bg-white text-[#306CEC] hover:bg-gray-50'
             }`}
             style={{ fontFamily: 'League Spartan, sans-serif' }}
           >
@@ -298,7 +315,7 @@ export default function Campaign() {
         >
           <motion.div
             className={`rounded-3xl p-8 max-w-md w-full relative shadow-2xl transition-colors duration-1000 ${
-              darkMode ? 'bg-gray-800' : 'bg-white'
+              darkMode ? 'bg-[#1a1f3a] border border-[#306CEC]/20' : 'bg-white'
             }`}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -309,17 +326,17 @@ export default function Campaign() {
               onClick={() => setShowQR(false)}
               className={`absolute top-4 right-4 text-2xl font-bold ${
                 darkMode
-                  ? 'text-gray-400 hover:text-gray-200'
+                  ? 'text-gray-400 hover:text-[#306CEC]'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
               ×
             </button>
             <div className="text-center space-y-6">
-              <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Join Our Community</h2>
+              <h2 className={`text-3xl font-bold ${darkMode ? 'text-[#306CEC]' : 'text-gray-900'}`}>Join Our Community</h2>
               <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Scan the QR code to join our WhatsApp community</p>
               <div className={`p-8 rounded-2xl flex items-center justify-center ${
-                darkMode ? 'bg-gray-700' : 'bg-gray-100'
+                darkMode ? 'bg-[#0A0E27]' : 'bg-gray-100'
               }`}>
                 <img 
                   src="/frame.png" 
@@ -352,7 +369,7 @@ export default function Campaign() {
           <motion.div
             className={`rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-2xl w-full relative shadow-2xl border my-4 sm:my-8 max-h-[95vh] overflow-y-auto transition-colors duration-1000 ${
               darkMode
-                ? 'bg-gradient-to-br from-gray-900 to-black border-gray-800'
+                ? 'bg-gradient-to-br from-[#1a1f3a] to-[#0A0E27] border-[#306CEC]/30'
                 : 'bg-gradient-to-br from-gray-900 to-black border-gray-800'
             }`}
             initial={{ scale: 0.9, opacity: 0 }}
@@ -362,8 +379,8 @@ export default function Campaign() {
           >
             <button
               onClick={() => setShowTrailer(false)}
-              className={`absolute top-2 right-2 sm:top-3 sm:right-3 text-gray-400 hover:text-white text-xl sm:text-2xl font-bold z-10 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center ${
-                darkMode ? 'hover:text-gray-200' : 'hover:text-gray-200'
+              className={`absolute top-2 right-2 sm:top-3 sm:right-3 text-xl sm:text-2xl font-bold z-10 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center ${
+                darkMode ? 'text-gray-400 hover:text-[#306CEC]' : 'text-gray-400 hover:text-white'
               }`}
             >
               ×
@@ -371,7 +388,9 @@ export default function Campaign() {
             
             <div className="space-y-3 sm:space-y-4 md:space-y-6">
               <div className="text-center space-y-1 sm:space-y-2">
-                <div className="inline-flex items-center gap-1 sm:gap-2 bg-blue-500/20 text-blue-400 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold mb-1 sm:mb-2">
+                <div className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold mb-1 sm:mb-2 ${
+                  darkMode ? 'bg-[#306CEC]/20 text-[#306CEC]' : 'bg-blue-500/20 text-blue-400'
+                }`}>
                   <MapPin className="w-3 h-3" />
                   <span>{selectedCity.name} Roadshow</span>
                 </div>
@@ -394,7 +413,9 @@ export default function Campaign() {
                   </video>
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 p-4">
-                    <Sparkles className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-blue-400 mb-3 sm:mb-4 animate-pulse" />
+                    <Sparkles className={`w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mb-3 sm:mb-4 animate-pulse ${
+                      darkMode ? 'text-[#306CEC]' : 'text-blue-400'
+                    }`} />
                     <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                       COMING SOON
                     </h3>
@@ -408,7 +429,9 @@ export default function Campaign() {
               {/* City Info */}
               <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
                 <div className="bg-white/5 backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 border border-white/10">
-                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-blue-400 mb-1 sm:mb-2" />
+                  <Calendar className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mb-1 sm:mb-2 ${
+                    darkMode ? 'text-[#306CEC]' : 'text-blue-400'
+                  }`} />
                   <p className="text-gray-400 text-[10px] sm:text-xs">Launch Date</p>
                   <p className="text-white font-bold text-xs sm:text-sm">{selectedCity.date}</p>
                 </div>
@@ -425,7 +448,7 @@ export default function Campaign() {
                   navigate('/subscription');
                   window.scrollTo(0, 0);
                 }}
-                className="w-full bg-[#306CEC] text-white px-4 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full font-bold text-sm sm:text-base md:text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="w-full bg-[#306CEC] hover:bg-[#1a4d9e] text-white px-4 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full font-bold text-sm sm:text-base md:text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
                 RESERVE YOUR SPOT NOW
