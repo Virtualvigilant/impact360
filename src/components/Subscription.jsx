@@ -23,23 +23,23 @@ export default function SubscriptionPlans() {
   const subscriptionPlans = {
     monthly: [
       { name: "Student", price: "999", period: "mo", features: ["1 event access", "slides", "resource pack"] },
-      { name: "Pro", price: "2,499", period: "mo", features: ["Access to event", "networking zone", "digital resources"], popular: true },
-      { name: "Premium", price: "4,499", period: "mo", features: ["VIP seating", "spotlight networking", "partner invites"] }
+      { name: "Pro", price: "2,099", period: "mo", features: ["Access to event", "networking zone", "digital resources"], popular: true },
+      { name: "Premium", price: "4,099", period: "mo", features: ["VIP seating", "spotlight networking", "partner invites"] }
     ],
     quarterly: [
-      { name: "Student", price: "2,699", period: "3mo", features: ["3 sessions + replays", "1 free guest pass per quarter"], save: "295" },
-      { name: "Pro", price: "6,999", period: "3mo", features: ["3 sessions", "1 VIP mixer invite", "priority entry"], save: "498", popular: true },
-      { name: "Premium", price: "12,499", period: "3mo", features: ["Exclusive roundtable access", "event recordings"], save: "998" }
+      { name: "Student", price: "2,847", period: "3mo", features: ["3 sessions + replays", "1 free guest pass per quarter"], save: "150" },
+      { name: "Pro", price: "5,982", period: "3mo", features: ["3 sessions", "1 VIP mixer invite", "priority entry"], save: "315", popular: true },
+      { name: "Premium", price: "11,682", period: "3mo", features: ["Exclusive roundtable access", "event recordings"], save: "615" }
     ],
     biannual: [
-      { name: "Student", price: "5,199", period: "6mo", features: ["6 sessions", "certificate of participation", "growth toolkit"], save: "795" },
-      { name: "Pro", price: "13,499", period: "6mo", features: ["6 sessions", "full replay access", "community membership"], save: "1,495", popular: true },
-      { name: "Premium", price: "23,999", period: "6mo", features: ["Mastermind dinner", "recognition certificate", "all replays"], save: "2,995" }
+      { name: "Student", price: "5,395", period: "6mo", features: ["6 sessions", "certificate of participation", "growth toolkit"], save: "599" },
+      { name: "Pro", price: "11,335", period: "6mo", features: ["6 sessions", "full replay access", "community membership"], save: "1,259", popular: true },
+      { name: "Premium", price: "22,135", period: "6mo", features: ["Mastermind dinner", "recognition certificate", "all replays"], save: "2,459" }
     ],
     annual: [
-      { name: "Student", price: "9,999", period: "yr", features: ["12 sessions", "all replays", "invite to Student Impact Summit"], save: "1,985" },
-      { name: "Pro", price: "23,999", period: "yr", features: ["12 sessions", "partner discounts", "Impact360 T-shirt"], save: "5,989", popular: true },
-      { name: "Premium", price: "44,999", period: "yr", features: ["All-access", "private dinner", "media spotlight", "merch pack"], save: "8989" }
+      { name: "Student", price: "10,189", period: "yr", features: ["12 sessions", "all replays", "invite to Student Impact Summit"], save: "1,799" },
+      { name: "Pro", price: "21,410", period: "yr", features: ["12 sessions", "partner discounts", "Impact360 T-shirt"], save: "3,778", popular: true },
+      { name: "Premium", price: "41,810", period: "yr", features: ["All-access", "private dinner", "media spotlight", "merch pack"], save: "7,378" }
     ]
   };
 
