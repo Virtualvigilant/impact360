@@ -585,18 +585,7 @@ export default function SubscriptionPlans() {
             <div className={`absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl ${darkMode ? 'bg-[#306CEC]/10' : 'bg-white/10'}`}></div>
             
             <div className="relative z-10 text-center">
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                viewport={{ once: true }}
-                className={`inline-flex items-center gap-2 backdrop-blur-sm text-white px-5 py-2 rounded-full text-sm font-bold mb-6 border ${
-                  darkMode ? 'bg-[#306CEC]/20 border-[#306CEC]/30' : 'bg-white/20 border-white/30'
-                }`}
-              >
-                <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
-                Optional Add-On
-              </motion.div>
+              
               
               <motion.h2 
                 initial={{ opacity: 0, y: 10 }}
@@ -638,7 +627,7 @@ export default function SubscriptionPlans() {
                   darkMode ? 'bg-[#306CEC]/20 border-[#306CEC]/30' : 'bg-white/20 border-white/30'
                 }`}
               >
-                <span className="text-2xl">✨</span>
+                <span className="text-2xl"></span>
                 Details Coming Soon
               </motion.div>
             </div>

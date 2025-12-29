@@ -367,7 +367,11 @@ export default function EventsPage() {
       </section>
 
       {/* WHAT TO EXPECT */}
-      <section className={`py-24 px-6 transition-colors duration-1000 ${darkMode ? 'bg-black' : 'bg-[#FFFEF9]'}`}>
+       <section className={`py-24 px-6 transition-colors duration-1000 ${
+        darkMode
+          ? 'bg-[#000000]'
+          : 'bg-gradient-to-b from-[#F5F5F0] to-[#FFFEF9]'
+      }`}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

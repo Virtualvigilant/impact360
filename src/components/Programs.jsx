@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Rocket, Zap, GraduationCap, Wrench, Dumbbell, Laptop, Handshake, Mic, Calendar, Users, Globe, Lightbulb, Link } from "lucide-react";
+import { Rocket, Zap, GraduationCap, Wrench, Dumbbell, Laptop, Handshake, Mic, Calendar, Users, Globe, Lightbulb, Link, Target, Sparkles } from "lucide-react";
 import { useDarkMode } from "../DarkModeContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -198,7 +198,7 @@ export default function ProgramsPage() {
   return (
     <div className={`font-sans transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#FFFEF9]'}`}>
       <Navbar />
-
+      
       {/* Hero Section */}
       <section className={`relative pt-32 pb-16 px-6 overflow-hidden transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#FFFEF9]'}`}>
         {/* Animated background shapes */}
@@ -243,6 +243,167 @@ export default function ProgramsPage() {
             {mainPrograms_with_gradient.map((program, index) => (
               <ProgramCard key={index} {...program} delay={index * 0.2} darkMode={darkMode} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FORGE WEEKLY SESSION */}
+      <section className={`py-24 px-6 transition-colors duration-1000 ${
+        darkMode
+          ? 'bg-[#000000]'
+          : 'bg-gradient-to-b from-[#F5F5F0] to-[#FFFEF9]'
+      }`}>
+        <motion.div
+          className="absolute top-0 left-0 w-full h-full opacity-5"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #306CEC 1px, transparent 1px)',
+            backgroundSize: '50px 50px'
+          }}
+        />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <motion.div
+              initial={{ scale: 0,}}
+              whileInView={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.5, }}
+              className="inline-block mb-6"
+            >
+              <div className={`px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wider shadow-2xl ${
+                darkMode
+                  ? 'bg-gradient-to-r from-[#306CEC] to-[#4A80FF] text-white'
+                  : 'bg-gradient-to-r from-[#306CEC] to-[#4A80FF] text-white'
+              }`}>
+                 Weekly Session
+              </div>
+            </motion.div>
+            
+            <h2 className={`text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent ${
+              darkMode
+                ? 'bg-gradient-to-r from-[#306CEC] via-[#4A80FF] to-[#306CEC]'
+                : 'bg-gradient-to-r from-[#306CEC] via-[#4A80FF] to-[#306CEC]'
+            }`}>
+              FORGE
+            </h2>
+            
+            <p className={`text-2xl font-semibold mb-4 ${darkMode ? 'text-[#4A80FF]' : 'text-[#306CEC]'}`}>
+              Happens Every Week
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* IMAGE */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.03 }}
+              className="relative rounded-3xl overflow-hidden shadow-2xl group"
+            >
+              <img
+                src="/events/forge.png"
+                alt="FORGE Weekly Build Session"
+                className="w-full h-[500px] object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div className={`absolute inset-0 ${
+                darkMode
+                  ? 'bg-gradient-to-t from-[#306CEC]/80 via-[#306CEC]/20 to-transparent'
+                  : 'bg-gradient-to-t from-[#306CEC]/70 via-[#306CEC]/20 to-transparent'
+              }`}></div>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+                className="absolute top-6 right-6"
+              >
+                
+              </motion.div>
+            </motion.div>
+
+            {/* CONTENT */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <p className={`text-xl leading-relaxed mb-8 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                A weekly build session where we take <span className={`font-bold ${darkMode ? 'text-[#4A80FF]' : 'text-[#306CEC]'}`}>raw ideas</span> and turn them into <span className={`font-bold ${darkMode ? 'text-[#4A80FF]' : 'text-[#306CEC]'}`}>real businesses</span>, <span className={`font-bold ${darkMode ? 'text-[#4A80FF]' : 'text-[#306CEC]'}`}>real systems</span>, and <span className={`font-bold ${darkMode ? 'text-[#4A80FF]' : 'text-[#306CEC]'}`}>real action</span>.
+              </p>
+
+              <div className={`space-y-6 mb-10 p-8 rounded-2xl border transition-colors duration-1000 ${
+                darkMode
+                  ? 'bg-[#1a1f3a] border-[#306CEC]/30'
+                  : 'bg-white border-[#306CEC]/10 shadow-lg'
+              }`}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="flex items-start gap-4 group"
+                >
+                  <Rocket className={`w-6 h-6 flex-shrink-0 mt-1 group-hover:scale-125 transition-transform ${
+                    darkMode ? 'text-[#4A80FF]' : 'text-[#306CEC]'
+                  }`} strokeWidth={2} />
+                  <div>
+                    <h4 className={`text-lg font-bold mb-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Live, Practical & Hands-On</h4>
+                    <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Build in real-time with guidance and feedback</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="flex items-start gap-4 group"
+                >
+                  <Target className={`w-6 h-6 flex-shrink-0 mt-1 group-hover:scale-125 transition-transform ${
+                    darkMode ? 'text-[#4A80FF]' : 'text-[#306CEC]'
+                  }`} strokeWidth={2} />
+                  <div>
+                    <h4 className={`text-lg font-bold mb-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>No Theory, No Waiting</h4>
+                    <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Skip the fluff and get straight to execution</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="flex items-start gap-4 group"
+                >
+                  <Sparkles className={`w-6 h-6 flex-shrink-0 mt-1 group-hover:scale-125 transition-transform ${
+                    darkMode ? 'text-[#4A80FF]' : 'text-[#306CEC]'
+                  }`} strokeWidth={2} />
+                  <div>
+                    <h4 className={`text-lg font-bold mb-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Just Execution</h4>
+                    <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Turn ideas into tangible progress every single week</p>
+                  </div>
+                </motion.div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+                className={`p-6 rounded-2xl text-center font-bold text-lg shadow-2xl ${
+                  darkMode
+                    ? 'bg-gradient-to-r from-[#306CEC] to-[#4A80FF] text-white'
+                    : 'bg-gradient-to-r from-[#306CEC] to-[#4A80FF] text-white'
+                }`}
+              >
+                If you're ready to stop planning and start building, this is your room.
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -316,8 +477,8 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* Upcoming Events Section */}
-      <section className={`py-24 px-6 transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' : 'bg-[#FFFEF9]'}`}>
+    {/* Upcoming Events Section */}
+      <section className={`py-24 px-6 transition-colors duration-1000 ${darkMode ? 'bg-[#000000]' :  'bg-gradient-to-b from-[#F5F5F0] to-[#FFFEF9]'}`}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
