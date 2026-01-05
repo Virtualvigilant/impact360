@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Campaign from "./components/Campaign.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
+import AdminDashboard from "./components/admin.jsx";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/navbar" element={<Navbar />} />
             <Route path="/footer" element={<Footer />} />
             <Route path="/campaign" element={<Campaign />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </div>
       </Router>

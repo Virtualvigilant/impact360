@@ -5,7 +5,7 @@ import { useDarkMode } from "../DarkModeContext";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
-export default function SubscriptionPlans() {
+export default function Subscription() {
   const [selectedPlan, setSelectedPlan] = useState('monthly');
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -57,6 +57,31 @@ export default function SubscriptionPlans() {
     { Icon: Gift, title: "Perks", description: "Enjoy discounts, merch, certificates, and special recognition opportunities" }
   ];
 
+ // Helper function to extract M-Pesa code from message
+  const extractMpesaCode = (message) => {
+    // M-Pesa codes are typically 10 characters alphanumeric
+    const codeMatch = message.match(/\b[A-Z0-9]{10}\b/);
+    return codeMatch ? codeMatch[0] : null;
+  };
+
+  // Helper function to extract amount from message
+  const extractAmount = (message) => {
+    // Look for amount patterns like "Ksh1,000" or "1000.00"
+    const amountMatch = message.match(/(?:Ksh\.?|KES\.?|)\s*([\d,]+\.?\d*)/i);
+    if (amountMatch) {
+      return amountMatch[1].replace(/,/g, '');
+    }
+    return null;
+  };
+
+  // Send confirmation email
+  const sendSubmissionConfirmationEmail = async (submission) => {
+    // Replace with your actual email API
+    console.log('Sending confirmation email to:', submission.email);
+
+  }
+
+
   const handleSubscribeClick = (plan) => {
     setPlanToSubscribe(plan);
     setServerError(null);
@@ -80,26 +105,54 @@ export default function SubscriptionPlans() {
     e.preventDefault();
     setIsProcessing(true);
     
-    // Here you can add your API call to submit the ticket form data
-    console.log('Ticket form submitted:', {
-      plan: planToSubscribe,
-      period: selectedPlan,
-      ...ticketFormData
-    });
-    
-    // Simulate processing
-    setTimeout(() => {
-      setIsProcessing(false);
-      setShowForm(false);
-      setShowTicketForm(false);
+      try {
+      // Extract M-Pesa code from payment confirmation message
+      const mpesaCode = extractMpesaCode(ticketFormData.paymentConfirmation);
+      const amount = extractAmount(ticketFormData.paymentConfirmation);
+
+      // Create submission object
+      const submission = {
+        id: `SUB-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+        name: ticketFormData.fullName,
+        position: ticketFormData.position,
+        email: ticketFormData.email,
+        phone: 'N/A', // Add phone field if you have it
+        mpesaCode: mpesaCode || 'NOT_FOUND',
+        mpesaMessage: ticketFormData.paymentConfirmation,
+        amount: amount || planToSubscribe?.price.replace(/,/g, '') || '0',
+        status: 'pending',
+        submittedAt: new Date().toISOString(),
+        planName: planToSubscribe?.name || 'General Ticket',
+        planPeriod: selectedPlan
+      };
+
+      // Save to localStorage (later replace with API call)
+      const existingSubmissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+      existingSubmissions.push(submission);
+      localStorage.setItem('submissions', JSON.stringify(existingSubmissions));
+
+      // Send confirmation email (submission received)
+      await sendSubmissionConfirmationEmail(submission);
+
+      // Show success message
+      alert('✅ Ticket submission received! You will receive an email once payment is verified.');
+      
+      // Reset form and close modal
       setTicketFormData({
         fullName: '',
         position: '',
         email: '',
         paymentConfirmation: ''
       });
-      alert('Ticket request submitted successfully! We will verify your payment and send your ticket via email.');
-    }, 2000);
+      setShowTicketForm(false);
+      setShowForm(false);
+      setIsProcessing(false);
+
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('❌ Error submitting ticket. Please try again.');
+      setIsProcessing(false);
+    }
   };
 
   const handleFormSubmit = async (e) => {
@@ -731,7 +784,6 @@ export default function SubscriptionPlans() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
