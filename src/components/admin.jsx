@@ -1,6 +1,5 @@
-// AdminDashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { Search, Check, X, Eye, Edit, Trash2, RefreshCw, Mail, Clock, CheckCircle, XCircle, LogOut, Lock } from 'lucide-react';
+import { Search, Check, X, Eye, Edit, Trash2, RefreshCw, Mail, Clock, CheckCircle, XCircle, LogOut, Lock, Menu } from 'lucide-react';
 import { 
   collection, 
   getDocs, 
@@ -9,7 +8,6 @@ import {
   deleteDoc, 
   query, 
   orderBy,
-  where,
   onSnapshot 
 } from 'firebase/firestore';
 import { 
@@ -17,18 +15,15 @@ import {
   signOut, 
   onAuthStateChanged 
 } from 'firebase/auth';
-import { db, auth } from '../firebase/firebase'; /// You'll need to create this file
+import { db, auth } from '../firebase/firebase';
 
 const AdminDashboard = () => {
-  // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-
-  // Dashboard state
   const [submissions, setSubmissions] = useState([]);
   const [filter, setFilter] = useState('pending');
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,8 +34,8 @@ const AdminDashboard = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [editData, setEditData] = useState({});
   const [notification, setNotification] = useState(null);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  // Check authentication state on mount
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -52,19 +47,17 @@ const AdminDashboard = () => {
         setCurrentUser(null);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
-  // Real-time listener for submissions
   useEffect(() => {
     if (!isAuthenticated) return;
-
+    
     const q = query(
       collection(db, 'subscriptions'),
       orderBy('createdAt', 'desc')
     );
-
+    
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const submissionsData = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -75,7 +68,7 @@ const AdminDashboard = () => {
       console.error('Error listening to submissions:', error);
       showNotification('Error loading submissions', 'error');
     });
-
+    
     return () => unsubscribe();
   }, [isAuthenticated]);
 
@@ -83,7 +76,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     setLoginError('');
     setLoading(true);
-
+    
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       showNotification('Login successful', 'success');
@@ -136,39 +129,39 @@ const AdminDashboard = () => {
     setTimeout(() => setNotification(null), 5000);
   };
 
- const handleApprove = async (submission) => {
-  if (!window.confirm(`Approve submission for ${submission.fullName}?`)) {  // ← FIX HERE
-    return;
-  }
-
-  setLoading(true);
-  try {
-    const ticketId = `TKT-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+  const handleApprove = async (submission) => {
+    if (!window.confirm(`Approve submission for ${submission.fullName}?`)) {
+      return;
+    }
     
-    await updateDoc(doc(db, 'subscriptions', submission.id), {
-      status: 'approved',
-      approvedAt: new Date().toISOString(),
-      approvedBy: currentUser.email,
-      ticketId: ticketId,
-      updatedAt: new Date().toISOString()
-    });
-
-    showNotification(`Submission approved for ${submission.fullName}`, 'success');  // ← FIX HERE
-    setSelectedSubmission(null);
-  } catch (error) {
-    console.error('Error approving submission:', error);
-    showNotification('Error approving submission: ' + error.message, 'error');
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    try {
+      const ticketId = `TKT-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+      
+      await updateDoc(doc(db, 'subscriptions', submission.id), {
+        status: 'approved',
+        approvedAt: new Date().toISOString(),
+        approvedBy: currentUser.email,
+        ticketId: ticketId,
+        updatedAt: new Date().toISOString()
+      });
+      
+      showNotification(`Submission approved for ${submission.fullName}`, 'success');
+      setSelectedSubmission(null);
+    } catch (error) {
+      console.error('Error approving submission:', error);
+      showNotification('Error approving submission: ' + error.message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleReject = async () => {
     if (!rejectionReason.trim()) {
       showNotification('Please provide a rejection reason', 'error');
       return;
     }
-
+    
     setLoading(true);
     try {
       await updateDoc(doc(db, 'subscriptions', selectedSubmission.id), {
@@ -178,7 +171,7 @@ const AdminDashboard = () => {
         rejectionReason: rejectionReason,
         updatedAt: new Date().toISOString()
       });
-
+      
       showNotification('Submission rejected', 'success');
       setShowRejectModal(false);
       setRejectionReason('');
@@ -196,7 +189,7 @@ const AdminDashboard = () => {
       showNotification('Please fill in all required fields', 'error');
       return;
     }
-
+    
     setLoading(true);
     try {
       await updateDoc(doc(db, 'subscriptions', selectedSubmission.id), {
@@ -204,7 +197,7 @@ const AdminDashboard = () => {
         updatedAt: new Date().toISOString(),
         updatedBy: currentUser.email
       });
-
+      
       showNotification('Submission updated successfully', 'success');
       setShowEditModal(false);
       setSelectedSubmission(null);
@@ -261,63 +254,58 @@ const AdminDashboard = () => {
     total: submissions.length
   };
 
-  // Login Screen
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-block p-4 bg-blue-100 rounded-full mb-4">
-              <Lock className="w-12 h-12 text-blue-600" />
+        <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-md">
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="inline-block p-3 sm:p-4 bg-blue-100 rounded-full mb-3 sm:mb-4">
+              <Lock className="w-10 h-10 sm:w-12 sm:h-12 text-blue-600" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Login</h1>
-            <p className="text-gray-600">Impact360 Dashboard</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Admin Login</h1>
+            <p className="text-sm sm:text-base text-gray-600">Impact360 Dashboard</p>
           </div>
-
+          
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
               <input
                 type="email"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                 placeholder="admin@impact360.com"
               />
             </div>
-
+            
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
               <input
                 type="password"
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                 placeholder="Enter password"
               />
             </div>
-
+            
             {loginError && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
                 {loginError}
               </div>
             )}
-
+            
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold transition-colors"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold transition-colors text-base"
             >
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
-
+          
           <p className="text-xs text-gray-500 text-center mt-6">
             Contact your system administrator if you need access.
           </p>
@@ -326,141 +314,162 @@ const AdminDashboard = () => {
     );
   }
 
-  // Main Dashboard (same as before, but now using real Firestore data)
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Notification Toast */}
       {notification && (
-        <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg ${
+        <div className={`fixed top-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-auto z-50 px-4 sm:px-6 py-3 sm:py-4 rounded-lg shadow-lg ${
           notification.type === 'success' ? 'bg-green-600' : 'bg-red-600'
-        } text-white flex items-center gap-3`}>
-          {notification.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
-          <span>{notification.message}</span>
+        } text-white flex items-center gap-2 sm:gap-3`}>
+          {notification.type === 'success' ? <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" /> : <XCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />}
+          <span className="text-sm sm:text-base">{notification.message}</span>
         </div>
       )}
 
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="bg-white shadow sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Impact360 Admin Dashboard</h1>
-              <p className="text-gray-600 mt-1">Logged in as: {currentUser?.email}</p>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">Impact360 Admin</h1>
+              <p className="text-xs sm:text-sm text-gray-600 mt-1 truncate">{currentUser?.email}</p>
             </div>
-            <div className="flex gap-3">
+            
+            <div className="hidden sm:flex gap-3">
               <button
                 onClick={loadSubmissions}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                Refresh
+                <span className="hidden md:inline">Refresh</span>
               </button>
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
+                <span className="hidden md:inline">Logout</span>
+              </button>
+            </div>
+            
+            <button
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              className="sm:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+          
+          {showMobileMenu && (
+            <div className="sm:hidden mt-4 pt-4 border-t space-y-2">
+              <button
+                onClick={() => {
+                  loadSubmissions();
+                  setShowMobileMenu(false);
+                }}
+                className="w-full flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Refresh
+              </button>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setShowMobileMenu(false);
+                }}
+                className="w-full flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
                 Logout
               </button>
             </div>
-          </div>
+          )}
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Total Submissions</p>
-                <p className="text-3xl font-bold text-blue-600">{stats.total}</p>
-              </div>
-              <Mail className="w-12 h-12 text-blue-600 opacity-20" />
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-8">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Pending Review</p>
-                <p className="text-3xl font-bold text-yellow-600">{stats.pending}</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Total</p>
+                <p className="text-2xl sm:text-3xl font-bold text-blue-600">{stats.total}</p>
               </div>
-              <Clock className="w-12 h-12 text-yellow-600 opacity-20" />
+              <Mail className="hidden sm:block w-8 sm:w-12 h-8 sm:h-12 text-blue-600 opacity-20" />
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Approved</p>
-                <p className="text-3xl font-bold text-green-600">{stats.approved}</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Pending</p>
+                <p className="text-2xl sm:text-3xl font-bold text-yellow-600">{stats.pending}</p>
               </div>
-              <CheckCircle className="w-12 h-12 text-green-600 opacity-20" />
+              <Clock className="hidden sm:block w-8 sm:w-12 h-8 sm:h-12 text-yellow-600 opacity-20" />
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-gray-600 text-sm">Rejected</p>
-                <p className="text-3xl font-bold text-red-600">{stats.rejected}</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Approved</p>
+                <p className="text-2xl sm:text-3xl font-bold text-green-600">{stats.approved}</p>
               </div>
-              <XCircle className="w-12 h-12 text-red-600 opacity-20" />
+              <CheckCircle className="hidden sm:block w-8 sm:w-12 h-8 sm:h-12 text-green-600 opacity-20" />
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-gray-600 text-xs sm:text-sm">Rejected</p>
+                <p className="text-2xl sm:text-3xl font-bold text-red-600">{stats.rejected}</p>
+              </div>
+              <XCircle className="hidden sm:block w-8 sm:w-12 h-8 sm:h-12 text-red-600 opacity-20" />
             </div>
           </div>
         </div>
 
-        {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
               <input
                 type="text"
                 placeholder="Search by name, email, or M-Pesa code..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
               />
             </div>
             
-            <div className="flex gap-2 flex-wrap">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
               <button
                 onClick={() => setFilter('pending')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  filter === 'pending'
-                    ? 'bg-yellow-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm ${
+                  filter === 'pending' ? 'bg-yellow-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
                 Pending ({stats.pending})
               </button>
               <button
                 onClick={() => setFilter('approved')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  filter === 'approved'
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm ${
+                  filter === 'approved' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
                 Approved ({stats.approved})
               </button>
               <button
                 onClick={() => setFilter('rejected')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  filter === 'rejected'
-                    ? 'bg-red-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm ${
+                  filter === 'rejected' ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
                 Rejected ({stats.rejected})
               </button>
               <button
                 onClick={() => setFilter('all')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  filter === 'all'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm ${
+                  filter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
                 All ({stats.total})
@@ -469,8 +478,89 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Submissions Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="lg:hidden space-y-4">
+          {filteredSubmissions.map((submission) => (
+            <div key={submission.id} className="bg-white rounded-lg shadow p-4">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 truncate">{submission.fullName}</h3>
+                  <p className="text-sm text-gray-600 truncate">{submission.email}</p>
+                </div>
+                <span className={`px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap ml-2 ${
+                  submission.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                  submission.status === 'approved' ? 'bg-green-100 text-green-800' :
+                  'bg-red-100 text-red-800'
+                }`}>
+                  {submission.status?.toUpperCase()}
+                </span>
+              </div>
+              
+              <div className="space-y-2 text-sm mb-4">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Plan:</span>
+                  <span className="font-medium text-gray-900">{submission.planName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Amount:</span>
+                  <span className="font-medium text-gray-900">KES {submission.amount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">M-Pesa:</span>
+                  <span className="font-mono text-xs text-gray-900">{submission.mpesaCode}</span>
+                </div>
+              </div>
+              
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setSelectedSubmission(submission)}
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors text-sm"
+                >
+                  <Eye className="w-4 h-4" />
+                  View
+                </button>
+                
+                {submission.status === 'pending' && (
+                  <>
+                    <button
+                      onClick={() => handleApprove(submission)}
+                      disabled={loading}
+                      className="flex items-center justify-center gap-1 px-3 py-2 text-green-600 bg-green-50 rounded-lg hover:bg-green-100 disabled:opacity-50 transition-colors text-sm"
+                    >
+                      <Check className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedSubmission(submission);
+                        setShowRejectModal(true);
+                      }}
+                      disabled={loading}
+                      className="flex items-center justify-center gap-1 px-3 py-2 text-red-600 bg-red-50 rounded-lg hover:bg-red-100 disabled:opacity-50 transition-colors text-sm"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
+                
+                <button
+                  onClick={() => openEditModal(submission)}
+                  className="flex items-center justify-center gap-1 px-3 py-2 text-purple-600 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors text-sm"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+          
+          {filteredSubmissions.length === 0 && (
+            <div className="text-center py-12 text-gray-500">
+              <Mail className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <p className="text-lg font-medium">No submissions found</p>
+              <p className="text-sm">Try adjusting your filters or search term</p>
+            </div>
+          )}
+        </div>
+
+        <div className="hidden lg:block bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 border-b">
@@ -508,8 +598,7 @@ const AdminDashboard = () => {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {submission.createdAt?.toDate ? submission.createdAt.toDate().toLocaleDateString() : 'N/A'}
-                   </td>
-
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex gap-2">
                         <button
@@ -580,19 +669,18 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Reject Modal */}
       {showRejectModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
+          <div className="bg-white rounded-lg max-w-md w-full p-4 sm:p-6">
             <h3 className="text-lg font-bold mb-4">Reject Submission</h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 mb-4 text-sm sm:text-base">
               Please provide a reason for rejecting this submission.
             </p>
             <textarea
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
-              placeholder="Enter rejection reason (e.g., 'M-Pesa code not found', 'Amount mismatch')..."
-              className="w-full border border-gray-300 rounded-lg p-3 mb-4 min-h-24 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              placeholder="Enter rejection reason..."
+              className="w-full border border-gray-300 rounded-lg p-3 mb-4 min-h-24 focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm sm:text-base"
             />
             <div className="flex gap-3 justify-end">
               <button
@@ -600,27 +688,26 @@ const AdminDashboard = () => {
                   setShowRejectModal(false);
                   setRejectionReason('');
                 }}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm sm:text-base"
               >
                 Cancel
               </button>
               <button
                 onClick={handleReject}
                 disabled={loading || !rejectionReason.trim()}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors text-sm sm:text-base"
               >
-                {loading ? 'Rejecting...' : 'Reject Submission'}
+                {loading ? 'Rejecting...' : 'Reject'}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-          <div className="bg-white rounded-lg max-w-2xl w-full p-6 my-8">
-            <h3 className="text-2xl font-bold mb-6">Edit Submission</h3>
+          <div className="bg-white rounded-lg max-w-2xl w-full p-4 sm:p-6 my-8 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Edit Submission</h3>
             
             <div className="space-y-4">
               <div>
@@ -629,7 +716,7 @@ const AdminDashboard = () => {
                   type="text"
                   value={editData.fullName || ''}
                   onChange={(e) => setEditData({ ...editData, fullName: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                 />
               </div>
               
@@ -639,7 +726,7 @@ const AdminDashboard = () => {
                   type="text"
                   value={editData.position || ''}
                   onChange={(e) => setEditData({ ...editData, position: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                 />
               </div>
               
@@ -649,7 +736,7 @@ const AdminDashboard = () => {
                   type="email"
                   value={editData.email || ''}
                   onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                 />
               </div>
               
@@ -659,7 +746,7 @@ const AdminDashboard = () => {
                   type="tel"
                   value={editData.phone || ''}
                   onChange={(e) => setEditData({ ...editData, phone: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                 />
               </div>
               
@@ -669,7 +756,7 @@ const AdminDashboard = () => {
                   type="text"
                   value={editData.mpesaCode || ''}
                   onChange={(e) => setEditData({ ...editData, mpesaCode: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                 />
               </div>
               
@@ -679,7 +766,7 @@ const AdminDashboard = () => {
                   type="text"
                   value={editData.amount || ''}
                   onChange={(e) => setEditData({ ...editData, amount: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                 />
               </div>
               
@@ -688,7 +775,7 @@ const AdminDashboard = () => {
                 <textarea
                   value={editData.mpesaMessage || ''}
                   onChange={(e) => setEditData({ ...editData, mpesaMessage: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg min-h-24 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg min-h-24 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                 />
               </div>
             </div>
@@ -699,14 +786,14 @@ const AdminDashboard = () => {
                   setShowEditModal(false);
                   setEditData({});
                 }}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm sm:text-base"
               >
                 Cancel
               </button>
               <button
                 onClick={handleEdit}
                 disabled={loading}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors text-sm sm:text-base"
               >
                 {loading ? 'Saving...' : 'Save Changes'}
               </button>
@@ -715,12 +802,11 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
+          <div className="bg-white rounded-lg max-w-md w-full p-4 sm:p-6">
             <h3 className="text-lg font-bold mb-4 text-red-600">Delete Submission</h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-6 text-sm sm:text-base">
               Are you sure you want to delete the submission from <strong>{selectedSubmission?.fullName}</strong>? 
               This action cannot be undone.
             </p>
@@ -730,14 +816,14 @@ const AdminDashboard = () => {
                   setShowDeleteModal(false);
                   setSelectedSubmission(null);
                 }}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm sm:text-base"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
                 disabled={loading}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors text-sm sm:text-base"
               >
                 {loading ? 'Deleting...' : 'Delete'}
               </button>
@@ -746,178 +832,170 @@ const AdminDashboard = () => {
         </div>
       )}
 
-    {/* Details Modal */}
-{selectedSubmission && !showRejectModal && !showEditModal && !showDeleteModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-    <div className="bg-white rounded-lg max-w-2xl w-full p-6 my-8">
-      <div className="flex justify-between items-start mb-6">
-        <h3 className="text-2xl font-bold">Submission Details</h3>
-        <button
-          onClick={() => setSelectedSubmission(null)}
-          className="text-gray-400 hover:text-gray-600"
-        >
-          <X className="w-6 h-6" />
-        </button>
-      </div>
-
-      <div className="space-y-4">
-        {/* Basic Info */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-sm font-medium text-gray-500">Full Name</label>
-            <p className="text-lg">{selectedSubmission.fullName}</p>
-          </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Position</label>
-            <p className="text-lg">{selectedSubmission.position || 'N/A'}</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-sm font-medium text-gray-500">Email</label>
-            <p className="text-lg">{selectedSubmission.email}</p>
-          </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Phone</label>
-            <p className="text-lg">{selectedSubmission.phone}</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-sm font-medium text-gray-500">Plan</label>
-            <p className="text-lg">{selectedSubmission.planName}</p>
-          </div>
-          <div>
-            <label className="text-sm font-medium text-gray-500">Period</label>
-            <p className="text-lg">{selectedSubmission.planPeriod}</p>
-          </div>
-        </div>
-
-        <div>
-          <label className="text-sm font-medium text-gray-500">M-Pesa Transaction Code</label>
-          <p className="text-lg font-mono bg-gray-100 p-3 rounded">{selectedSubmission.mpesaCode}</p>
-        </div>
-
-        <div>
-          <label className="text-sm font-medium text-gray-500">Amount Paid</label>
-          <p className="text-lg font-semibold">KES {selectedSubmission.amount}</p>
-        </div>
-
-        <div>
-          <label className="text-sm font-medium text-gray-500">M-Pesa Message</label>
-          <p className="text-sm bg-gray-100 p-3 rounded whitespace-pre-wrap">{selectedSubmission.mpesaMessage}</p>
-        </div>
-
-        <div>
-          <label className="text-sm font-medium text-gray-500">Status</label>
-          <p>
-            <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
-              selectedSubmission.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-              selectedSubmission.status === 'approved' ? 'bg-green-100 text-green-800' :
-              'bg-red-100 text-red-800'
-            }`}>
-              {selectedSubmission.status?.toUpperCase()}
-            </span>
-          </p>
-        </div>
-
-        {selectedSubmission.status === 'approved' && selectedSubmission.ticketId && (
-          <div>
-            <label className="text-sm font-medium text-gray-500">Ticket ID</label>
-            <p className="text-lg font-mono bg-green-50 p-3 rounded">{selectedSubmission.ticketId}</p>
-          </div>
-        )}
-
-        {selectedSubmission.status === 'rejected' && selectedSubmission.rejectionReason && (
-          <div>
-            <label className="text-sm font-medium text-gray-500">Rejection Reason</label>
-            <p className="text-sm bg-red-50 p-3 rounded">{selectedSubmission.rejectionReason}</p>
-          </div>
-        )}
-
-        {/* Submitted & Updated */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-sm font-medium text-gray-500">Submitted At</label>
-            <p className="text-sm">
-              {selectedSubmission.createdAt?.toDate
-                ? selectedSubmission.createdAt.toDate().toLocaleString()
-                : 'N/A'}
-            </p>
-          </div>
-
-          {selectedSubmission.updatedAt && (
-            <div>
-              <label className="text-sm font-medium text-gray-500">Last Updated</label>
-              <p className="text-sm">
-                {selectedSubmission.updatedAt?.toDate
-                  ? selectedSubmission.updatedAt.toDate().toLocaleString()
-                  : new Date(selectedSubmission.updatedAt).toLocaleString()}
-              </p>
+      {selectedSubmission && !showRejectModal && !showEditModal && !showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-2xl w-full p-4 sm:p-6 my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-start mb-4 sm:mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold">Submission Details</h3>
+              <button
+                onClick={() => setSelectedSubmission(null)}
+                className="text-gray-400 hover:text-gray-600 p-1"
+              >
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
             </div>
-          )}
-        </div>
-
-        {/* Approved At */}
-        {selectedSubmission.approvedAt && (
-          <div>
-            <label className="text-sm font-medium text-gray-500">Approved At</label>
-            <p className="text-sm text-green-600">
-              {selectedSubmission.approvedAt?.toDate
-                ? selectedSubmission.approvedAt.toDate().toLocaleString()
-                : new Date(selectedSubmission.approvedAt).toLocaleString()}
-            </p>
+            
+            <div className="space-y-4 text-sm sm:text-base">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Full Name</label>
+                  <p className="text-base sm:text-lg">{selectedSubmission.fullName}</p>
+                </div>
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Position</label>
+                  <p className="text-base sm:text-lg">{selectedSubmission.position || 'N/A'}</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Email</label>
+                  <p className="text-base sm:text-lg break-all">{selectedSubmission.email}</p>
+                </div>
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Phone</label>
+                  <p className="text-base sm:text-lg">{selectedSubmission.phone}</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Plan</label>
+                  <p className="text-base sm:text-lg">{selectedSubmission.planName}</p>
+                </div>
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Period</label>
+                  <p className="text-base sm:text-lg">{selectedSubmission.planPeriod}</p>
+                </div>
+              </div>
+              
+              <div>
+                <label className="text-xs sm:text-sm font-medium text-gray-500">M-Pesa Transaction Code</label>
+                <p className="text-base sm:text-lg font-mono bg-gray-100 p-3 rounded break-all">{selectedSubmission.mpesaCode}</p>
+              </div>
+              
+              <div>
+                <label className="text-xs sm:text-sm font-medium text-gray-500">Amount Paid</label>
+                <p className="text-base sm:text-lg font-semibold">KES {selectedSubmission.amount}</p>
+              </div>
+              
+              <div>
+                <label className="text-xs sm:text-sm font-medium text-gray-500">M-Pesa Message</label>
+                <p className="text-xs sm:text-sm bg-gray-100 p-3 rounded whitespace-pre-wrap break-words">{selectedSubmission.mpesaMessage}</p>
+              </div>
+              
+              <div>
+                <label className="text-xs sm:text-sm font-medium text-gray-500">Status</label>
+                <p>
+                  <span className={`px-3 py-1 text-sm font-semibold rounded-full ${
+                    selectedSubmission.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                    selectedSubmission.status === 'approved' ? 'bg-green-100 text-green-800' :
+                    'bg-red-100 text-red-800'
+                  }`}>
+                    {selectedSubmission.status?.toUpperCase()}
+                  </span>
+                </p>
+              </div>
+              
+              {selectedSubmission.status === 'approved' && selectedSubmission.ticketId && (
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Ticket ID</label>
+                  <p className="text-base sm:text-lg font-mono bg-green-50 p-3 rounded break-all">{selectedSubmission.ticketId}</p>
+                </div>
+              )}
+              
+              {selectedSubmission.status === 'rejected' && selectedSubmission.rejectionReason && (
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Rejection Reason</label>
+                  <p className="text-xs sm:text-sm bg-red-50 p-3 rounded">{selectedSubmission.rejectionReason}</p>
+                </div>
+              )}
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Submitted At</label>
+                  <p className="text-xs sm:text-sm">
+                    {selectedSubmission.createdAt?.toDate
+                      ? selectedSubmission.createdAt.toDate().toLocaleString()
+                      : 'N/A'}
+                  </p>
+                </div>
+                {selectedSubmission.updatedAt && (
+                  <div>
+                    <label className="text-xs sm:text-sm font-medium text-gray-500">Last Updated</label>
+                    <p className="text-xs sm:text-sm">
+                      {selectedSubmission.updatedAt?.toDate
+                        ? selectedSubmission.updatedAt.toDate().toLocaleString()
+                        : new Date(selectedSubmission.updatedAt).toLocaleString()}
+                    </p>
+                  </div>
+                )}
+              </div>
+              
+              {selectedSubmission.approvedAt && (
+                <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500">Approved At</label>
+                  <p className="text-xs sm:text-sm text-green-600">
+                    {selectedSubmission.approvedAt?.toDate
+                      ? selectedSubmission.approvedAt.toDate().toLocaleString()
+                      : new Date(selectedSubmission.approvedAt).toLocaleString()}
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => setSelectedSubmission(null)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm sm:text-base"
+              >
+                Close
+              </button>
+              {selectedSubmission.status === 'pending' && (
+                <>
+                  <button
+                    onClick={() => handleApprove(selectedSubmission)}
+                    disabled={loading}
+                    className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors text-sm sm:text-base"
+                  >
+                    <Check className="w-4 h-4 inline mr-2" />
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => setShowRejectModal(true)}
+                    disabled={loading}
+                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors text-sm sm:text-base"
+                  >
+                    <X className="w-4 h-4 inline mr-2" />
+                    Reject
+                  </button>
+                </>
+              )}
+              {selectedSubmission.status === 'rejected' && (
+                <button
+                  onClick={() => openEditModal(selectedSubmission)}
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
+                >
+                  <Edit className="w-4 h-4 inline mr-2" />
+                  Edit & Resubmit
+                </button>
+              )}
+            </div>
           </div>
-        )}
-      </div> {/* <-- Close inner space-y-4 */}
-
-      {/* Action Buttons */}
-      <div className="mt-6 flex gap-3">
-        <button
-          onClick={() => setSelectedSubmission(null)}
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          Close
-        </button>
-
-        {selectedSubmission.status === 'pending' && (
-          <>
-            <button
-              onClick={() => handleApprove(selectedSubmission)}
-              disabled={loading}
-              className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
-            >
-              <Check className="w-4 h-4 inline mr-2" />
-              Approve
-            </button>
-            <button
-              onClick={() => setShowRejectModal(true)}
-              disabled={loading}
-              className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
-            >
-              <X className="w-4 h-4 inline mr-2" />
-              Reject
-            </button>
-          </>
-        )}
-
-        {selectedSubmission.status === 'rejected' && (
-          <button
-            onClick={() => openEditModal(selectedSubmission)}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Edit className="w-4 h-4 inline mr-2" />
-            Edit & Resubmit
-          </button>
-        )}
-      </div>
-    </div>
-  </div>
-)}
+        </div>
+      )}
     </div>
   );
-} 
+};
 
 export default AdminDashboard;
