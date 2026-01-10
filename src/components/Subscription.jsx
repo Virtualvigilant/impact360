@@ -16,7 +16,7 @@ const EMAILJS_SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
 const EMAILJS_PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
 const TEMPLATE_USER = process.env.REACT_APP_EMAILJS_TEMPLATE_USER;
 const TEMPLATE_ADMIN = process.env.REACT_APP_EMAILJS_TEMPLATE_ADMIN;
-const ADMIN_EMAIL = 'wangoiblessing@gmail.com'; // Or add to .env too        // Your admin email address
+const ADMIN_EMAIL = 'Impact360.i3@gmail.com'; // Or add to .env too        // Your admin email address
 
 export default function Subscription() {
   const [selectedPlan, setSelectedPlan] = useState('monthly');
