@@ -11,6 +11,7 @@ import Footer from "./components/Footer.jsx";
 import Campaign from "./components/Campaign.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import AdminDashboard from "./components/admin.jsx";
+import TicketVerification from "./components/TicketVerification.jsx";
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/footer" element={<Footer />} />
             <Route path="/campaign" element={<Campaign />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/verify" element={<TicketVerification />} />
           </Routes>
         </div>
       </Router>

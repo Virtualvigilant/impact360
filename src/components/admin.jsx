@@ -146,38 +146,61 @@ const AdminDashboard = () => {
   // ========================================
   // GENERATE QR CODE WITH USER DATA
   // ========================================
-  const generateQRCodeWithUserData = async (submission, ticketId) => {
-    try {
-      const qrData = JSON.stringify({
-        ticketId: ticketId,
-        event: 'Impact360',
-        fullName: submission.fullName,
-        email: submission.email,
-        phone: submission.phone,
-        planName: submission.planName,
-        planPeriod: submission.planPeriod,
-        amount: submission.amount,
-        verified: true,
-        approvedBy: currentUser.email,
-        approvedAt: new Date().toISOString()
-      });
+ const generateQRCodeWithUserData = async (submission, ticketId) => {
+  try {
+    // OPTION 1: Pretty Formatted Text
+    const qrData = `
+━━━━━━━━━━━━━━━━━━━━━━━━
+   IMPACT360 EVENT TICKET
+━━━━━━━━━━━━━━━━━━━━━━━━
 
-      const qrCodeImage = await QRCode.toDataURL(qrData, {
-        width: 400,
-        margin: 2,
-        errorCorrectionLevel: 'H',
-        color: {
-          dark: '#306CEC',
-          light: '#FFFFFF'
-        }
-      });
+📋 TICKET ID
+${ticketId}
 
-      return qrCodeImage;
-    } catch (error) {
-      console.error('Error generating QR code:', error);
-      return null;
-    }
-  };
+👤 ATTENDEE
+${submission.fullName}
+
+📧 EMAIL
+${submission.email}
+
+📱 PHONE
+${submission.phone}
+
+🎯 PLAN
+${submission.planName} (${submission.planPeriod})
+
+💰 AMOUNT PAID
+KES ${submission.amount}
+
+✓ VERIFIED
+Approved by: ${currentUser.email}
+Date: ${new Date().toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    })}
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+   VALID EVENT ENTRY PASS
+━━━━━━━━━━━━━━━━━━━━━━━━
+    `.trim();
+
+    const qrCodeImage = await QRCode.toDataURL(qrData, {
+      width: 400,
+      margin: 2,
+      errorCorrectionLevel: 'H',
+      color: {
+        dark: '#306CEC',
+        light: '#FFFFFF'
+      }
+    });
+
+    return qrCodeImage;
+  } catch (error) {
+    console.error('Error generating QR code:', error);
+    return null;
+  }
+};
 
   // ========================================
   // SEND APPROVAL EMAIL WITH QR TICKET
