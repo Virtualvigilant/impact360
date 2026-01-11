@@ -148,44 +148,13 @@ const AdminDashboard = () => {
   // ========================================
  const generateQRCodeWithUserData = async (submission, ticketId) => {
   try {
-    // OPTION 1: Pretty Formatted Text
-    const qrData = `
-━━━━━━━━━━━━━━━━━━━━━━━━
-   IMPACT360 EVENT TICKET
-━━━━━━━━━━━━━━━━━━━━━━━━
+    // Automatically uses correct URL (localhost in dev, production URL when deployed)
+    const baseUrl = window.location.origin;
+    const verificationUrl = `${baseUrl}/verify?ticket=${ticketId}&name=${encodeURIComponent(submission.fullName)}&plan=${encodeURIComponent(submission.planName)}&verified=true`;
 
-📋 TICKET ID
-${ticketId}
+    console.log('✅ Generated verification URL:', verificationUrl);
 
-👤 ATTENDEE
-${submission.fullName}
-
-📧 EMAIL
-${submission.email}
-
-📱 PHONE
-${submission.phone}
-
-🎯 PLAN
-${submission.planName} (${submission.planPeriod})
-
-💰 AMOUNT PAID
-KES ${submission.amount}
-
-✓ VERIFIED
-Approved by: ${currentUser.email}
-Date: ${new Date().toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-    })}
-
-━━━━━━━━━━━━━━━━━━━━━━━━
-   VALID EVENT ENTRY PASS
-━━━━━━━━━━━━━━━━━━━━━━━━
-    `.trim();
-
-    const qrCodeImage = await QRCode.toDataURL(qrData, {
+    const qrCodeImage = await QRCode.toDataURL(verificationUrl, {
       width: 400,
       margin: 2,
       errorCorrectionLevel: 'H',
