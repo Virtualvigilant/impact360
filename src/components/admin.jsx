@@ -176,7 +176,7 @@ const AdminDashboard = () => {
   // ========================================
 const sendApprovalEmailWithTicket = async (submission, ticketId) => {
   try {
-    console.log('🎫 Generating QR code ticket for:', submission.fullName);
+    console.log('Generating QR code ticket for:', submission.fullName);
     
     const qrCodeImage = await generateQRCodeWithUserData(submission, ticketId);
 
@@ -184,7 +184,7 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
       throw new Error('Failed to generate QR code');
     }
 
-    console.log('✅ QR code generated successfully');
+    console.log(' QR code generated successfully');
 
     const templateParams = {
       to_email: submission.email,
@@ -281,7 +281,7 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
       templateParams
     );
 
-    console.log('✅ Approval email with QR ticket sent successfully!');
+    console.log(' Approval email with QR ticket sent successfully!');
     return true;
 
   } catch (error) {
