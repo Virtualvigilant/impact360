@@ -258,7 +258,7 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
               <li><strong>Save this email</strong> or screenshot the QR code above</li>
               <li><strong>Arrive 15 minutes early</strong> to the event venue</li>
               <li><strong>Show your QR code</strong> at the registration desk</li>
-              <li><strong>Bring a valid ID</strong> for verification</li>
+              <li><strong>Enjoy the event!</strong> Engage, learn, and connect</li>
             </ol>
           </div>
           
@@ -267,6 +267,7 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
               <strong>📅 Event Details</strong><br>
               Date: 7th February 2026<br>
               Venue: Taidy's Nakuru<br>
+              Time:From 1:30pm<br>
             </p>
           </div>
           
