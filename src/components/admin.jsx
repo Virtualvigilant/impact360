@@ -265,7 +265,8 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
           <div style="margin-top: 28px; padding: 22px; background-color: #D4EDDA; border-radius: 10px; border-left: 5px solid #28a745;">
             <p style="margin: 0; color: #155724; font-size: 15px; text-align: left; line-height: 1.7;">
               <strong>📅 Event Details</strong><br>
-              Date and time will be communicated separately. Check your email regularly for updates.
+              Date: 7th February 2026<br>
+              Venue: Taidy's Nakuru<br>
             </p>
           </div>
           
