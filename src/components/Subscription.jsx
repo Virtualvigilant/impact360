@@ -78,12 +78,28 @@ export default function Subscription() {
   };
 
   const extractAmount = (message) => {
-    const amountMatch = message.match(/(?:Ksh\.?|KES\.?|)\s*([\d,]+\.?\d*)/i);
-    if (amountMatch) {
-      return amountMatch[1].replace(/,/g, '');
+  // Try to match common M-Pesa amount patterns
+  // Matches: "Ksh2,099.00", "KES 2099", "2,099.00 sent", etc.
+  const patterns = [
+    /(?:Ksh\.?|KES\.?)\s*([\d,]+\.?\d*)/i,  // Ksh2,099.00 or KES 2099
+    /([\d,]+\.?\d*)\s*(?:sent|paid|to)/i,   // 2,099.00 sent to...
+    /confirmed[.\s]+(?:Ksh\.?|KES\.?)?\s*([\d,]+\.?\d*)/i  // Confirmed. Ksh2,099.00
+  ];
+  
+  for (const pattern of patterns) {
+    const match = message.match(pattern);
+    if (match && match[1]) {
+      const amount = match[1].replace(/,/g, '');
+      // Validate it's a reasonable amount (more than 100 KES)
+      if (parseFloat(amount) >= 100) {
+        return amount;
+      }
     }
-    return planToSubscribe?.price.replace(/,/g, '') || '0';
-  };
+  }
+  
+  // Fallback to plan price if no valid amount found
+  return planToSubscribe?.price.replace(/,/g, '') || '0';
+};
 
   // ========================================
   // SEND USER CONFIRMATION EMAIL
