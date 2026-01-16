@@ -22,7 +22,6 @@ const Navbar = () => {
   const pagesWithSolidBg = [
     "/about",
     "/programs",
-    "/events",
     "/subscription",
     "/campaign",
   ];

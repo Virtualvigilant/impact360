@@ -156,7 +156,7 @@ export default function HomePage() {
         {/* CENTERED HERO TEXT */}
         <div className="relative z-10 w-full max-w-6xl mx-auto px-6 text-center">
           <h1
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight"
+            className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight"
             style={{
               fontFamily: 'League Spartan, sans-serif',
               textShadow: "0 4px 20px rgba(0,0,0,0.7), 0 2px 10px rgba(0,0,0,0.5)"
@@ -171,7 +171,7 @@ export default function HomePage() {
               textShadow: "0 2px 12px rgba(0,0,0,0.7)"
             }}
           >
-            Breaking barriers and bringing world-class entrepreneurship resources to every corner of the continent—empowering founders everywhere to build sustainable, scalable solutions.
+            Breaking barriers and bringing world class entrepreneurship resources to every corner of the continent empowering founders everywhere to build sustainable, scalable solutions.
           </p>
 
           {/* Buttons */}

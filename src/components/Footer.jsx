@@ -89,9 +89,9 @@ export default function Footer() {
               {/* CONTACT ICONS */}
               <div className="flex gap-4">
                 {[
-                  { icon: <Mail />, link: "mailto:info@impact360.com" },
-                  { icon: <Phone />, link: "tel:+254123456789" },
-                  { icon: <MapPin />, link: "#" },
+                  { icon: <Mail />, link: "mailto:impact360.i3@.com" },
+                  { icon: <Phone />, link: "tel:+25411359079" },
+                  { icon: <MapPin />, link: "Nakuru" },
                 ].map((item, i) => (
                   <motion.a
                     key={i}
@@ -117,18 +117,24 @@ export default function Footer() {
             >
               <h3 className="text-xl font-bold mb-4">Quick Links</h3>
               <ul className="space-y-3">
-                {["Home", "About", "Programs", "Events", "Subscription"].map((item, i) => (
+                {[
+                  { label: "Home", href: "/" },
+                  { label: "About", href: "/about" },
+                  { label: "Programs", href: "/programs" },
+                  { label: "Events", href: "/events" },
+                  { label: "Subscription", href: "/subscription" }
+                ].map((item, i) => (
                   <motion.li key={i} whileHover={{ x: 5 }}>
-                    <button
-                      onClick={() => scrollToSection(item)}
-                      className={`${
+                    <a
+                      href={item.href}
+                      className={`$
                         darkMode 
                           ? 'text-gray-300 hover:text-white' 
                           : 'text-[#FFFEF9]/80 hover:text-[#FFFEF9]'
                       } transition-colors`}
                     >
-                      {item}
-                    </button>
+                      {item.label}
+                    </a>
                   </motion.li>
                 ))}
               </ul>
