@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Camera, Mic, Handshake, Lightbulb, Target, Globe, Rocket, Sparkles, MapPin, Users, MessageCircle, Network, ArrowDown } from "lucide-react";
+import { Calendar, Sparkles, MapPin, Users, Lightbulb, Network, MessageCircle, ArrowDown } from "lucide-react";
 import { useDarkMode } from "../DarkModeContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -176,108 +176,6 @@ const EventGalleryCard = ({ image, title, category, delay = 0, darkMode }) => (
 
 export default function EventsPage() {
   const { darkMode } = useDarkMode();
-
-  const featuredEvents = [
-    {
-      title: "Round Xchange",
-      status: "Upcoming",
-      date: "Febuary 7th 2026",
-      description:
-        "The premier networking and knowledge-sharing event connecting founders, investors, and ecosystem players. Round Xchange brings together the brightest minds in African entrepreneurship for a day of insights, connections, and opportunities.",
-      highlights: [
-        "Connect with leading investors and venture capitalists",
-        "Pitch sessions with live feedback from experienced entrepreneurs",
-        "Roundtable discussions on scaling, fundraising, and market expansion",
-        "Networking sessions with 200+ founders and ecosystem players",
-        "Expert panels on current trends in African tech and innovation"
-      ],
-      speakers: ["Industry Leaders", "Successful Founders", "Top Investors", "Policy Makers"],
-      image: "/events/round-xchange.png",
-      cta: "Register for Round Xchange"
-    },
-    {
-      title: "Beyond Capital",
-      status: "Past Event",
-      description:
-        "An intensive deep-dive into alternative funding strategies and capital creation for African startups. Learn how to build sustainable businesses without traditional venture capital.",
-      highlights: [
-        "Bootstrapping strategies from successful founders",
-        "Alternative funding methods: grants, competitions, crowdfunding",
-        "Revenue model design and optimization",
-        "Strategic partnerships for growth",
-        "Financial modeling and unit economics"
-      ],
-      speakers: ["Self-funded Entrepreneurs", "Financial Advisors", "Grant Experts", "Strategic Investors"],
-      image: "/events/beyond-capital.jpg"
-    },
-     {
-      title: "Beyond Now",
-      status: "Past Event",
-      description:
-        "A transformative event focused on the future of entrepreneurship in the age of artificial intelligence. Explore how AI is reshaping industries and creating new opportunities for African founders.",
-      highlights: [
-         "AI applications for African startups",
-        "Building AI-powered products on a budget",
-        "Ethical AI considerations and responsible innovation",
-        "Real-world case studies from AI startups",
-        "Hands-on workshops with AI tools and frameworks"
-      ],
-      speakers: ["Self-funded Entrepreneurs", "Financial Advisors", "Grant Experts", "Strategic Investors"],
-      image: "/events/beyond-now.png"
-    }
-  ];
-
-  const eventGallery = [
-    {
-      image: "/gallery/workshop-1.jpg",
-      title: "Workshop Session",
-      category: "Beyond Capital"
-    },
-    {
-      image: "/gallery/panel-1.jpg",
-      title: "Open mic",
-      category: "Beyond Capital"
-    },
-    {
-      image: "/gallery/networking-1.png",
-      title: "Networking Break",
-      category: "Beyond Capital"
-    }
-   
-  ];
-
-  const expectations = [
-    {
-      Icon: Mic,
-      title: "Expert Speakers",
-      description: "Learn from successful entrepreneurs across Africa and beyond."
-    },
-    {
-      Icon: Handshake,
-      title: "Networking Opportunities",
-      description: "Meet founders, investors, mentors, and ecosystem leaders."
-    },
-    {
-      Icon: Lightbulb,
-      title: "Actionable Insights",
-      description: "Gain practical tools and frameworks you can apply instantly."
-    },
-    {
-      Icon: Target,
-      title: "Interactive Sessions",
-      description: "Workshops, roundtables, and deep-dive Q&A sessions."
-    },
-    {
-      Icon: Globe,
-      title: "Decentralized Access",
-      description: "Participate in person or virtually from different counties."
-    },
-    {
-      Icon: Rocket,
-      title: "Growth Opportunities",
-      description: "Funding, partnerships, and scaling frameworks."
-    }
-  ];
 
   // --- Speakers Section State ---
   const speakerImages = [
