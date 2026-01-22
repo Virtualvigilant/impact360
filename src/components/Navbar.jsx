@@ -105,35 +105,37 @@ const Navbar = () => {
 
       {/* NAVBAR */}
       <nav
-        className={`w-full flex justify-between items-center px-8 fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300 ${getNavbarBg()}`}
+        className={`w-full flex items-center justify-between px-8 fixed top-0 left-0 right-0 z-50 py-2 md:py-3 transition-all duration-300 ${getNavbarBg()}`}
+        style={{ minHeight: "72px" }} // Ensures consistent navbar height
       >
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 transition-all duration-500"
+          className="flex items-center gap-2 md:gap-3 transition-all duration-500"
         >
-          <div className="w-10 h-10 flex items-center justify-center">
+          <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
             <img
               src="/logo2.png"
               alt="Impact360 Logo"
-              className="w-full h-full object-contain drop-shadow-lg"
+              className="w-full h-full object-contain drop-shadow-lg rounded-full"
             />
           </div>
-          <h1
-            className={`text-xl font-bold tracking-wide ${
+          <span
+            className={`text-xl md:text-2xl font-bold tracking-wide flex items-center ${
               scrolled || pagesWithSolidBg.includes(location.pathname)
                 ? "text-black dark:text-white"
                 : "text-white"
             }`}
+            style={{ lineHeight: 1 }}
           >
             Impact360
-          </h1>
+          </span>
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           <ul
-            className={`flex gap-10 font-semibold text-sm transition-all duration-300 ${
+            className={`flex gap-8 font-semibold text-sm transition-all duration-300 items-center ${
               scrolled || pagesWithSolidBg.includes(location.pathname)
                 ? "text-black dark:text-white"
                 : "text-white"
@@ -153,8 +155,10 @@ const Navbar = () => {
                   <span
                     className={`absolute -bottom-1 left-0 h-0.5 transition-all duration-300 ${
                       location.pathname === item.path
-                        ? "w-full bg-[#306CEC]"
-                        : "w-0 group-hover:w-full bg-[#306CEC]"
+                        ? `w-full ${scrolled || pagesWithSolidBg.includes(location.pathname)
+                            ? "bg-black dark:bg-white"
+                            : "bg-white"}`
+                        : "w-0 group-hover:w-full bg-black dark:group-hover:bg-white"
                     }`}
                   ></span>
                 </Link>
@@ -171,11 +175,13 @@ const Navbar = () => {
           </ul>
 
           {/* Dark Mode Toggle */}
-          <DarkModeToggle />
+          <div className="ml-4 flex items-center">
+            <DarkModeToggle />
+          </div>
         </div>
 
         {/* Mobile Menu Button & Dark Mode */}
-        <div className="md:hidden flex items-center gap-4">
+        <div className="md:hidden flex items-center gap-2">
           <DarkModeToggle />
           <button
             onClick={() => setMenuOpen(true)}
@@ -184,6 +190,7 @@ const Navbar = () => {
                 ? "text-black dark:text-white"
                 : "text-white"
             }`}
+            style={{ lineHeight: 1 }}
           >
             ☰
           </button>

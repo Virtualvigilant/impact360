@@ -40,22 +40,22 @@ const EventCard = ({ type, title, description, image, delay = 0, darkMode }) => 
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ delay, duration: 0.2 }}
     viewport={{ once: true }}
-    whileHover={{ y: -10 }}
-    className={`rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group ${
+    whileHover={{ y: -12, scale: 1.02 }}
+    className={`rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group ${
       darkMode ? 'bg-[#1a1f3a] border border-[#306CEC]/20' : 'bg-white'
     }`}
   >
     <div className="relative h-64 overflow-hidden">
-      <img
+      <motion.img
         src={image}
         alt={title}
-        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
       />
-      <div className={`absolute inset-0 transition-all duration-500 ${
-        darkMode 
-          ? 'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-[#306CEC]/60 group-hover:via-[#306CEC]/30' 
-          : 'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-[#306CEC]/60 group-hover:via-[#306CEC]/30'
-      }`}></div>
+      <div className={`absolute inset-0 flex items-end p-0 transition-all duration-500 ${
+        'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black group-hover:via-black/40'
+      }`}>
+        {/* Overlay content can go here if needed */}
+      </div>
       <div className={`absolute top-4 left-4 px-4 py-2 rounded-full font-bold text-sm ${
         darkMode
           ? 'bg-[#306CEC] text-white'
@@ -64,7 +64,6 @@ const EventCard = ({ type, title, description, image, delay = 0, darkMode }) => 
         {type}
       </div>
     </div>
-    
     <div className="p-8">
       <h3 className={`text-2xl font-bold mb-3 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`}>{title}</h3>
       <p className={`leading-relaxed mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{description}</p>

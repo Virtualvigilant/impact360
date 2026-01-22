@@ -370,7 +370,7 @@ export default function Campaign() {
             className={`rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-2xl w-full relative shadow-2xl border my-4 sm:my-8 max-h-[95vh] overflow-y-auto transition-colors duration-1000 ${
               darkMode
                 ? 'bg-gradient-to-br from-[#1a1f3a] to-[#0A0E27] border-[#306CEC]/30'
-                : 'bg-gradient-to-br from-gray-900 to-black border-gray-800'
+                : 'bg-gradient-to-br from-white to-[#F5F6F8] border-gray-200'
             }`}
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -380,7 +380,7 @@ export default function Campaign() {
             <button
               onClick={() => setShowTrailer(false)}
               className={`absolute top-2 right-2 sm:top-3 sm:right-3 text-xl sm:text-2xl font-bold z-10 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center ${
-                darkMode ? 'text-gray-400 hover:text-[#306CEC]' : 'text-gray-400 hover:text-white'
+                darkMode ? 'text-gray-400 hover:text-[#306CEC]' : 'text-gray-400 hover:text-[#306CEC]'
               }`}
             >
               ×
@@ -389,19 +389,19 @@ export default function Campaign() {
             <div className="space-y-3 sm:space-y-4 md:space-y-6">
               <div className="text-center space-y-1 sm:space-y-2">
                 <div className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold mb-1 sm:mb-2 ${
-                  darkMode ? 'bg-[#306CEC]/20 text-[#306CEC]' : 'bg-blue-500/20 text-blue-400'
+                  darkMode ? 'bg-[#306CEC]/20 text-[#306CEC]' : 'bg-blue-500/10 text-[#306CEC]'
                 }`}>
                   <MapPin className="w-3 h-3" />
                   <span>{selectedCity.name} Roadshow</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                <h2 className={`text-xl sm:text-2xl md:text-3xl font-bold leading-tight ${darkMode ? 'text-white' : 'text-[#1a1f3a]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
                   COMING TO {selectedCity.name.toUpperCase()}
                 </h2>
-                <p className="text-xs sm:text-sm text-gray-400">Get ready for an unforgettable experience</p>
+                <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Get ready for an unforgettable experience</p>
               </div>
 
               {/* Video Container */}
-              <div className="relative aspect-video bg-gray-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl">
+              <div className={`relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl ${darkMode ? 'bg-gray-800' : 'bg-gray-200'}`}>
                 {selectedCity.hasTrailer ? (
                   <video
                     className="w-full h-full object-cover"
@@ -412,14 +412,12 @@ export default function Campaign() {
                     Your browser does not support the video tag.
                   </video>
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 p-4">
-                    <Sparkles className={`w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mb-3 sm:mb-4 animate-pulse ${
-                      darkMode ? 'text-[#306CEC]' : 'text-blue-400'
-                    }`} />
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2" style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                  <div className={`w-full h-full flex flex-col items-center justify-center p-4 ${darkMode ? 'bg-gradient-to-br from-gray-800 to-gray-900' : 'bg-gradient-to-br from-gray-100 to-gray-200'}`}>
+                    <Sparkles className={`w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mb-3 sm:mb-4 animate-pulse ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`} />
+                    <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2 ${darkMode ? 'text-white' : 'text-[#1a1f3a]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
                       COMING SOON
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-400 text-center px-4 sm:px-6">
+                    <p className={`text-xs sm:text-sm text-center px-4 sm:px-6 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                       The trailer for {selectedCity.name} is coming soon. Stay tuned!
                     </p>
                   </div>
@@ -428,17 +426,15 @@ export default function Campaign() {
 
               {/* City Info */}
               <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
-                <div className="bg-white/5 backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 border border-white/10">
-                  <Calendar className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mb-1 sm:mb-2 ${
-                    darkMode ? 'text-[#306CEC]' : 'text-blue-400'
-                  }`} />
-                  <p className="text-gray-400 text-[10px] sm:text-xs">Launch Date</p>
-                  <p className="text-white font-bold text-xs sm:text-sm">{selectedCity.date}</p>
+                <div className={`backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 border ${darkMode ? 'bg-white/5 border-white/10' : 'bg-[#306CEC]/5 border-[#306CEC]/10'}`}>
+                  <Calendar className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mb-1 sm:mb-2 ${darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`} />
+                  <p className={`text-[10px] sm:text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Launch Date</p>
+                  <p className={`font-bold text-xs sm:text-sm ${darkMode ? 'text-white' : 'text-[#1a1f3a]'}`}>{selectedCity.date}</p>
                 </div>
-                <div className="bg-white/5 backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 border border-white/10">
+                <div className={`backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 border ${darkMode ? 'bg-white/5 border-white/10' : 'bg-[#306CEC]/5 border-[#306CEC]/10'}`}>
                   <Users className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-yellow-400 mb-1 sm:mb-2" />
-                  <p className="text-gray-400 text-[10px] sm:text-xs">Available Spots</p>
-                  <p className="text-white font-bold text-xs sm:text-sm">{selectedCity.spots}</p>
+                  <p className={`text-[10px] sm:text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Available Spots</p>
+                  <p className={`font-bold text-xs sm:text-sm ${darkMode ? 'text-white' : 'text-[#1a1f3a]'}`}>{selectedCity.spots}</p>
                 </div>
               </div>
 
@@ -448,7 +444,7 @@ export default function Campaign() {
                   navigate('/subscription');
                   window.scrollTo(0, 0);
                 }}
-                className="w-full bg-[#306CEC] hover:bg-[#1a4d9e] text-white px-4 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full font-bold text-sm sm:text-base md:text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className={`w-full bg-[#306CEC] hover:bg-[#1a4d9e] text-white px-4 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full font-bold text-sm sm:text-base md:text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300`}
                 style={{ fontFamily: 'League Spartan, sans-serif' }}
               >
                 RESERVE YOUR SPOT NOW

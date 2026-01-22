@@ -184,7 +184,7 @@ export default function HomePage() {
 
             <button 
               onClick={() => setShowQR(true)}
-              className={`text-white px-10 py-4 rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl ${darkMode ? 'bg-[#306CEC] hover:bg-[#1a4d99]' : 'bg-[#306CEC] hover:bg-[#1a4d99]'}`}
+              className="bg-black text-white border-2 border-white/40 px-10 py-4 rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:bg-white hover:text-black"
               style={{ fontFamily: 'League Spartan, sans-serif' }}
             >
               Join Community
@@ -244,7 +244,10 @@ export default function HomePage() {
                       alt={offer.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className={`absolute inset-0 flex items-end p-8 transition-all duration-500 ${darkMode ? 'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-[#306CEC]/95 group-hover:via-[#306CEC]/40' : 'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-[#306CEC]/90 group-hover:via-[#306CEC]/40'}`}>
+                    <div className={`absolute inset-0 flex items-end p-8 transition-all duration-500 ${
+                      // Remove all blue and use only black for hover
+                      'bg-gradient-to-t from-black/60 via-black/30 to-transparent group-hover:from-black group-hover:via-black/40'
+                    }`}>
                       <motion.div 
                         className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 w-20 h-20 flex items-center justify-center"
                         whileHover={{ scale: 1.2, rotate: 5 }}
@@ -255,8 +258,9 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="p-8 relative">
-                    <div className={`absolute top-0 left-0 w-20 h-1 transform origin-left transition-all duration-500 group-hover:w-full ${darkMode ? 'bg-[#306CEC]' : 'bg-[#306CEC]'}`}></div>
-                    <h3 className={`text-3xl font-bold mb-4 mt-2 transition-colors duration-300 ${darkMode ? 'text-[#306CEC] group-hover:text-[#1a4d99]' : 'text-[#306CEC] group-hover:text-[#1a4d99]'}`} style={{ fontFamily: 'League Spartan, sans-serif' }}>
+                    {/* Top bar: black on hover */}
+                    <div className="absolute top-0 left-0 w-20 h-1 transform origin-left transition-all duration-500 group-hover:w-full bg-black"></div>
+                    <h3 className="text-3xl font-bold mb-4 mt-2 transition-colors duration-300 text-[#306CEC]" style={{ fontFamily: 'League Spartan, sans-serif' }}>
                       {offer.title}
                     </h3>
                     <p className={`text-lg mb-6 leading-relaxed ${darkMode ? 'text-gray-300' : 'text-[#000000]/70'}`}>
@@ -264,7 +268,7 @@ export default function HomePage() {
                     </p>
                     <a
                       href={offer.link}
-                      className={`inline-flex items-center font-semibold gap-2 transition-all duration-300 group-hover:gap-4 ${darkMode ? 'text-[#306CEC] group-hover:text-[#1a4d99]' : 'text-[#306CEC] group-hover:text-[#1a4d99]'}`}
+                      className="inline-flex items-center font-semibold gap-2 transition-all duration-300 group-hover:gap-4 text-[#306CEC]"
                       style={{ fontFamily: 'League Spartan, sans-serif' }}
                     >
                       Learn More 
