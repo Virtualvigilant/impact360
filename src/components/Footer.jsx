@@ -265,7 +265,7 @@ export default function Footer() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
             >
-              Made with ❤️ by Impact360
+               Impact360
             </motion.div>
           </motion.div>
 

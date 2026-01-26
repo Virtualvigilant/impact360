@@ -939,6 +939,7 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plan</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">City</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">M-Pesa Code</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
@@ -957,6 +958,7 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
                       <br />
                       <span className="text-xs text-gray-500">{submission.planPeriod}</span>
                     </td>
+                    <td className="px-6 py-4 text-sm text-gray-900">{submission.city || 'N/A'}</td>
                     <td className="px-6 py-4 text-sm font-mono text-gray-900">{submission.mpesaCode}</td>
                     <td className="px-6 py-4 text-sm text-gray-900">KES {submission.amount}</td>
                     <td className="px-6 py-4 text-sm text-gray-900 capitalize">{submission.type || '-'}</td>
@@ -1123,6 +1125,28 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
                 />
               </div>
               
+              <div>
+                {selectedSubmission?.type === 'event' && (
+                  <>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                    <select
+                      value={editData.city || ''}
+                      onChange={e => setEditData({ ...editData, city: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                    >
+                      <option value="">Select city</option>
+                      <option value="Nakuru">Nakuru</option>
+                      <option value="Nairobi">Nairobi</option>
+                      <option value="Mombasa">Mombasa</option>
+                      <option value="Kisumu">Kisumu</option>
+                      <option value="Eldoret">Eldoret</option>
+                      <option value="Thika">Thika</option>
+                      <option value="Machakos">Machakos</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </>
+                )}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">M-Pesa Code</label>
                 <input
