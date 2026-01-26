@@ -8,7 +8,9 @@ import {
   deleteDoc, 
   query, 
   orderBy,
-  onSnapshot 
+  onSnapshot,
+  addDoc,
+  where
 } from 'firebase/firestore';
 import { 
   signInWithEmailAndPassword, 
@@ -82,6 +84,44 @@ const sendMembershipActivationEmail = async (submission, expiryDate) => {
 // EMAILJS CONFIGURATION - UPDATE THESE!
 // ========================================
 
+// ========================================
+// SUBSCRIBE TO NEWSLETTER FUNCTION
+// ========================================
+
+
+const subscribeToNewsletter = async (email) => {
+  if (!email) {
+    alert("Please enter an email");
+    return;
+  }
+
+  try {
+    // prevent duplicates
+    const q = query(
+      collection(db, "newsletterSubscribers"),
+      where("email", "==", email.toLowerCase())
+    );
+
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      alert("You're already subscribed 🙂");
+      return;
+    }
+
+    await addDoc(collection(db, "newsletterSubscribers"), {
+      email: email.toLowerCase(),
+      subscribedAt: new Date(),
+      status: "active",
+      source: "website-footer"
+    });
+
+    alert("Thanks for subscribing!");
+  } catch (error) {
+    console.error("Newsletter subscribe error:", error);
+    alert("Something went wrong. Try again.");
+  }
+};
+
 
 const AdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -101,6 +141,24 @@ const AdminDashboard = () => {
   const [editData, setEditData] = useState({});
   const [notification, setNotification] = useState(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [newsletterSubscribers, setNewsletterSubscribers] = useState([]);
+  const [showNewsletterModal, setShowNewsletterModal] = useState(false);
+
+  // Fetch newsletter subscribers
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const fetchSubscribers = async () => {
+      try {
+        const q = query(collection(db, "newsletterSubscribers"));
+        const snapshot = await getDocs(q);
+        const subs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setNewsletterSubscribers(subs);
+      } catch (err) {
+        console.error("Error fetching newsletter subscribers:", err);
+      }
+    };
+    fetchSubscribers();
+  }, [isAuthenticated]);
 
   // Initialize EmailJS
   useEffect(() => {
@@ -809,6 +867,12 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
               >
                 Membership
               </button>
+              <button
+                onClick={() => setShowNewsletterModal(true)}
+                className="px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-xs sm:text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200 ml-2"
+              >
+                Newsletter Subscribers
+              </button>
             </div>
 
             {/* Status filter buttons */}
@@ -1401,6 +1465,47 @@ const sendApprovalEmailWithTicket = async (submission, ticketId) => {
     </div>
   </div>
 )}
+    {/* Newsletter Subscribers Modal */}
+    {showNewsletterModal && (
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+        onClick={() => setShowNewsletterModal(false)}
+      >
+        <div
+          className="bg-white rounded-xl max-w-2xl w-full p-6 relative shadow-lg border border-gray-200 font-sans"
+          onClick={e => e.stopPropagation()}
+        >
+          <button onClick={() => setShowNewsletterModal(false)} className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
+          <h2 className="text-2xl font-extrabold mb-6 text-[#306CEC] text-center tracking-tight" style={{ fontFamily: 'League Spartan, DM Sans, Arial, sans-serif' }}>Newsletter Subscribers</h2>
+          {newsletterSubscribers.length === 0 ? (
+            <p className="text-gray-500 text-center text-base font-medium">No newsletter subscribers found.</p>
+          ) : (
+            <div className="overflow-x-auto rounded-lg border border-gray-100">
+              <table className="min-w-full text-[15px] text-gray-800 font-sans">
+                <thead className="bg-[#f4f8ff]">
+                  <tr>
+                    <th className="px-4 py-3 text-left font-bold tracking-wide text-base" style={{ fontFamily: 'League Spartan, DM Sans, Arial, sans-serif' }}>Email</th>
+                    <th className="px-4 py-3 text-left font-bold tracking-wide text-base" style={{ fontFamily: 'League Spartan, DM Sans, Arial, sans-serif' }}>Subscribed At</th>
+                    <th className="px-4 py-3 text-left font-bold tracking-wide text-base" style={{ fontFamily: 'League Spartan, DM Sans, Arial, sans-serif' }}>Status</th>
+                    <th className="px-4 py-3 text-left font-bold tracking-wide text-base" style={{ fontFamily: 'League Spartan, DM Sans, Arial, sans-serif' }}>Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {newsletterSubscribers.map((sub, idx) => (
+                    <tr key={sub.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="px-4 py-3 font-mono break-all text-[15px]">{sub.email}</td>
+                      <td className="px-4 py-3 text-[15px]">{sub.subscribedAt?.toDate ? sub.subscribedAt.toDate().toLocaleString() : (sub.subscribedAt ? new Date(sub.subscribedAt).toLocaleString() : '—')}</td>
+                      <td className="px-4 py-3 capitalize text-[15px]">{sub.status || 'active'}</td>
+                      <td className="px-4 py-3 text-[15px]">{sub.source || ''}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+    )}
     </div>
   );
 };

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 import { motion } from "framer-motion";
 import { useDarkMode } from "../DarkModeContext";
 
@@ -20,6 +22,8 @@ const TikTokIcon = () => (
 
 export default function Footer() {
   const { darkMode } = useDarkMode();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const scrollToSection = (sectionId) => {
     const element = document
@@ -196,6 +200,8 @@ export default function Footer() {
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   className={`flex-1 px-6 py-4 rounded-full placeholder-opacity-50 focus:ring-2 transition-colors duration-1000 ${
                     darkMode
@@ -204,18 +210,43 @@ export default function Footer() {
                   }`}
                 />
                 <motion.button
+                  onClick={async () => {
+                    if (!email) {
+                      alert("Please enter a valid email.");
+                      return;
+                    }
+
+                    setLoading(true);
+                    try {
+                      await addDoc(collection(db, "newsletterSubscribers"), {
+                        email: email,
+                        subscribedAt: serverTimestamp(),
+                        status: "pending",
+                        source: "footer-section", // where the subscription came from
+                      });
+                      alert("✅ Subscription successful!");
+                      setEmail(""); // clear input
+                    } catch (error) {
+                      console.error("Subscription error:", error);
+                      alert("❌ Something went wrong. Please try again.");
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
                   className={`px-8 py-4 rounded-full font-bold shadow-lg transition-colors duration-1000 ${
                     darkMode
-                      ? 'bg-[#306CEC] text-white hover:bg-[#4A80FF]'
-                      : 'bg-[#FFFEF9] text-[#306CEC] hover:bg-[#FFFEF9]/90'
+                      ? "bg-[#306CEC] text-white hover:bg-[#4A80FF]"
+                      : "bg-[#FFFEF9] text-[#306CEC] hover:bg-[#FFFEF9]/90"
                   }`}
                   whileHover={{ scale: 1.05 }}
+                  disabled={loading}
                 >
-                  Subscribe
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
+                  {loading ? "Subscribing..." : "Subscribe"}
+			</motion.button>
+		  </div>
+        </div>
+      </motion.div>
+
 
           {/* FOOTER BOTTOM */}
           <motion.div
