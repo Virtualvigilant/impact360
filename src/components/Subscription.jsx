@@ -57,12 +57,13 @@ const membershipBenefits = {
 };
 
 export default function Subscription() {
-  const [selectedPlan, setSelectedPlan] = useState('monthly');
+  const [selectedPlan, setSelectedPlan] = useState('spotlight');
   const [showPaymentInfo, setShowPaymentInfo] = useState(false);
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [planToSubscribe, setPlanToSubscribe] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [copied, setCopied] = useState({ paybill: false, account: false });
+  const [expandedPlans, setExpandedPlans] = useState({}); // NEW: Track expanded plans
   const [ticketFormData, setTicketFormData] = useState({
     fullName: '',
     city: '',
@@ -85,25 +86,52 @@ export default function Subscription() {
   const MPESA_ACCOUNT = "1118559";
 
   const subscriptionPlans = {
-    monthly: [
-      { name: "Student", price: "999", period: "mo", features: ["1 event access", "slides", "resource pack"] },
+    spotlight: [
+      { name: "Student", price: "999", period: "mo", features: ["1 event access"] },
       { name: "Pro", price: "2,099", period: "mo", features: ["Access to event", "networking zone", "digital resources"], popular: true },
       { name: "Premium", price: "4,099", period: "mo", features: ["VIP seating", "spotlight networking", "partner invites"] }
     ],
-    quarterly: [
-      { name: "Student", price: "2,847", period: "3mo", features: ["3 sessions + replays", "1 free guest pass per quarter"], save: "150" },
-      { name: "Pro", price: "5,982", period: "3mo", features: ["3 sessions", "1 VIP mixer invite", "priority entry"], save: "315", popular: true },
-      { name: "Premium", price: "11,682", period: "3mo", features: ["Exclusive roundtable access", "event recordings"], save: "615" }
+    momentum: [
+      { name: "Student", price: "2,847", period: "3mo", features: ["3 sessions", "1 free guest pass per quarter"], save: "150" },
+      { name: "Pro", price: "5,982", period: "3mo", features: ["3 sessions", "1 VIP mixer invite"], save: "315", popular: true },
+      { name: "Premium", price: "11,682", period: "3mo", features: ["Exclusive roundtable access"], save: "615" }
     ],
-    biannual: [
-      { name: "Student", price: "5,395", period: "6mo", features: ["6 sessions", "certificate of participation", "growth toolkit"], save: "599" },
-      { name: "Pro", price: "11,335", period: "6mo", features: ["6 sessions", "full replay access", "community membership"], save: "1,259", popular: true },
-      { name: "Premium", price: "22,135", period: "6mo", features: ["Mastermind dinner", "recognition certificate", "all replays"], save: "2,459" }
+    mastery: [
+      { name: "Student", price: "5,395", period: "6mo", features: ["6 sessions", "growth toolkit"], save: "599" },
+      { name: "Pro", price: "11,335", period: "6mo", features: ["6 sessions", "community membership"], save: "1,259", popular: true },
+      { name: "Premium", price: "22,135", period: "6mo", features: ["Mastermind dinner"], save: "2,459" }
     ],
-    annual: [
-      { name: "Student", price: "10,189", period: "yr", features: ["12 sessions", "all replays", "invite to Student Impact Summit"], save: "1,799" },
-      { name: "Pro", price: "21,410", period: "yr", features: ["12 sessions", "partner discounts", "Impact360 T-shirt"], save: "3,778", popular: true },
-      { name: "Premium", price: "41,810", period: "yr", features: ["All-access", "private dinner", "media spotlight", "merch pack"], save: "7,378" }
+    membership: [
+      { name: "Student", price: "10,189", period: "yr", features: [
+        "Access to Impact360 community (students & early builders)",
+        "Free or discounted entry to Impact360 events, roadshows & webinars",
+        "Foundational workshops on entrepreneurship, tech & digital skills",
+        "Access to startup resources & learning materials",
+        "Exposure to local startup stories & role models",
+        "Priority access to internships, volunteering & community projects"
+      ], save: "1,799" },
+      { name: "Pro", price: "21,410", period: "yr", features: [
+        "Everything in Student Membership, plus:",
+        "Access to founder-only & professional community",
+        "Curated masterclasses (business, tech, AI, finance, growth)",
+        "Business tools & templates (Business models, Pitch decks, Go-to-market frameworks)",
+        "Monthly expert sessions (legal, tech, finance, marketing)",
+        "Pitch opportunities at Impact360 demo days & partner events",
+        "Visibility within the Impact360 ecosystem (startups, partners, talent)",
+        "Discounts on consulting, programs & ecosystem services",
+        "Priority consideration for grants & funding opportunities"
+      ], save: "3,778", popular: true },
+      { name: "Premium", price: "41,810", period: "yr", features: [
+        "Everything in Pro Membership, plus:",
+        "Direct mentorship & advisory access (1:1 or small groups)",
+        "Personalized business & growth support (Strategy, Tech integration, Scaling & operations)",
+        "Investor & partner warm introductions (where applicable)",
+        "Access to closed-door roundtables with founders, investors & policymakers",
+        "Priority access to Impact360 consulting services",
+        "Brand & startup visibility (Showcasing across platforms, Speaking opportunities)",
+        "Early access to new programs, pilots & ecosystem initiatives",
+        "Dedicated support for fundraising readiness, market expansion & corporate partnerships"
+      ], save: "7,378" }
     ]
   };
 
@@ -233,8 +261,17 @@ export default function Subscription() {
 
   // Show type selector modal when subscribe is clicked
   const handleSubscribeClick = (plan) => {
-    setPendingPlan(plan);
-    setShowTypeSelector(true);
+    // For Membership plans, go directly to payment
+    if (selectedPlan === 'membership') {
+      setSubscriptionType('Membership');
+      setPlanToSubscribe(plan);
+      setShowPaymentInfo(true);
+    } else {
+      // For Spotlight, Momentum, Mastery - go directly to payment
+      setSubscriptionType('Events');
+      setPlanToSubscribe(plan);
+      setShowPaymentInfo(true);
+    }
   };
 
   // When user picks Event or Membership in modal
@@ -265,6 +302,14 @@ export default function Subscription() {
 
   const handleTicketFormChange = (e) => {
     setTicketFormData({ ...ticketFormData, [e.target.name]: e.target.value });
+  };
+
+  // NEW: Toggle plan expansion
+  const togglePlanExpansion = (planKey) => {
+    setExpandedPlans(prev => ({
+      ...prev,
+      [planKey]: !prev[planKey]
+    }));
   };
 
   // ========================================
@@ -508,16 +553,18 @@ export default function Subscription() {
             viewport={{ once: true }} 
             className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-12 sm:mb-14 md:mb-16"
           >
-            {[
-
-              { key: 'monthly', label: 'Monthly' },
-              { key: 'quarterly', label: 'Quarterly' },
-              { key: 'biannual', label: 'Bi-Annual' },
-              { key: 'annual', label: 'Annual' }
-            ].map((plan) => (
+            {([
+              { key: 'spotlight', label: 'Spotlight Pass' },
+              { key: 'momentum', label: 'Momentum Pass' },
+              { key: 'mastery', label: 'Mastery Pass' },
+              { key: 'membership', label: 'Membership' }
+            ]).map((plan) => (
               <motion.button 
                 key={plan.key} 
-                onClick={() => setSelectedPlan(plan.key)} 
+                onClick={() => {
+                  setSelectedPlan(plan.key);
+                  // State will persist - each plan tracks its own expansion independently
+                }} 
                 whileHover={{ scale: 1.05 }} 
                 whileTap={{ scale: 0.95 }}
                 className={`px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 rounded-full font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ${
@@ -539,9 +586,15 @@ export default function Subscription() {
 
           {/* Pricing Cards - Responsive Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8 max-w-6xl mx-auto">
-            {subscriptionPlans[selectedPlan].map((plan, index) => (
+            {subscriptionPlans[selectedPlan].map((plan, index) => {
+              const planKey = `${selectedPlan}-${plan.name}-${index}`;
+              const isExpanded = expandedPlans[planKey] === true;
+              const visibleFeatures = isExpanded ? plan.features : plan.features.slice(0, 3);
+              const hasMore = plan.features.length > 3;
+
+              return (
               <motion.div 
-                key={index} 
+                key={planKey}
                 initial={{ opacity: 0, y: 30 }} 
                 whileInView={{ opacity: 1, y: 0 }} 
                 transition={{ delay: index * 0.1, duration: 0.6 }} 
@@ -581,20 +634,36 @@ export default function Subscription() {
                 </div>
 
                 <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 flex-grow">
-                  {plan.features.map((feature, i) => (
-                    <motion.div 
-                      key={i} 
-                      initial={{ opacity: 0, x: -20 }} 
-                      whileInView={{ opacity: 1, x: 0 }} 
-                      transition={{ delay: 0.6 + i * 0.1 }} 
-                      viewport={{ once: true }} 
-                      className="flex items-start gap-2 sm:gap-3"
-                    >
-                      <Check className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5 ${plan.popular ? darkMode ? 'text-[#306CEC]' : 'text-yellow-300' : darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`} strokeWidth={2.5} />
-                      <span className={`text-sm sm:text-base ${darkMode ? 'text-gray-300' : plan.popular ? 'text-white/90' : 'text-gray-600'}`}>{feature}</span>
-                    </motion.div>
-                  ))}
+                  <AnimatePresence mode="wait">
+                    {visibleFeatures.map((feature, i) => (
+                      <motion.div 
+                        key={`${planKey}-feature-${i}`}
+                        initial={{ opacity: 0, x: -20 }} 
+                        animate={{ opacity: 1, x: 0 }} 
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ delay: 0.05 + i * 0.02 }} 
+                        className="flex items-start gap-2 sm:gap-3"
+                      >
+                        <Check className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5 ${plan.popular ? darkMode ? 'text-[#306CEC]' : 'text-yellow-300' : darkMode ? 'text-[#306CEC]' : 'text-[#306CEC]'}`} strokeWidth={2.5} />
+                        <span className={`text-sm sm:text-base ${darkMode ? 'text-gray-300' : plan.popular ? 'text-white/90' : 'text-gray-600'}`}>{feature}</span>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>
+
+                {hasMore && (
+                  <button
+                    onClick={() => {
+                      console.log('Toggling:', planKey, 'Current:', isExpanded);
+                      togglePlanExpansion(planKey);
+                    }}
+                    className={`text-xs font-bold mb-4 transition-colors ${
+                      darkMode ? 'text-[#306CEC] hover:text-[#1a9bd1]' : plan.popular ? 'text-white hover:text-gray-200' : 'text-[#306CEC] hover:text-[#1a9bd1]'
+                    }`}
+                  >
+                    {isExpanded ? '- Show Less' : '+ Show More'}
+                  </button>
+                )}
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -608,7 +677,8 @@ export default function Subscription() {
                   SUBSCRIBE NOW
                 </motion.button>
               </motion.div>
-            ))}
+            );
+            })}
 
           </div>
         </div>
@@ -1104,7 +1174,7 @@ Dear John Doe, you have sent Ksh. 999.0 to THE O'GAD IMPACT GROUP LTD for 111855
         </div>
       </section>
       {/* Benefits Section - Responsive */}
-      <section className={`py-16 sm:py-20 md:py-24 px-4 sm:px-6 transition-colors duration-1000 ${darkMode ? 'bg-black' : 'bg-[#F5F5F0]'}`}>
+      <section className={`py-16 sm:py-20 md:py-24 px-4 sm:px-6 transition-colors duration-1000 ${darkMode ? 'bg-black' : 'bg-[#F5F5f0]'}`}>
         <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 30 }} 
