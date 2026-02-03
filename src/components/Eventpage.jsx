@@ -205,7 +205,7 @@ export default function EventsPage() {
                 name: "Eldoret",
                 img: "/events/Eldoret.jpg",
                 desc: "Known for its enterprising spirit and startups.",
-                date: "April 11, 2026"
+                date: "April 18, 2026"
               },
               {
                 name: "Kisumu",
